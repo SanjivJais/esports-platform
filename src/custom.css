@@ -1,0 +1,24 @@
+.hide-incrementer::-webkit-inner-spin-button,
+.hide-incrementer::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+.hide-incrementer {
+  -moz-appearance: textfield;
+}
+
+
+.custom-scrollbar::-webkit-scrollbar, body::-webkit-scrollbar  {
+  width: 8px;
+  /* Set the width of the scrollbar */
+  background-color: rgba(50, 50, 50, 0.732);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb, body::-webkit-scrollbar{
+  background-color: #a0a0a0db;
+  /* Set the color of the thumb (the draggable part) */
+  border-radius: 4px;
+  /* Set the border-radius for a rounded appearance */
+}

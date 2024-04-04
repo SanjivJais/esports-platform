@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body{
+    font-family: "Mukta";
+    background-color: #05090F;
+    color: #E2E2E2;
+}
