@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../custom.css'
 import { IoMdClose } from "react-icons/io";
+import { useAuth } from '../utils/AuthContext';
 
 export const Login = () => {
+
+  const { loginUser } = useAuth();
+  const [loginDetails, setLoginDetails] = useState({
+    email: '',
+    password: '',
+  })
+
+  const handleInputs = (event) => {
+    setLoginDetails((prevData) => ({
+      ...prevData,
+      [event.target.name]: String(event.target.value)
+    }))
+  }
+
+  const userLogin = () => {
+    loginUser(loginDetails);
+  }
+
+
+
   return (
     <>
       <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
@@ -57,7 +78,7 @@ export const Login = () => {
                   <path d="M9.74405 8.44998H12V2.59998H4.80005V8.44998H6.60005V10.153L9.74405 8.44998Z" fill="#6C81A2" />
                 </svg>
               </div>
-              <input type="email" name="" id="" placeholder='Email' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
+              <input type="email" name="email" onChange={handleInputs} id="" placeholder='Email' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
             </div>
             <div className="flex border-[0.8px] border-inactive rounded-[3px]">
               <div className='px-4 self-center'>
@@ -65,15 +86,15 @@ export const Login = () => {
                   <path d="M7.26923 5.38462V2.87179C7.26923 2.11015 6.97747 1.3797 6.45814 0.841129C5.93881 0.302563 5.23445 0 4.5 0C3.76555 0 3.06119 0.302563 2.54186 0.841129C2.02253 1.3797 1.73077 2.11015 1.73077 2.87179C1.73077 3.06221 1.80371 3.24482 1.93354 3.37946C2.06337 3.5141 2.23947 3.58974 2.42308 3.58974C2.60669 3.58974 2.78278 3.5141 2.91261 3.37946C3.04245 3.24482 3.11538 3.06221 3.11538 2.87179C3.11538 2.49097 3.26126 2.12575 3.52093 1.85646C3.7806 1.58718 4.13278 1.4359 4.5 1.4359C4.86722 1.4359 5.21941 1.58718 5.47907 1.85646C5.73874 2.12575 5.88462 2.49097 5.88462 2.87179V5.38462H1.73077C1.27174 5.38462 0.831513 5.57372 0.506931 5.91032C0.182348 6.24692 0 6.70346 0 7.17949V12.2051C0 12.6812 0.182348 13.1377 0.506931 13.4743C0.831513 13.8109 1.27174 14 1.73077 14H7.26923C7.72826 14 8.16849 13.8109 8.49307 13.4743C8.81765 13.1377 9 12.6812 9 12.2051V7.17949C9 6.70346 8.81765 6.24692 8.49307 5.91032C8.16849 5.57372 7.72826 5.38462 7.26923 5.38462ZM5.19231 10.5682V10.7692C5.19231 10.9596 5.11937 11.1423 4.98954 11.2769C4.8597 11.4115 4.68361 11.4872 4.5 11.4872C4.31639 11.4872 4.1403 11.4115 4.01046 11.2769C3.88063 11.1423 3.80769 10.9596 3.80769 10.7692V10.5682C3.59842 10.4429 3.42442 10.263 3.30296 10.0464C3.18151 9.82974 3.11684 9.58392 3.11538 9.33333C3.11538 8.95251 3.26126 8.58728 3.52093 8.318C3.7806 8.04872 4.13278 7.89744 4.5 7.89744C4.86722 7.89744 5.21941 8.04872 5.47907 8.318C5.73874 8.58728 5.88462 8.95251 5.88462 9.33333C5.88316 9.58392 5.81849 9.82974 5.69704 10.0464C5.57558 10.263 5.40158 10.4429 5.19231 10.5682Z" fill="#6C81A2" />
                 </svg>
               </div>
-              <input type="password" placeholder='Password' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
+              <input type="password" name='password' onChange={handleInputs} placeholder='Password' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
             </div>
 
-            <button className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px]'>Login</button>
+            <button onClick={userLogin} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px]'>Login</button>
             <label htmlFor="" className='text-sm'>Don't have an account? <Link to={'/signup'} className='text-primary underline-offset-4 underline'>Signup here</Link></label>
 
             <div className='flex flex-col items-center mt-12'>
               <div className="h-[1px] bg-inactive w-full"></div>
-              <label htmlFor="" className='relative bg-secondary -translate-y-[50%] w-fit px-3'>Login With</label>
+              <label htmlFor="" className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</label>
               <button className='rounded-[100px] mt-6 flex justify-center items-center gap-3 border-[1px] border-inactive h-12 px-8'>
                 <span>
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -96,7 +117,7 @@ export const Login = () => {
                     </defs>
                   </svg>
                 </span>
-                Login with Google
+                Continue with Google
               </button>
             </div>
           </div>

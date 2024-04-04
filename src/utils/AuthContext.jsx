@@ -42,11 +42,13 @@ export const AuthProvider = ({ children }) => {
         ID.unique(),
         userInfo.email,
         userInfo.password,
-        userInfo.name
+        userInfo.name,
       );
+
       navigate('/login');
     } catch (error) {
       console.log(error);
+
     }
     setLoading(false)
   }
