@@ -66,7 +66,7 @@ export const Login = () => {
         {/* input fields section  */}
 
         <div className="bg-secondary flex flex-col lg:col-span-4 md:col-span-6 col-span-1 md:px-10 px-6 py-10">
-          <Link to={'/'}><div className="flex justify-end"><IoMdClose className='text-xl' /></div></Link>
+          <div className="flex justify-end"><Link to={'/'}><IoMdClose className='text-xl' /></Link></div>
           <div className="flex md:hidden font-extrabold text-3xl text-primary justify-center my-1 mb-6">Hamro Esports</div>
           <h2 className='font-extrabold text-2xl'>Login</h2>
           <div className="flex flex-col gap-3 mt-5">
@@ -92,7 +92,7 @@ export const Login = () => {
             <button onClick={userLogin} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px]'>Login</button>
             <label htmlFor="" className='text-sm'>Don't have an account? <Link to={'/signup'} className='text-primary underline-offset-4 underline'>Signup here</Link></label>
 
-            <div className='flex flex-col items-center mt-12'>
+            {/* <div className='flex flex-col items-center mt-12'>
               <div className="h-[1px] bg-inactive w-full"></div>
               <label htmlFor="" className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</label>
               <button className='rounded-[100px] mt-6 flex justify-center items-center gap-3 border-[1px] border-inactive h-12 px-8'>
@@ -119,7 +119,7 @@ export const Login = () => {
                 </span>
                 Continue with Google
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

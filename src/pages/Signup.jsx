@@ -1,30 +1,70 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../custom.css'
 import { IoMdClose } from "react-icons/io";
 import { useAuth } from '../utils/AuthContext';
+import { Alert } from '../components/Alert';
+
 
 export const Signup = () => {
+  const [countryCheck, setCountryCheck] = useState(null)
+
+  const fetchCountryFromIP = async () => {
+    try {
+      let cachedData = localStorage.getItem('userCountryData');
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        const { country, timestamp } = cachedData;
+        const expirationTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        if (Date.now() - timestamp < expirationTime) {
+          return country === 'NP'; // Check if country is Nepal
+        } else {
+          localStorage.removeItem('userCountryData'); // Remove expired data from storage
+        }
+      }
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      const country = data.country; // Get country code from API response
+      cachedData = {
+        country,
+        timestamp: Date.now()
+      };
+      localStorage.setItem('userCountryData', JSON.stringify(cachedData));
+      return country === 'NP'; // Check if country is Nepal
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+      return false; // Default to false if there's an error
+    }
+  };
+
+
+  useEffect(() => {
+    fetchCountryFromIP().then(isUserFromNepal => {
+      setCountryCheck(isUserFromNepal);
+    });
+  }, []); // Empty dependency array to run the effect once on component mount
+
+  const signUp = () => {
+    if (countryCheck !== null && countryCheck) {
+      registerUser(userData);
+    }
+  };
 
   const { registerUser } = useAuth();
   const [userData, setUserData] = useState({
     name: '',
     email: '',
-    phone: '',
     password: '',
   })
 
   const handleInputs = (event) => {
+    event.preventDefault();
     setUserData((prevData) => ({
       ...prevData,
       [event.target.name]: String(event.target.value),
     }))
   }
 
-
-  const signUp = () => {
-    registerUser(userData);
-  }
 
 
 
@@ -69,10 +109,15 @@ export const Signup = () => {
         {/* input fields section  */}
 
         <div className="bg-secondary flex flex-col lg:col-span-4 md:col-span-6 col-span-1 md:px-10 px-6 py-10">
-          <Link to={'/'}><div className="flex justify-end"><IoMdClose className='text-xl' /></div></Link>
+          <div className="flex justify-end"><Link to={'/'}><IoMdClose className='text-xl' /></Link></div>
           <div className="flex md:hidden font-extrabold text-3xl text-primary justify-center my-1 mb-6">Hamro Esports</div>
           <h2 className='font-extrabold text-2xl'>Sign Up</h2>
+
+
           <div className="flex flex-col gap-3 mt-5">
+            {!countryCheck && (
+              <Alert type={"error"} message={"Your country is not yet supported! Please check back later :)"} />
+            )}
             <div className="flex border-[0.8px] border-inactive rounded-[3px]">
               <div className='px-4 self-center'>
                 <svg width="13" height="18.2" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,17 +139,6 @@ export const Signup = () => {
             </div>
             <div className="flex border-[0.8px] border-inactive rounded-[3px]">
               <div className='px-4 self-center'>
-                <svg width="10" height="17" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.46154 0H1.53846C0.689231 0 0 0.712727 0 1.59091V12.4091C0 13.2873 0.689231 14 1.53846 14H6.46154C7.31077 14 8 13.2873 8 12.4091V1.59091C8 0.712727 7.31077 0 6.46154 0ZM4 13.3636C3.48923 13.3636 3.07692 12.9373 3.07692 12.4091C3.07692 11.8809 3.48923 11.4545 4 11.4545C4.51077 11.4545 4.92308 11.8809 4.92308 12.4091C4.92308 12.9373 4.51077 13.3636 4 13.3636ZM6.76923 10.8182H1.23077V1.90909H6.76923V10.8182Z" fill="#6C81A2" />
-                </svg>
-              </div>
-              <div className="flex border-l-[0.8px] border-inactive  items-center pl-4 w-full">
-                <span>+977 </span>
-                <input type="number" name='phone' onChange={handleInputs} placeholder='Phone No.' className='hide-incrementer w-full rounded-[3px] bg-transparent outline-none p-3 placeholder:opacity-70' />
-              </div>
-            </div>
-            <div className="flex border-[0.8px] border-inactive rounded-[3px]">
-              <div className='px-4 self-center'>
                 <svg width="10" height="15.5" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7.26923 5.38462V2.87179C7.26923 2.11015 6.97747 1.3797 6.45814 0.841129C5.93881 0.302563 5.23445 0 4.5 0C3.76555 0 3.06119 0.302563 2.54186 0.841129C2.02253 1.3797 1.73077 2.11015 1.73077 2.87179C1.73077 3.06221 1.80371 3.24482 1.93354 3.37946C2.06337 3.5141 2.23947 3.58974 2.42308 3.58974C2.60669 3.58974 2.78278 3.5141 2.91261 3.37946C3.04245 3.24482 3.11538 3.06221 3.11538 2.87179C3.11538 2.49097 3.26126 2.12575 3.52093 1.85646C3.7806 1.58718 4.13278 1.4359 4.5 1.4359C4.86722 1.4359 5.21941 1.58718 5.47907 1.85646C5.73874 2.12575 5.88462 2.49097 5.88462 2.87179V5.38462H1.73077C1.27174 5.38462 0.831513 5.57372 0.506931 5.91032C0.182348 6.24692 0 6.70346 0 7.17949V12.2051C0 12.6812 0.182348 13.1377 0.506931 13.4743C0.831513 13.8109 1.27174 14 1.73077 14H7.26923C7.72826 14 8.16849 13.8109 8.49307 13.4743C8.81765 13.1377 9 12.6812 9 12.2051V7.17949C9 6.70346 8.81765 6.24692 8.49307 5.91032C8.16849 5.57372 7.72826 5.38462 7.26923 5.38462ZM5.19231 10.5682V10.7692C5.19231 10.9596 5.11937 11.1423 4.98954 11.2769C4.8597 11.4115 4.68361 11.4872 4.5 11.4872C4.31639 11.4872 4.1403 11.4115 4.01046 11.2769C3.88063 11.1423 3.80769 10.9596 3.80769 10.7692V10.5682C3.59842 10.4429 3.42442 10.263 3.30296 10.0464C3.18151 9.82974 3.11684 9.58392 3.11538 9.33333C3.11538 8.95251 3.26126 8.58728 3.52093 8.318C3.7806 8.04872 4.13278 7.89744 4.5 7.89744C4.86722 7.89744 5.21941 8.04872 5.47907 8.318C5.73874 8.58728 5.88462 8.95251 5.88462 9.33333C5.88316 9.58392 5.81849 9.82974 5.69704 10.0464C5.57558 10.263 5.40158 10.4429 5.19231 10.5682Z" fill="#6C81A2" />
                 </svg>
@@ -117,35 +151,6 @@ export const Signup = () => {
             </div>
             <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px]'>Sign Up</button>
             <label htmlFor="" className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></label>
-
-            <div className='flex flex-col items-center mt-12'>
-              <div className="h-[1px] bg-inactive w-full"></div>
-              <label htmlFor="" className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</label>
-              <button className='rounded-[100px] mt-6 flex justify-center items-center gap-3 border-[1px] border-inactive h-12 px-8'>
-                <span>
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.9999 4.58333C12.482 4.58333 13.8428 5.09073 14.9291 5.93456L18.2631 2.75375C16.3247 1.04496 13.7872 0 10.9999 0C6.77631 0 3.11356 2.38326 1.27026 5.8757L4.97766 8.80255C5.87575 6.34276 8.2293 4.58333 10.9999 4.58333Z" fill="#F44336" />
-                    <path d="M21.9047 12.3767C21.962 11.9261 22 11.4663 22 11C22 10.2137 21.9141 9.44796 21.7573 8.70837H11V13.2917H16.9457C16.4647 14.5418 15.6083 15.5997 14.5182 16.3345L18.2393 19.2723C20.2119 17.5409 21.5618 15.1162 21.9047 12.3767Z" fill="#2196F3" />
-                    <path d="M4.58333 11C4.58333 10.2269 4.72712 9.48902 4.97772 8.80259L1.27032 5.87573C0.462306 7.40672 0 9.14852 0 11C0 12.8309 0.453802 14.5534 1.24503 16.0719L4.95713 13.1413C4.7194 12.4708 4.58333 11.7521 4.58333 11Z" fill="#FFC107" />
-                    <path d="M11.0001 17.4166C8.20835 17.4166 5.83964 15.6305 4.95721 13.1412L1.24512 16.0718C3.0794 19.5923 6.75575 22 11.0001 22C13.7755 22 16.3064 20.9689 18.2394 19.2722L14.5183 16.3345C13.5129 17.0123 12.3095 17.4166 11.0001 17.4166Z" fill="#00B060" />
-                    <path opacity="0.1" d="M11.0001 21.7708C7.76275 21.7708 4.85178 20.4351 2.7937 18.307C4.80836 20.568 7.73354 22 11.0001 22C14.2365 22 17.1374 20.5962 19.1476 18.3707C17.0956 20.4642 14.2067 21.7708 11.0001 21.7708Z" fill="black" />
-                    <path opacity="0.1" d="M11 13.0625V13.2917H16.9457L17.0385 13.0625H11Z" fill="black" />
-                    <path d="M21.9949 11.1348C21.9957 11.0897 22 11.0453 22 11C22 10.9872 21.998 10.9748 21.998 10.962C21.9973 11.0198 21.9944 11.0768 21.9949 11.1348Z" fill="#E6E6E6" />
-                    <path opacity="0.2" d="M11 8.70837V8.93754H21.8034C21.789 8.8619 21.7732 8.78346 21.7573 8.70837H11Z" fill="white" />
-                    <path d="M21.7573 8.70833H11V13.2917H16.9457C16.0211 15.6948 13.7291 17.4167 11 17.4167C7.4562 17.4167 4.58333 14.5438 4.58333 11C4.58333 7.45614 7.4562 4.58333 11 4.58333C12.285 4.58333 13.4694 4.97811 14.4728 5.62896C14.6264 5.72878 14.7848 5.82249 14.9291 5.93456L18.2632 2.75375L18.188 2.6959C16.2589 1.02398 13.7532 0 11 0C4.92485 0 0 4.92485 0 11C0 17.0751 4.92485 22 11 22C16.6079 22 21.2258 17.8005 21.9047 12.3767C21.962 11.926 22 11.4663 22 11C22 10.2136 21.9141 9.44792 21.7573 8.70833Z" fill="url(#paint0_linear_73_226)" />
-                    <path opacity="0.1" d="M14.4727 5.39983C13.4693 4.74898 12.285 4.3542 10.9999 4.3542C7.45612 4.3542 4.58325 7.22701 4.58325 10.7709C4.58325 10.8095 4.58377 10.8397 4.58444 10.8783C4.64627 7.38792 7.49478 4.58337 10.9999 4.58337C12.285 4.58337 13.4693 4.97814 14.4727 5.629C14.6263 5.72881 14.7847 5.82253 14.929 5.93459L18.2631 2.75378L14.929 5.70542C14.7847 5.59336 14.6263 5.49964 14.4727 5.39983Z" fill="black" />
-                    <path opacity="0.2" d="M11 0.229167C13.7271 0.229167 16.2093 1.23602 18.131 2.8798L18.2632 2.75375L18.1623 2.66592C16.2332 0.993996 13.7532 0 11 0C4.92485 0 0 4.92485 0 11C0 11.0387 0.00537112 11.076 0.00576272 11.1146C0.067866 5.09286 4.96351 0.229167 11 0.229167Z" fill="white" />
-                    <defs>
-                      <linearGradient id="paint0_linear_73_226" x1="0" y1="11" x2="22" y2="11" gradientUnits="userSpaceOnUse">
-                        <stop stopColor="white" stopOpacity="0.2" />
-                        <stop offset="1" stopColor="white" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </span>
-                Continue with Google
-              </button>
-            </div>
           </div>
         </div>
       </div>
