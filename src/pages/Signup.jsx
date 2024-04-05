@@ -5,10 +5,15 @@ import { IoMdClose } from "react-icons/io";
 import { useAuth } from '../utils/AuthContext';
 import { Alert } from '../components/Alert';
 
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+import ClipLoader  from 'react-spinners/ClipLoader';
+
+
 
 export const Signup = () => {
-  const [countryCheck, setCountryCheck] = useState(null)
 
+  const [countryCheck, setCountryCheck] = useState(null)
   const fetchCountryFromIP = async () => {
     try {
       let cachedData = localStorage.getItem('userCountryData');
@@ -37,17 +42,22 @@ export const Signup = () => {
     }
   };
 
-
   useEffect(() => {
     fetchCountryFromIP().then(isUserFromNepal => {
       setCountryCheck(isUserFromNepal);
     });
   }, []); // Empty dependency array to run the effect once on component mount
 
-  const signUp = () => {
+
+  const [loading, setLoading] = useState(false);
+
+  const signUp = async () => {
     if (countryCheck !== null && countryCheck) {
-      registerUser(userData);
+      setLoading(true)
+      await registerUser(userData);
+      setLoading(false)
     }
+
   };
 
   const { registerUser } = useAuth();
@@ -57,12 +67,14 @@ export const Signup = () => {
     password: '',
   })
 
+
   const handleInputs = (event) => {
     event.preventDefault();
     setUserData((prevData) => ({
       ...prevData,
       [event.target.name]: String(event.target.value),
     }))
+
   }
 
 
@@ -147,9 +159,9 @@ export const Signup = () => {
             </div>
             <div className="flex items-start my-2 text-sm">
               <input type="checkbox" name="" id="" className='bg-transparent cursor-pointer' />
-              <p className='ml-2 -mt-1'>I'm at least 16 years of age and confirm to the <span className='text-primary underline underline-offset-4'>Terms & Conditions</span> and <span className='text-primary underline underline-offset-4'>Privacy Policy</span>.</p>
+              <p className='ml-2 -mt-1'>I'm at least 16 years of age and confirm to the <a href='#' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='#' className='text-primary underline underline-offset-4'>Privacy Policy</a>.</p>
             </div>
-            <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px]'>Sign Up</button>
+            <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'><span>Sign Up</span>{loading && <ClipLoader size={22} color="#080F18" />}</button>
             <label htmlFor="" className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></label>
           </div>
         </div>

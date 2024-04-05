@@ -3,6 +3,9 @@ import { account, ID } from "../../config/Appwrite";
 import { useNavigate } from "react-router-dom";
 import HashLoader from 'react-spinners/HashLoader'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -16,7 +19,6 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const loginUser = async (userInfo) => {
-    setLoading(true)
     try {
       const response = await account.createEmailPasswordSession(
         userInfo.email,
@@ -26,9 +28,12 @@ export const AuthProvider = ({ children }) => {
       setUser(accountDetails);
       navigate('/');
     } catch (error) {
-      console.error(error);
+      if (error.code === 401)
+        toast.error("Invalid details, please check your email/password.")
+      else
+        toast.error(error.message);
+
     }
-    setLoading(false)
   }
 
   const logoutUser = () => {
@@ -36,7 +41,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null)
   }
   const registerUser = async (userInfo) => {
-    setLoading(true)
     try {
       const response = await account.create(
         ID.unique(),
@@ -44,13 +48,14 @@ export const AuthProvider = ({ children }) => {
         userInfo.password,
         userInfo.name,
       );
-
       navigate('/login');
+      toast.success("Account created successfully!");
     } catch (error) {
-      console.log(error);
-
+      if (error.code === 409)
+        toast.error("Account already exists!")
+      else
+        toast.error(error.message);
     }
-    setLoading(false)
   }
 
   const checkUserStatus = async () => {
@@ -73,6 +78,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={contextData} >
       {loading ? <div className="flex justify-center items-center h-[100vh] w-screen"><HashLoader color="#F88B26" /></div> : children}
+      <ToastContainer hideProgressBar theme="dark" />
     </AuthContext.Provider>
   )
 }

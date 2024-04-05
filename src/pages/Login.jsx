@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import '../custom.css'
 import { IoMdClose } from "react-icons/io";
 import { useAuth } from '../utils/AuthContext';
+import ClipLoader  from 'react-spinners/ClipLoader';
 
 export const Login = () => {
 
@@ -19,11 +20,14 @@ export const Login = () => {
     }))
   }
 
-  const userLogin = () => {
-    loginUser(loginDetails);
+  const [loading, setLoading] = useState(false);
+
+
+  const userLogin = async () => {
+    setLoading(true)
+    await loginUser(loginDetails);
+    setLoading(false)
   }
-
-
 
   return (
     <>
@@ -89,7 +93,7 @@ export const Login = () => {
               <input type="password" name='password' onChange={handleInputs} placeholder='Password' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
             </div>
 
-            <button onClick={userLogin} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px]'>Login</button>
+            <button onClick={userLogin} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'><span>Login</span>{loading && <ClipLoader size={22} color="#080F18" />}</button>
             <label htmlFor="" className='text-sm'>Don't have an account? <Link to={'/signup'} className='text-primary underline-offset-4 underline'>Signup here</Link></label>
 
             {/* <div className='flex flex-col items-center mt-12'>
