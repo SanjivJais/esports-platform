@@ -5,9 +5,10 @@ import { IoMdClose } from "react-icons/io";
 import { useAuth } from '../utils/AuthContext';
 import { Alert } from '../components/Alert';
 
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-import ClipLoader  from 'react-spinners/ClipLoader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ClipLoader from 'react-spinners/ClipLoader';
+import { account } from '../../config/Appwrite';
 
 
 
@@ -48,25 +49,12 @@ export const Signup = () => {
     });
   }, []); // Empty dependency array to run the effect once on component mount
 
-
-  const [loading, setLoading] = useState(false);
-
-  const signUp = async () => {
-    if (countryCheck !== null && countryCheck) {
-      setLoading(true)
-      await registerUser(userData);
-      setLoading(false)
-    }
-
-  };
-
-  const { registerUser } = useAuth();
+  const { registerUser, googleSignin } = useAuth();
   const [userData, setUserData] = useState({
     name: '',
     email: '',
     password: '',
   })
-
 
   const handleInputs = (event) => {
     event.preventDefault();
@@ -74,14 +62,57 @@ export const Signup = () => {
       ...prevData,
       [event.target.name]: String(event.target.value),
     }))
-
   }
 
+  const [loading, setLoading] = useState(false);
+
+  const checkInputValidity = () => {
+    if (userData.name != '') {
+      if (userData.email !== '') {
+        if (userData.password !== '') {
+          if (userData.password.length >= 8) {
+            if (document.getElementById("agreementCheckbox").checked) {
+
+              return 1;
+            } else {
+              toast.error("Confirm the checkbox.");
+
+            }
+          } else {
+            toast.error("Password must be at least 8 characters.");
+
+          }
+        } else {
+          toast.error("Create a password");
+
+        }
+      } else {
+        toast.error("Enter your email");
+
+      }
+    } else {
+      toast.error("Enter your name");
+    }
+  }
+  const signUp = async () => {
+    if (countryCheck !== null && countryCheck && checkInputValidity()) {
+      setLoading(true)
+      await registerUser(userData);
+      setLoading(false)
+    }
+  };
+
+  const googleAuth = async (e) => {
+    e.preventDefault();
+    await googleSignin();
+  }
 
 
 
   return (
     <>
+      <ToastContainer hideProgressBar theme="dark" />
+
       <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
         <div className="bg-[url('..\src\assets\EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>
@@ -158,11 +189,40 @@ export const Signup = () => {
               <input type="password" name='password' onChange={handleInputs} placeholder='Create password' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
             </div>
             <div className="flex items-start my-2 text-sm">
-              <input type="checkbox" name="" id="" className='bg-transparent cursor-pointer' />
+              <input type="checkbox" name="" id="agreementCheckbox" className='bg-transparent cursor-pointer' />
               <p className='ml-2 -mt-1'>I'm at least 16 years of age and confirm to the <a href='#' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='#' className='text-primary underline underline-offset-4'>Privacy Policy</a>.</p>
             </div>
             <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'><span>Sign Up</span>{loading && <ClipLoader size={22} color="#080F18" />}</button>
             <label htmlFor="" className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></label>
+            {/* Sign in with  */}
+            <div className='flex flex-col items-center mt-12'>
+              <div className="h-[1px] bg-inactive w-full"></div>
+              <label htmlFor="" className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</label>
+              <button onClick={(e) => googleAuth(e)} className='rounded-[100px] mt-6 flex justify-center items-center gap-3 border-[1px] border-inactive h-12 px-8'>
+                <span>
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.9999 4.58333C12.482 4.58333 13.8428 5.09073 14.9291 5.93456L18.2631 2.75375C16.3247 1.04496 13.7872 0 10.9999 0C6.77631 0 3.11356 2.38326 1.27026 5.8757L4.97766 8.80255C5.87575 6.34276 8.2293 4.58333 10.9999 4.58333Z" fill="#F44336" />
+                    <path d="M21.9047 12.3767C21.962 11.9261 22 11.4663 22 11C22 10.2137 21.9141 9.44796 21.7573 8.70837H11V13.2917H16.9457C16.4647 14.5418 15.6083 15.5997 14.5182 16.3345L18.2393 19.2723C20.2119 17.5409 21.5618 15.1162 21.9047 12.3767Z" fill="#2196F3" />
+                    <path d="M4.58333 11C4.58333 10.2269 4.72712 9.48902 4.97772 8.80259L1.27032 5.87573C0.462306 7.40672 0 9.14852 0 11C0 12.8309 0.453802 14.5534 1.24503 16.0719L4.95713 13.1413C4.7194 12.4708 4.58333 11.7521 4.58333 11Z" fill="#FFC107" />
+                    <path d="M11.0001 17.4166C8.20835 17.4166 5.83964 15.6305 4.95721 13.1412L1.24512 16.0718C3.0794 19.5923 6.75575 22 11.0001 22C13.7755 22 16.3064 20.9689 18.2394 19.2722L14.5183 16.3345C13.5129 17.0123 12.3095 17.4166 11.0001 17.4166Z" fill="#00B060" />
+                    <path opacity="0.1" d="M11.0001 21.7708C7.76275 21.7708 4.85178 20.4351 2.7937 18.307C4.80836 20.568 7.73354 22 11.0001 22C14.2365 22 17.1374 20.5962 19.1476 18.3707C17.0956 20.4642 14.2067 21.7708 11.0001 21.7708Z" fill="black" />
+                    <path opacity="0.1" d="M11 13.0625V13.2917H16.9457L17.0385 13.0625H11Z" fill="black" />
+                    <path d="M21.9949 11.1348C21.9957 11.0897 22 11.0453 22 11C22 10.9872 21.998 10.9748 21.998 10.962C21.9973 11.0198 21.9944 11.0768 21.9949 11.1348Z" fill="#E6E6E6" />
+                    <path opacity="0.2" d="M11 8.70837V8.93754H21.8034C21.789 8.8619 21.7732 8.78346 21.7573 8.70837H11Z" fill="white" />
+                    <path d="M21.7573 8.70833H11V13.2917H16.9457C16.0211 15.6948 13.7291 17.4167 11 17.4167C7.4562 17.4167 4.58333 14.5438 4.58333 11C4.58333 7.45614 7.4562 4.58333 11 4.58333C12.285 4.58333 13.4694 4.97811 14.4728 5.62896C14.6264 5.72878 14.7848 5.82249 14.9291 5.93456L18.2632 2.75375L18.188 2.6959C16.2589 1.02398 13.7532 0 11 0C4.92485 0 0 4.92485 0 11C0 17.0751 4.92485 22 11 22C16.6079 22 21.2258 17.8005 21.9047 12.3767C21.962 11.926 22 11.4663 22 11C22 10.2136 21.9141 9.44792 21.7573 8.70833Z" fill="url(#paint0_linear_73_226)" />
+                    <path opacity="0.1" d="M14.4727 5.39983C13.4693 4.74898 12.285 4.3542 10.9999 4.3542C7.45612 4.3542 4.58325 7.22701 4.58325 10.7709C4.58325 10.8095 4.58377 10.8397 4.58444 10.8783C4.64627 7.38792 7.49478 4.58337 10.9999 4.58337C12.285 4.58337 13.4693 4.97814 14.4727 5.629C14.6263 5.72881 14.7847 5.82253 14.929 5.93459L18.2631 2.75378L14.929 5.70542C14.7847 5.59336 14.6263 5.49964 14.4727 5.39983Z" fill="black" />
+                    <path opacity="0.2" d="M11 0.229167C13.7271 0.229167 16.2093 1.23602 18.131 2.8798L18.2632 2.75375L18.1623 2.66592C16.2332 0.993996 13.7532 0 11 0C4.92485 0 0 4.92485 0 11C0 11.0387 0.00537112 11.076 0.00576272 11.1146C0.067866 5.09286 4.96351 0.229167 11 0.229167Z" fill="white" />
+                    <defs>
+                      <linearGradient id="paint0_linear_73_226" x1="0" y1="11" x2="22" y2="11" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="white" stopOpacity="0.2" />
+                        <stop offset="1" stopColor="white" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </span>
+                Continue with Google
+              </button>
+            </div>
           </div>
         </div>
       </div>
