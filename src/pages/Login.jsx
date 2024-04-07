@@ -7,7 +7,6 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { account } from '../../config/Appwrite';
 
 export const Login = () => {
 
@@ -47,12 +46,10 @@ export const Login = () => {
     }
   }
 
-  const googleAuth = (e) => {
+  const googleAuth = async (e) => {
     e.preventDefault();
-    googleSignin();
+    await googleSignin();
   }
-
-
 
   return (
     <>

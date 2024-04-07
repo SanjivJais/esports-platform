@@ -14,7 +14,12 @@ export default {
         secondaryLight: "#0E1825",
         inactive: "#6C81A1",
         offWhite: "#E2E2E2",
-      }
+        gray: "#9C9C9C",
+        dimText: "#696969",
+      },
+      boxShadow: {
+        'card': '0 10px 25px 3px #6C81A124',
+      },
     },
   },
   plugins: [],

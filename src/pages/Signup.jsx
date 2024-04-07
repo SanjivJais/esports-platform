@@ -8,7 +8,6 @@ import { Alert } from '../components/Alert';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { account } from '../../config/Appwrite';
 
 
 

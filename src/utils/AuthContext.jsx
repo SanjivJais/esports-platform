@@ -44,30 +44,8 @@ export const AuthProvider = ({ children }) => {
         "http://localhost:5173/",
         "http://localhost:5173/login"
       );
-      const session = await account.getSession('current');
-      const accessToken = session.providerAccessToken;
-      console.log(accessToken);
-      await fetchGoogleUserInfo(accessToken);
-
     } catch (error) {
       toast.error(error.message);
-    }
-  }
-
-  async function fetchGoogleUserInfo(accessToken) {
-    try {
-      const response = await fetch('https://people.googleapis.com/v1/people/me?personFields=emailAddresses,names,photos', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch user info from Google.');
-      }
-      const userData = await response.json();
-      setUser(userData);
-    } catch (error) {
-      
     }
   }
 
