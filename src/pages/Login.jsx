@@ -55,7 +55,7 @@ export const Login = () => {
     <>
       <ToastContainer hideProgressBar theme="dark" />
       <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
-        <div className="bg-[url('..\src\assets\EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
+        <div className="bg-[url('/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>
             <h2 className='font-bold text-xl mb-4 flex flex-col lg:gap-6 gap-4'>WELCOME BACK TO
               <br />
