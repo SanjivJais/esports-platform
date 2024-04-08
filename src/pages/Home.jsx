@@ -8,11 +8,11 @@ export const Home = () => {
       imgURL: 'https://lh3.googleusercontent.com/proxy/T3X_yIUe0gd7vg5RZBzXU08_7vN6a2xtPdr4W6Rtd5CXUfN8Rv2Rcjh3ym0UfmNmRBqTXIuAbvkPWJyC0_NdAJ13lFfb8TXR89RBWyFd7QSsa81nn4u7XcQvJZL2cHJuEOEq8N9ByH_YNqDGQA',
       maxPlayers: 48,
       minPlayers: 30,
-      joinedPlayers: 25,
-      entryFree: 0,
+      joinedPlayers: 10,
+      entryFree: 20,
       gameMode: 'BR - Squad',
       rewardType: 'coin',
-      rewardAmount: 30,
+      rewardAmount: 250,
       startDate: 'May 2, 2024',
       startTime: '3:00 PM',
     },
@@ -32,7 +32,7 @@ export const Home = () => {
     },
     {
       gameTitle: 'Free Fire',
-      imgURL: 'https://lh3.googleusercontent.com/proxy/T3X_yIUe0gd7vg5RZBzXU08_7vN6a2xtPdr4W6Rtd5CXUfN8Rv2Rcjh3ym0UfmNmRBqTXIuAbvkPWJyC0_NdAJ13lFfb8TXR89RBWyFd7QSsa81nn4u7XcQvJZL2cHJuEOEq8N9ByH_YNqDGQA',
+      imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
       maxPlayers: 48,
       minPlayers: 25,
       joinedPlayers: 30,
@@ -44,10 +44,6 @@ export const Home = () => {
       startTime: '2:00 PM',
     },
   ])
-
-  useEffect(() => (
-    setTournaments(tournaments)
-  ), [])
 
   return (
     <div className='p-6 flex justify-center w-full'>
@@ -68,7 +64,6 @@ export const Home = () => {
           />
         ))}
       </div>
-
     </div>
   )
 }
