@@ -7,7 +7,7 @@ import { useAuth } from '../utils/AuthContext';
 export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   const { user } = useAuth();
   return (
-    <nav className="sticky z-50 top-0 bg-secondary h-[72px] md:px-6 shadow-md flex items-center justify-between pl-0 pr-6">
+    <nav className="sticky z-20 top-0 bg-secondary h-[72px] md:px-6 shadow-md flex items-center justify-between pl-0 pr-6">
       <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 md:block hidden' onClick={toggleSidebar} />
       <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 md:hidden' onClick={mobToggleSidebar} />
 

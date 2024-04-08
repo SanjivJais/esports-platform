@@ -19,6 +19,7 @@ export default {
       },
       boxShadow: {
         'card': '0 10px 25px 3px #6C81A124',
+        'modal': '0 10px 25px 3px #6C81A105',
       },
     },
   },

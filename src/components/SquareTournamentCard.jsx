@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { Modal } from './Modal';
 
 export const SquareTournamentCard = ({ gameTitle, imgURL, maxPlayers, minPlayers, joinedPlayers, entryFree, gameMode, rewardType, rewardAmount, startDate, startTime }) => {
+    const [showModal, setShowModal] = useState(false);
 
     let joinPercent = parseInt((joinedPlayers * 100) / maxPlayers);
     const cardStyles = {
@@ -49,10 +51,11 @@ export const SquareTournamentCard = ({ gameTitle, imgURL, maxPlayers, minPlayers
                         <div className='font-semibold flex gap-2'><span>{startDate}</span> <span>.</span> <span>{startTime}</span></div>
                     </div>
                     {/* <button className=' px-5 py-2 hover:text-secondary border-[1px] border-inactive hover:border-primary transition-colors duration-150 ease-in-out border-opacity-50 rounded-[5px] font-bold hover:bg-primary'>View Details</button> */}
-                    <button className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>View Details</button>
+                    <button onClick={()=>setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>View Details</button>
                 </div>
 
             </div>
+            <Modal isVisible={showModal} onClose={()=>setShowModal(false)} />
         </div>
     )
 }

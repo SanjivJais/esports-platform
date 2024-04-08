@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { SquareTournamentCard } from '../components/SquareTournamentCard'
 
 export const Home = () => {
-  const [tournaments, setTournaments] = useState([
+  const tournaments = [
     {
       gameTitle: 'Free Fire',
       imgURL: 'https://lh3.googleusercontent.com/proxy/T3X_yIUe0gd7vg5RZBzXU08_7vN6a2xtPdr4W6Rtd5CXUfN8Rv2Rcjh3ym0UfmNmRBqTXIuAbvkPWJyC0_NdAJ13lFfb8TXR89RBWyFd7QSsa81nn4u7XcQvJZL2cHJuEOEq8N9ByH_YNqDGQA',
@@ -43,11 +43,12 @@ export const Home = () => {
       startDate: 'May 3, 2024',
       startTime: '2:00 PM',
     },
-  ])
+    
+  ]
 
   return (
-    <div className='p-6 flex justify-center w-full'>
-      <div className="grid grid-cols-3 gap-6">
+    <div className='p-6 flex flex-col items-center w-full'>
+      <div className="grid grid-cols-3 gap-8">
         {tournaments && tournaments.map((tournament, index) => (
           <SquareTournamentCard key={index}
             gameTitle={tournament.gameTitle}
