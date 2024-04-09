@@ -42,8 +42,8 @@ export const SquareTournamentCard = ({ tournament }) => {
                         <div className='font-semibold'>{tournament.minPlayers} / {tournament.maxPlayers}</div>
                     </div>
                     <div>
-                        <label htmlFor="" className='text-[12px] text-dimText'>REWARDS</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="\Coin.svg" alt="" />} {tournament.rewardAmount}</div>
+                        <label htmlFor="" className='text-[12px] text-dimText'>PRIZE POOL</label>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {tournament.rewardAmount}</div>
                     </div>
                 </div>
                 <div className="h-[1px] bg-inactive bg-opacity-40 my-4"></div>
