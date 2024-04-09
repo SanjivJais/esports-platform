@@ -10,15 +10,27 @@
 }
 
 
-.custom-scrollbar::-webkit-scrollbar, body::-webkit-scrollbar  {
+.custom-scrollbar::-webkit-scrollbar,
+body::-webkit-scrollbar {
   width: 8px;
   /* Set the width of the scrollbar */
   background-color: rgba(50, 50, 50, 0.732);
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb, body::-webkit-scrollbar{
+.custom-scrollbar::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar {
   background-color: #a0a0a0db;
   /* Set the color of the thumb (the draggable part) */
   border-radius: 4px;
   /* Set the border-radius for a rounded appearance */
+}
+
+/* styles.css */
+
+.tournModalComponent-custom-gradient {
+  background: linear-gradient(to top, #080F18 10%, #080F18 5%, transparent 85%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
 }

@@ -43,6 +43,20 @@ export const Home = () => {
       startDate: 'May 3, 2024',
       startTime: '2:00 PM',
     },
+    {
+      gameTitle: 'PUBG Mobile',
+      imgURL: 'https://w0.peakpx.com/wallpaper/189/508/HD-wallpaper-pubg-squad.jpg',
+      maxPlayers: 100,
+      minPlayers: 80,
+      joinedPlayers: 90,
+      entryFree: 0,
+      gameMode: 'BR - Solo',
+      rewardType: 'coin',
+      rewardAmount: 50,
+      startDate: 'May 4, 2024',
+      startTime: '3:30 PM',
+
+    },
     
   ]
 
@@ -51,17 +65,18 @@ export const Home = () => {
       <div className="grid grid-cols-3 gap-8">
         {tournaments && tournaments.map((tournament, index) => (
           <SquareTournamentCard key={index}
-            gameTitle={tournament.gameTitle}
-            imgURL={tournament.imgURL}
-            minPlayers={tournament.minPlayers}
-            maxPlayers={tournament.maxPlayers}
-            joinedPlayers={tournament.joinedPlayers}
-            entryFree={tournament.entryFree}
-            gameMode={tournament.gameMode}
-            rewardType={tournament.rewardType}
-            rewardAmount={tournament.rewardAmount}
-            startDate={tournament.startDate}
-            startTime={tournament.startTime}
+          tournament={tournament}
+            // gameTitle={tournament.gameTitle}
+            // imgURL={tournament.imgURL}
+            // minPlayers={tournament.minPlayers}
+            // maxPlayers={tournament.maxPlayers}
+            // joinedPlayers={tournament.joinedPlayers}
+            // entryFree={tournament.entryFree}
+            // gameMode={tournament.gameMode}
+            // rewardType={tournament.rewardType}
+            // rewardAmount={tournament.rewardAmount}
+            // startDate={tournament.startDate}
+            // startTime={tournament.startTime}
           />
         ))}
       </div>
