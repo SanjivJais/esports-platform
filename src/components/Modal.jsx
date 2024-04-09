@@ -1,15 +1,16 @@
 import React from 'react'
 import { IoClose } from 'react-icons/io5'
 
-export const Modal = ({ isVisible, onClose }) => {
+export const Modal = ({ isVisible, onClose, children }) => {
     if (!isVisible) return null;
-    const handleClose = (e) => {
-        // if (e.target.id === "modalWrapper") { onClose() };
-    }
+    // const handleClose = (e) => {
+    //     if (e.target.id === "modalWrapper") { onClose() };
+    // }
     return (
         <div id='modalWrapper' className="fixed z-40 inset-0 bg-secondary backdrop-blur-sm bg-opacity-30 flex justify-center items-center">
-            <div className='bg-secondary overflow-auto custom-scrollbar h-[85vh] w-[72vw] flex flex-col rounded-[5px] shadow-modal'>
-                <IoClose onClick={() => onClose()} className='self-end m-4 text-3xl bg-secondary p-[5px] bg-opacity-60 rounded-[50%] cursor-pointer' />
+            <div className='relative bg-secondary overflow-auto custom-scrollbar h-[85vh] w-[72vw] flex flex-col rounded-[5px] border-inactive border-opacity-10 border-[0.5px] shadow-modal'>
+                <IoClose onClick={() => onClose()} className='absolute top-3 right-3 text-3xl bg-secondary p-[5px] bg-opacity-60 rounded-[50%] cursor-pointer' />
+                {children}
             </div>
         </div>
     )

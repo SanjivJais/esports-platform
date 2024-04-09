@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Modal } from './Modal';
 
+
 export const SquareTournamentCard = ({ gameTitle, imgURL, maxPlayers, minPlayers, joinedPlayers, entryFree, gameMode, rewardType, rewardAmount, startDate, startTime }) => {
     const [showModal, setShowModal] = useState(false);
 
@@ -14,7 +15,7 @@ export const SquareTournamentCard = ({ gameTitle, imgURL, maxPlayers, minPlayers
     return (
         <div className='w-96 h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
             <div className={`flex flex-col justify-between rounded-br-none rounded-bl-none w-full h-52`} style={cardStyles}>
-                <label htmlFor="Game Title" className='self-end bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-2 right-2 text-end'>{gameTitle}</label>
+                <label htmlFor="Game Title" className='self-end bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-2 right-2'>{gameTitle}</label>
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>
                     <div className="flex justify-between  text-[13px] mb-1">
                         <label htmlFor="" >Players Joined</label>
@@ -51,11 +52,22 @@ export const SquareTournamentCard = ({ gameTitle, imgURL, maxPlayers, minPlayers
                         <div className='font-semibold flex gap-2'><span>{startDate}</span> <span>.</span> <span>{startTime}</span></div>
                     </div>
                     {/* <button className=' px-5 py-2 hover:text-secondary border-[1px] border-inactive hover:border-primary transition-colors duration-150 ease-in-out border-opacity-50 rounded-[5px] font-bold hover:bg-primary'>View Details</button> */}
-                    <button onClick={()=>setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>View Details</button>
+                    <button onClick={() => setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>View Details</button>
                 </div>
 
             </div>
-            <Modal isVisible={showModal} onClose={()=>setShowModal(false)} />
+            <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+                <div className='w-full h-full'>
+                    <div className='h-[45%] flex flex-col justify-between' style={{
+                        backgroundImage: `url("${imgURL}")`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}>
+                        <div className='self-start bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-3 left-3'>{gameTitle}</div>
+                        <div className='bg-secondary bg-opacity-80 h-20'></div>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 }

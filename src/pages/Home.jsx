@@ -5,7 +5,7 @@ export const Home = () => {
   const tournaments = [
     {
       gameTitle: 'Free Fire',
-      imgURL: 'https://lh3.googleusercontent.com/proxy/T3X_yIUe0gd7vg5RZBzXU08_7vN6a2xtPdr4W6Rtd5CXUfN8Rv2Rcjh3ym0UfmNmRBqTXIuAbvkPWJyC0_NdAJ13lFfb8TXR89RBWyFd7QSsa81nn4u7XcQvJZL2cHJuEOEq8N9ByH_YNqDGQA',
+      imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
       maxPlayers: 48,
       minPlayers: 30,
       joinedPlayers: 10,
