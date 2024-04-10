@@ -18,8 +18,8 @@ body::-webkit-scrollbar {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar {
-  background-color: #a0a0a0db;
+body::-webkit-scrollbar-thumb {
+  background-color: #696666;
   /* Set the color of the thumb (the draggable part) */
   border-radius: 4px;
   /* Set the border-radius for a rounded appearance */

@@ -10,9 +10,12 @@ export const Home = () => {
       minPlayers: 30,
       joinedPlayers: 10,
       entryFree: 20,
-      gameMode: 'BR - Squad',
+      gameMode: 'BR',
+      gameType: 'Solo',
       rewardType: 'coin',
-      rewardAmount: 250,
+      firstPrize: 250,
+      secondPrize: 20,
+      thirdPrize: 10,
       startDate: 'May 2, 2024',
       startTime: '3:00 PM',
     },
@@ -23,9 +26,12 @@ export const Home = () => {
       minPlayers: 80,
       joinedPlayers: 90,
       entryFree: 0,
-      gameMode: 'BR - Solo',
+      gameMode: 'BR',
+      gameType: 'Squad',
       rewardType: 'coin',
-      rewardAmount: 50,
+      firstPrize: 50,
+      secondPrize: 20,
+      thirdPrize: 0,
       startDate: 'May 4, 2024',
       startTime: '3:30 PM',
 
@@ -37,9 +43,12 @@ export const Home = () => {
       minPlayers: 25,
       joinedPlayers: 30,
       entryFree: 10,
-      gameMode: 'BR - Solo',
+      gameMode: 'Clash Squad',
+      gameType: 'Squad',
       rewardType: 'coin',
-      rewardAmount: 70,
+      firstPrize: 70,
+      secondPrize: 20,
+      thirdPrize: 10,
       startDate: 'May 3, 2024',
       startTime: '2:00 PM',
     },
@@ -50,14 +59,17 @@ export const Home = () => {
       minPlayers: 80,
       joinedPlayers: 90,
       entryFree: 0,
-      gameMode: 'BR - Solo',
+      gameMode: 'BR',
+      gameType: 'Squad',
       rewardType: 'coin',
-      rewardAmount: 50,
+      firstPrize: 50,
+      secondPrize: 20,
+      thirdPrize: 10,
       startDate: 'May 4, 2024',
       startTime: '3:30 PM',
 
     },
-    
+
   ]
 
   return (
@@ -65,18 +77,18 @@ export const Home = () => {
       <div className="grid grid-cols-3 gap-8">
         {tournaments && tournaments.map((tournament, index) => (
           <SquareTournamentCard key={index}
-          tournament={tournament}
-            // gameTitle={tournament.gameTitle}
-            // imgURL={tournament.imgURL}
-            // minPlayers={tournament.minPlayers}
-            // maxPlayers={tournament.maxPlayers}
-            // joinedPlayers={tournament.joinedPlayers}
-            // entryFree={tournament.entryFree}
-            // gameMode={tournament.gameMode}
-            // rewardType={tournament.rewardType}
-            // rewardAmount={tournament.rewardAmount}
-            // startDate={tournament.startDate}
-            // startTime={tournament.startTime}
+            tournament={tournament}
+          // gameTitle={tournament.gameTitle}
+          // imgURL={tournament.imgURL}
+          // minPlayers={tournament.minPlayers}
+          // maxPlayers={tournament.maxPlayers}
+          // joinedPlayers={tournament.joinedPlayers}
+          // entryFree={tournament.entryFree}
+          // gameMode={tournament.gameMode}
+          // rewardType={tournament.rewardType}
+          // rewardAmount={tournament.rewardAmount}
+          // startDate={tournament.startDate}
+          // startTime={tournament.startTime}
           />
         ))}
       </div>

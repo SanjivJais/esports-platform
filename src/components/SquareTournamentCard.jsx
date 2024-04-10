@@ -5,7 +5,7 @@ import { TournModalComponent } from './TournModalComponent';
 
 export const SquareTournamentCard = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
-
+    let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
     let joinPercent = parseInt((tournament.joinedPlayers * 100) / tournament.maxPlayers);
     const cardStyles = {
         backgroundImage: `url("${tournament.imgURL}")`,
@@ -31,11 +31,11 @@ export const SquareTournamentCard = ({ tournament }) => {
                 <div className="flex justify-between">
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>ENTRY</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="\Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>MODE</label>
-                        <div className='font-semibold'>{tournament.gameMode}</div>
+                        <div className='font-semibold'>{tournament.gameMode} - {tournament.gameType}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>MIN/MAX</label>
@@ -43,7 +43,7 @@ export const SquareTournamentCard = ({ tournament }) => {
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>PRIZE POOL</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {tournament.rewardAmount}</div>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {totalPrize}</div>
                     </div>
                 </div>
                 <div className="h-[1px] bg-inactive bg-opacity-40 my-4"></div>
@@ -59,7 +59,7 @@ export const SquareTournamentCard = ({ tournament }) => {
             </div>
             <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
                 <TournModalComponent tournament={tournament} />
-                
+
             </Modal>
         </div>
     )

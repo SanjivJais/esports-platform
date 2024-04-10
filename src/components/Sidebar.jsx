@@ -12,7 +12,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
         <div className="flex w-full items-center justify-end mt-4 md:hidden"><IoClose className={`text-lg cursor-pointer ${mobSideOpen ? '' : 'rotate-180 duration-100'}`} onClick={mobToggleSidebar} /></div>
         <Link to={'/'}>
           <div className="flex h-[72px] px-4 items-center justify-center text-lg font-bold">
-            Hamro Esports <sup className='text-xs text-primary ml-2 font-normal'>Beta</sup>
+            EsportsGravity <sup className='text-xs text-primary ml-2 font-normal'>Beta</sup>
           </div>
         </Link>
         <div className="flex flex-col">
