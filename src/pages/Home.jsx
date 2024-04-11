@@ -18,6 +18,12 @@ export const Home = () => {
       thirdPrize: 10,
       startDate: 'May 2, 2024',
       startTime: '3:00 PM',
+      host: 'EsportsGravity',
+      status: 'Open',
+      roomID: '98987537',
+      roomPass: '8269418',
+      ytLiveURL: 'https://www.youtube.com/watch?v=ncTquQE0kuk',
+      watchLiveURL2: '',
     },
     {
       gameTitle: 'PUBG Mobile',
@@ -34,7 +40,12 @@ export const Home = () => {
       thirdPrize: 0,
       startDate: 'May 4, 2024',
       startTime: '3:30 PM',
-
+      host: 'EsportsGravity',
+      status: 'Open',
+      roomID: '',
+      roomPass: '',
+      ytLiveURL: 'https://www.youtube.com/watch?v=5x8vvKlwWsU&t=3s',
+      watchLiveURL2: '',
     },
     {
       gameTitle: 'Free Fire',
@@ -51,6 +62,12 @@ export const Home = () => {
       thirdPrize: 10,
       startDate: 'May 3, 2024',
       startTime: '2:00 PM',
+      host: 'EsportsGravity',
+      status: 'Open',
+      roomID: '',
+      roomPass: '',
+      ytLiveURL: '',
+      watchLiveURL2: '',
     },
     {
       gameTitle: 'PUBG Mobile',
@@ -67,7 +84,12 @@ export const Home = () => {
       thirdPrize: 10,
       startDate: 'May 4, 2024',
       startTime: '3:30 PM',
-
+      host: 'EsportsGravity',
+      status: 'Open',
+      roomID: '',
+      roomPass: '',
+      ytLiveURL: '',
+      watchLiveURL2: '',
     },
 
   ]
