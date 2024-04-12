@@ -59,7 +59,7 @@ export const Login = () => {
           <div className='relative bottom-[12%] text-center'>
             <h2 className='font-bold text-xl mb-4 flex flex-col lg:gap-6 gap-4'>WELCOME BACK TO
               <br />
-              <span className='font-extrabold lg:text-[68px] md:text-4xl text-primary'>Hamro Esports</span>
+              <span className='font-extrabold lg:text-[68px] md:text-4xl text-primary'>EsportsGravity</span>
             </h2>
             <h3 className='mt-8 italic'>Nepal's <span className='text-primary'>#1</span> Esports Platform</h3>
             <div className="flex gap-2 justify-center mt-8">
@@ -94,7 +94,7 @@ export const Login = () => {
 
         <div className="bg-secondary flex flex-col lg:col-span-4 md:col-span-6 col-span-1 md:px-10 px-6 py-10">
           <div className="flex justify-end"><Link to={'/'}><IoMdClose className='text-xl' /></Link></div>
-          <div className="flex md:hidden font-extrabold text-3xl text-primary justify-center my-1 mb-6">Hamro Esports</div>
+          <div className="flex md:hidden font-extrabold text-3xl text-primary justify-center my-1 mb-6">EsportsGravity</div>
           <h2 className='font-extrabold text-2xl'>Login</h2>
           <div className="flex flex-col gap-3 mt-5">
             <div className="flex border-[0.8px] border-inactive rounded-[3px]">

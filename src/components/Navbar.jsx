@@ -8,8 +8,8 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   const { user } = useAuth();
   return (
     <nav className="sticky z-20 top-0 bg-secondary h-[72px] md:px-6 shadow-md flex items-center justify-between pl-0 pr-6">
-      <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 md:block hidden' onClick={toggleSidebar} />
-      <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 md:hidden' onClick={mobToggleSidebar} />
+      <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:block hidden' onClick={toggleSidebar} />
+      <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:hidden' onClick={mobToggleSidebar} />
 
       <div className="flex gap-3 items-center">
         <div className="flex bg-secondaryLight items-center rounded-[3px] border-[1px] border-secondary px-6 py-2"><input type="text" className='bg-transparent focus:outline-none w-full' placeholder='Search' /><GoSearch className='text-lg text-inactive' /></div>

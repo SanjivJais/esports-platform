@@ -115,7 +115,7 @@ export const TournModalComponent = ({ tournament }) => {
                                 <div className='flex flex-col gap-6'>
                                     <AiFillEyeInvisible className='text-inactive text-opacity-35 text-[4rem] self-center' />
                                     <p className='text-offBlue text-[0.9rem]'>
-                                        <span className='text-primary'>NOTE:</span>
+                                        <span className='text-primary'>NOTE: </span>
                                         Room ID and Room Password will be visible here just
                                         <span className='text-offWhite'> 15 minutes </span>
                                         before starting time of match. Please check back in time!

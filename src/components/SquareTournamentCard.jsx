@@ -14,7 +14,7 @@ export const SquareTournamentCard = ({ tournament }) => {
         borderRadius: '5px',
     };
     return (
-        <div className='w-96 h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
+        <div className='lg:w-96 md:w-[40vw] w-[85vw] h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
             <div className={`flex flex-col justify-between rounded-br-none rounded-bl-none w-full h-52`} style={cardStyles}>
                 <label htmlFor="Game Title" className='self-end bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-2 right-2'>{tournament.gameTitle}</label>
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>

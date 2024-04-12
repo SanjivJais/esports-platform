@@ -130,7 +130,7 @@ export const Home = () => {
 
   return (
     <div className='p-6 flex flex-col items-center w-full'>
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
         {tournaments && tournaments.map((tournament, index) => (
           <SquareTournamentCard key={index}
             tournament={tournament}
