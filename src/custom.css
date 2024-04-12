@@ -34,3 +34,35 @@ body::-webkit-scrollbar-thumb {
   height: 100%;
   width: 100%;
 }
+
+.content-area{
+  color: #B2C7E9;
+}
+
+.content-area h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #E2E2E2;
+}
+
+.content-area h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #E2E2E2;
+}
+
+.content-area ul {
+  list-style-type: disc;
+  margin-left: 2rem;
+  margin-bottom: 10px;
+}
+
+.content-area li {
+  margin-bottom: 5px;
+}
+
+.content-area p {
+  margin-bottom: 15px;
+}

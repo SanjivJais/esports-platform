@@ -24,6 +24,37 @@ export const Home = () => {
       roomPass: '8269418',
       ytLiveURL: 'https://www.youtube.com/watch?v=ncTquQE0kuk',
       watchLiveURL2: '',
+      rulesDetails: `
+      <section class="rules-details">
+      <h2>Rules and Details</h2>
+
+      <h3>General Rules</h3>
+      <ul>
+          <li>All participants must adhere to fair play principles and refrain from using any cheats, hacks, or exploits in-game.</li>
+          <li>Participants must join the match lobby within the specified time frame. A maximum delay of 3 minutes will be allowed before disqualification.</li>
+          <li>Players are responsible for ensuring their game settings are configured correctly to avoid any technical issues during the tournament.</li>
+          <li>Respect other participants and tournament staff. Any form of harassment, abuse, or disruptive behavior will not be tolerated.</li>
+      </ul>
+
+      <h3>Tournament Format</h3>
+      <p>This is a one-match tournament. The match is scheduled in advance, and participants can see details regarding match timings and lobby details.</p>
+
+      <h3>Prizes and Rewards</h3>
+      <p>Winning teams or players will receive prizes based on their performance. Prizes may include in-game currency, merchandise, or cash rewards.</p>
+
+      <h3>Disqualification Criteria</h3>
+      <p>Participants may be disqualified for the following reasons:</p>
+      <ul>
+          <li>Repeated violation of tournament rules.</li>
+          <li>Failure to comply with match schedules or delays exceeding the allowed time limit.</li>
+          <li>Unsportsmanlike conduct or disruptive behavior.</li>
+          <li>Using unauthorized software or tools during matches.</li>
+      </ul>
+
+      <h3>Disclaimer</h3>
+      <p>The tournament organizers reserve the right to modify rules, disqualify participants, or make decisions based on unforeseen circumstances. All participants are expected to abide by the rules and decisions made by the tournament organizers.</p>
+      </section>
+      `,
     },
     {
       gameTitle: 'PUBG Mobile',
@@ -46,6 +77,7 @@ export const Home = () => {
       roomPass: '',
       ytLiveURL: 'https://www.youtube.com/watch?v=5x8vvKlwWsU&t=3s',
       watchLiveURL2: '',
+      rulesDetails: '',
     },
     {
       gameTitle: 'Free Fire',
@@ -68,6 +100,7 @@ export const Home = () => {
       roomPass: '',
       ytLiveURL: '',
       watchLiveURL2: '',
+      rulesDetails: '',
     },
     {
       gameTitle: 'PUBG Mobile',
@@ -90,6 +123,7 @@ export const Home = () => {
       roomPass: '',
       ytLiveURL: '',
       watchLiveURL2: '',
+      rulesDetails: '',
     },
 
   ]
@@ -100,17 +134,6 @@ export const Home = () => {
         {tournaments && tournaments.map((tournament, index) => (
           <SquareTournamentCard key={index}
             tournament={tournament}
-          // gameTitle={tournament.gameTitle}
-          // imgURL={tournament.imgURL}
-          // minPlayers={tournament.minPlayers}
-          // maxPlayers={tournament.maxPlayers}
-          // joinedPlayers={tournament.joinedPlayers}
-          // entryFree={tournament.entryFree}
-          // gameMode={tournament.gameMode}
-          // rewardType={tournament.rewardType}
-          // rewardAmount={tournament.rewardAmount}
-          // startDate={tournament.startDate}
-          // startTime={tournament.startTime}
           />
         ))}
       </div>

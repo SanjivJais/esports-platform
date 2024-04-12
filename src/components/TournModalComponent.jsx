@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { MdInfo } from "react-icons/md";
 import { AiFillEyeInvisible } from "react-icons/ai";
+import ReactHtmlParser from 'react-html-parser';
+import { Modal } from './Modal';
 
 export const TournModalComponent = ({ tournament }) => {
     let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
@@ -20,11 +22,14 @@ export const TournModalComponent = ({ tournament }) => {
 
     // YT video id extraction
     const ytVidExtracter = (url) => {
-        let splited = url.split("v="); 
-        let splitedAgain = splited[1].split("&"); 
+        let splited = url.split("v=");
+        let splitedAgain = splited[1].split("&");
         let videoId = splitedAgain[0];
         return videoId;
     }
+
+    const [joinConfirmationModal, setJoinConfirmationModal] = useState(null);
+    const handleJoinConfirmation = () => { setJoinConfirmationModal(!joinConfirmationModal); }
 
 
     return (
@@ -109,7 +114,12 @@ export const TournModalComponent = ({ tournament }) => {
                                 :
                                 <div className='flex flex-col gap-6'>
                                     <AiFillEyeInvisible className='text-inactive text-opacity-35 text-[4rem] self-center' />
-                                    <p className='text-offBlue text-[0.9rem]'><span className='text-primary'>NOTE:</span> Room ID and Room Password will be visible here just <span className='text-offWhite'>15 minutes</span> before starting time of match!</p>
+                                    <p className='text-offBlue text-[0.9rem]'>
+                                        <span className='text-primary'>NOTE:</span>
+                                        Room ID and Room Password will be visible here just
+                                        <span className='text-offWhite'> 15 minutes </span>
+                                        before starting time of match. Please check back in time!
+                                    </p>
                                 </div>
                             }
                         </>
@@ -132,8 +142,8 @@ export const TournModalComponent = ({ tournament }) => {
                         </div>
                     }
                     {activeTab === 3 &&
-                        <div>
-                            Rules & Details
+                        <div className='content-area'>
+                            {ReactHtmlParser(tournament.rulesDetails)}
                         </div>
                     }
 
@@ -180,7 +190,7 @@ export const TournModalComponent = ({ tournament }) => {
                     </div>
 
                 </div>
-                <div className='h-auto w-[36%] bg-frameBG rounded-[5px] flex flex-col -mt-12'>
+                <div className='h-fit w-[36%] bg-frameBG rounded-[5px] flex flex-col -mt-12'>
 
                     <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
                         <h3 className='font-bold text-lg text-offBlue'>Prize Pool</h3>
@@ -212,8 +222,20 @@ export const TournModalComponent = ({ tournament }) => {
                         </div>
                     </div>
                     <div className='p-2 flex flex-col justify-between'>
-                        <button className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>
+                        <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>
                     </div>
+
+                    {/* confirmation modal  */}
+                    <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
+                        <div className='p-6 w-96'>
+                            <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'><img className='' src="/Coin.svg" alt="" />{tournament.entryFree}</span></p>
+                            <div className="flex w-full justify-evenly mt-7">
+                                <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
+                                <button className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
+                            </div>
+                        </div>
+
+                    </Modal>
                 </div>
             </div>
         </div>
