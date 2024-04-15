@@ -33,17 +33,17 @@ export const TournModalComponent = ({ tournament }) => {
 
 
     return (
-        <div className='h-[92vh] w-[72vw]'>
-            <div className='h-[45%] flex flex-col justify-between' style={{
+        <div className='h-[92vh] md:w-[72vw] w-[90vw]'>
+            <div className='lg:h-[45%] md:h-[40%] h-[35%] flex flex-col justify-between' style={{
                 backgroundImage: `url("${tournament.imgURL}")`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
             }}>
                 <div className='self-start bg-secondary h-fit bg-opacity-60 relative text-[12px] px-3 py-[3px] rounded-xl top-3 left-3'>{tournament.gameTitle}</div>
                 <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
-                    <div className="w-[63%]">
-                        <h2 className='text-4xl font-semibold text-offWhite mb-4'>Esports Tournament #1</h2>
-                        <div className="flex gap-8">
+                    <div className="lg:w-[63%] md:w-[58%] w-full">
+                        <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>Esports Tournament #1</h2>
+                        <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm overflow-x-auto">
                             <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
                             <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
                             <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch Live</label>
@@ -53,12 +53,12 @@ export const TournModalComponent = ({ tournament }) => {
                     </div>
                 </div>
             </div>
-            <div className='w-full px-4 py-6 flex gap-4'>
-                <div className="w-[64%] flex flex-col">
+            <div className='w-full px-4 py-6 flex md:flex-row flex-col gap-4'>
+                <div className="lg:w-[64%] md:w-[58%] flex flex-col">
 
                     {activeTab === 0 &&
                         <>
-                            <div className="grid grid-cols-4 gap-x-4 gap-y-8">
+                            <div className="grid lg:grid-cols-4 grid-cols-3 gap-x-4 gap-y-8">
                                 <div>
                                     <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENTRY FEE </span></label>
                                     <div className='font-medium flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
@@ -100,7 +100,7 @@ export const TournModalComponent = ({ tournament }) => {
                     {activeTab === 1 &&
                         <>
                             {tournament.roomID !== '' ?
-                                <div className="grid grid-cols-4 gap-x-4 gap-y-8">
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-8">
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM ID </span></label>
                                         <div className='font-medium'>{tournament.roomID}</div>
@@ -127,7 +127,7 @@ export const TournModalComponent = ({ tournament }) => {
                     {activeTab === 2 &&
                         <div className='flex flex-col items-center gap-4'>
                             {tournament.ytLiveURL &&
-                                <iframe className='rounded-[10px]'
+                                <iframe className='rounded-[10px] md:h-[310px] w-full h-auto'
                                     width="560"
                                     height="315"
                                     src={`https://www.youtube.com/embed/${ytVidExtracter(tournament.ytLiveURL)}`}
@@ -190,7 +190,7 @@ export const TournModalComponent = ({ tournament }) => {
                     </div>
 
                 </div>
-                <div className='h-fit w-[36%] bg-frameBG rounded-[5px] flex flex-col -mt-12'>
+                <div className='h-fit lg:w-[36%] md:w-[42%] bg-frameBG rounded-[5px] flex flex-col md:-mt-12'>
 
                     <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
                         <h3 className='font-bold text-lg text-offBlue'>Prize Pool</h3>
@@ -227,7 +227,7 @@ export const TournModalComponent = ({ tournament }) => {
 
                     {/* confirmation modal  */}
                     <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
-                        <div className='p-6 w-96'>
+                        <div className='p-6 md:w-96 w-72'>
                             <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'><img className='' src="/Coin.svg" alt="" />{tournament.entryFree}</span></p>
                             <div className="flex w-full justify-evenly mt-7">
                                 <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
