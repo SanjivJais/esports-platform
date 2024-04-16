@@ -52,14 +52,13 @@ export const SquareTournamentCard = ({ tournament }) => {
                         <label htmlFor="" className='text-[12px] text-dimText'>STARTING</label>
                         <div className='font-semibold flex gap-2'><span>{tournament.startDate}</span> <span>.</span> <span>{tournament.startTime}</span></div>
                     </div>
-                    {/* <button className=' px-5 py-2 hover:text-secondary border-[1px] border-inactive hover:border-primary transition-colors duration-150 ease-in-out border-opacity-50 rounded-[5px] font-bold hover:bg-primary'>View Details</button> */}
-                    <button onClick={() => setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>View Details</button>
+                    <button onClick={() => setShowModal(true)} className='bg-secondaryLight px-5 py-2 hover:text-secondary border-[0.8px] border-inactive border-opacity-40 hover:border-primary transition-colors duration-200 ease-in-out rounded-[5px] font-bold hover:bg-primary'>View Details</button>
+                    {/* <button onClick={() => setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>View Details</button> */}
                 </div>
 
             </div>
             <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
                 <TournModalComponent tournament={tournament} />
-
             </Modal>
         </div>
     )

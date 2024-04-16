@@ -7,6 +7,8 @@ import { Login } from './pages/Login'
 import { Home } from './pages/Home'
 import { Profile } from './pages/Profile'
 import { ParentPage } from "./pages/ParentPage"
+import { Tournaments } from './pages/Tournaments'
+import { Announcements } from "./pages/Announcements"
 
 
 const LoginStatusRouting = () => {
@@ -20,6 +22,8 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path='/' element={<ParentPage Page={<Home />} />} />
+          <Route path='/tournaments' element={<ParentPage Page={<Tournaments />} />} />
+          <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
 
           <Route element={<LoginStatusRouting />}>
             <Route path="/signup" element={<Signup />} />

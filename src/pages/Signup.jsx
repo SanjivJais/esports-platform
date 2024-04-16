@@ -13,7 +13,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 export const Signup = () => {
 
-  const [countryCheck, setCountryCheck] = useState(null)
+  const [countryCheck, setCountryCheck] = useState(true)
   const fetchCountryFromIP = async () => {
     try {
       let cachedData = localStorage.getItem('userCountryData');
@@ -38,7 +38,7 @@ export const Signup = () => {
       return country === 'NP'; // Check if country is Nepal
     } catch (error) {
       console.error('Error fetching IP address:', error);
-      return false; // Default to false if there's an error
+      return true; // Default to false if there's an error
     }
   };
 
