@@ -1,5 +1,6 @@
 import React from 'react'
 import { SquareTournamentCard } from '../components/SquareTournamentCard'
+import { Slider } from '../components/Slider'
 
 export const Home = () => {
   const tournaments = [
@@ -130,6 +131,7 @@ export const Home = () => {
 
   return (
     <div className='p-4 flex flex-col items-center w-full'>
+      <div className='mb-6'><Slider /></div>
       <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
         {tournaments && tournaments.map((tournament, index) => (
           <SquareTournamentCard key={index}

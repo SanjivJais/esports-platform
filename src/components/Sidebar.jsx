@@ -48,7 +48,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       link: '/temp3/',
       icon: <MdFeedback />
     },
-    
+
 
   ]
 
@@ -63,16 +63,6 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
             EsportsGravity <sup className='text-xs text-primary ml-2 font-normal'>Beta</sup>
           </div>
         </Link>
-        <div className="flex flex-col">
-          {user != null && (
-            <>
-              <Link to={'/profile'}>Profile</Link>
-              <label onClick={logoutUser} htmlFor="Logout" className='text-inactive underline underline-offset-4'>Logout</label>
-            </>
-          )}
-        </div>
-
-
 
         <div className="flex flex-col h-[88%] px-4 overflow-y-auto custom-scrollbar text-inactive pt-3 font-semibold">
           <div className="bg-frameBG px-4 mb-2 py-3 my-1 rounded-[5px] border-[0.8px] border-inactive border-opacity-20">

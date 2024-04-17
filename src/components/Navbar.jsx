@@ -5,6 +5,8 @@ import { GoSearch } from "react-icons/go";
 import { useAuth } from '../utils/AuthContext';
 import { Modal } from './Modal';
 import { SquareTournamentCard } from './SquareTournamentCard';
+import { RiArrowDropDownLine } from 'react-icons/ri';
+import { IoIosLogOut } from 'react-icons/io';
 
 
 
@@ -62,7 +64,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   ]
 
 
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
   const [searchEnable, setSearchEnable] = useState(null);
   const handleSearchEnable = () => { setSearchEnable(!searchEnable); }
   return (
@@ -72,20 +74,31 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
         <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:hidden' onClick={mobToggleSidebar} />
 
         <div className="flex gap-3 items-center">
-          <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-[3px] border-[1px] border-secondary md:px-6 px-4 py-2"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
-          <div className="flex">
-            {/* <img src="" alt="" className='h-20 w-auto' /> */}
-
-            <label htmlFor="user">{(user != null && (user.email))}</label>
+          <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-[5px] border-[1px] border-secondary md:px-6 px-4 py-2"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
+          <div className='group hover:cursor-pointer'>
+            {user != null &&
+              <>
+                <div className="flex items-center gap-2">
+                  <img src="/icons/dummyProfilePic.png" alt="" className='h-8 w-auto rounded-2xl' />
+                  <div className='flex items-center'>
+                    <label htmlFor="user">{(user != null && (user.name))}</label>
+                    <RiArrowDropDownLine className='text-2xl' />
+                  </div>
+                </div>
+                <div className='absolute flex-col w-40 rounded-[5px] px-2 py-0 group-hover:py-2 bg-secondary h-0 transition-all duration-200 group-hover:h-fit group-hover:flex'>
+                  <Link to={'/profile'}> <div className='px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'>Profile</div></Link>
+                  <div onClick={logoutUser} className='items-center gap-2 px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'><span>Logout</span> <IoIosLogOut /></div>
+                </div>
+              </>
+            }
           </div>
           {(user == null && (
             <>
-              <Link to={'/login'}><button className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Login</button></Link>
-              <Link to={'/signup'}><button className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-medium'>Signup</button></Link>
+              <Link to={'/login'}><button className='bg-transparent rounded-[5px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Login</button></Link>
+              <Link to={'/signup'}><button className='bg-primary rounded-[5px] text-secondary border-[1px] border-primary px-8 py-2 font-medium'>Signup</button></Link>
             </>
           ))}
         </div>
-
 
       </nav>
       <Modal isVisible={searchEnable} onClose={() => setSearchEnable(false)}>
