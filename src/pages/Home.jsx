@@ -10,17 +10,17 @@ export const Home = () => {
       maxPlayers: 48,
       minPlayers: 30,
       joinedPlayers: 10,
-      entryFree: 20,
+      entryFree: 20,  // 0 for Free Entry OR some value for entry fee
       gameMode: 'BR',
       gameType: 'Solo',
-      rewardType: 'coin',
+      rewardType: 'coin', // "coin"
       firstPrize: 250,
       secondPrize: 20,
       thirdPrize: 10,
       startDate: 'May 2, 2024',
       startTime: '3:00 PM',
       host: 'EsportsGravity',
-      status: 'Open',
+      status: 'Open', // "Open" or "Closed"
       roomID: '98987537',
       roomPass: '8269418',
       ytLiveURL: 'https://www.youtube.com/watch?v=ncTquQE0kuk',
@@ -73,7 +73,7 @@ export const Home = () => {
       startDate: 'May 4, 2024',
       startTime: '3:30 PM',
       host: 'EsportsGravity',
-      status: 'Open',
+      status: 'Closed',
       roomID: '',
       roomPass: '',
       ytLiveURL: 'https://www.youtube.com/watch?v=5x8vvKlwWsU&t=3s',
@@ -130,7 +130,7 @@ export const Home = () => {
   ]
 
   return (
-    <div className='p-4 flex flex-col items-center w-full'>
+    <div className='py-4 flex flex-col items-center w-full'>
       <div className='mb-2 w-full'><Slider /></div>
       <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full"></div>
       <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 mt-6">
