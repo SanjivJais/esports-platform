@@ -52,7 +52,7 @@ export const TournModalComponent = ({ tournament }) => {
                     <div className='self-start bg-secondary h-fit bg-opacity-60 relative text-[12px] px-3 py-[3px] rounded-xl top-3 left-3'>{tournament.gameTitle}</div>
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">
-                            <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>Esports Tournament #1</h2>
+                            <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>{tournament.tournTitle}</h2>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>

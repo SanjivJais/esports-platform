@@ -7,7 +7,9 @@ import { Login } from './pages/Login'
 import { Home } from './pages/Home'
 import { Profile } from './pages/Profile'
 import { ParentPage } from "./pages/ParentPage"
+import { PubgTournaments } from './pages/PubgTournaments'
 import { Tournaments } from './pages/Tournaments'
+import { FFTournaments } from './pages/FFTournaments'
 import { Announcements } from "./pages/Announcements"
 
 
@@ -23,6 +25,8 @@ function App() {
         <Routes>
           <Route path='/' element={<ParentPage Page={<Home />} />} />
           <Route path='/tournaments' element={<ParentPage Page={<Tournaments />} />} />
+          <Route path='/tournaments/pubg' element={<ParentPage Page={<PubgTournaments />} />} />
+          <Route path='/tournaments/freefire' element={<ParentPage Page={<FFTournaments />} />} />
           <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
 
           <Route element={<LoginStatusRouting />}>

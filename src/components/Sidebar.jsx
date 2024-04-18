@@ -10,7 +10,6 @@ import { GrAnnounce } from 'react-icons/gr';
 export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
   const { logoutUser, user } = useAuth();
 
-  const [submenuOpen, setSubmenuOpen] = useState(null);
   const Menus = [
     {
       title: 'Home',
@@ -21,9 +20,10 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       title: 'Tournaments',
       link: '/tournaments',
       icon: <FaTrophy />,
-      submenu: false,
+      submenu: true,
       submenuItems: [
-        { title: 'Daily Rush', link: '/' },
+        { title: 'PUBG', link: '/tournaments/pubg' },
+        { title: 'Free Fire', link: '/tournaments/freefire' },
 
       ]
     },
@@ -72,27 +72,26 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
             </div>
           </div>
           {Menus.map((menu, index) => (
-            <div key={index}>
+            <div key={index} className='group'>
               {menu.separator && <div className="h-[1px] bg-inactive bg-opacity-20 my-2"></div>}
               <NavLink to={menu.link} className={({ isActive }) => `${isActive ? 'bg-primary text-secondary' : 'hover:bg-secondaryLight hover:text-offBlue'} flex justify-between items-center px-4 hover:cursor-pointer  
                 py-3 my-1 rounded-[5px] transition-all ease-in-out duration-200 `}>
                 <div className='flex items-center'>
-                  <div className={`${sideOpen ? 'text-[20px]' : 'text-[22px]'}`}>
+                  <div className={'text-[20px]'}>
                     {menu.icon}
                   </div>
                   <label htmlFor="" className={`ml-2 hover:cursor-pointer`}>{menu.title}</label>
                 </div>
-                <IoCaretDownOutline onClick={() => {
-                  setSubmenuOpen((prevSubmenu) => (prevSubmenu === menu.title ? null : menu.title));
-                }} className={`${menu.submenu ? '' : 'hidden'} ${submenuOpen == menu.title ? 'rotate-180' : ''} hover:text-secondary ml-2 transition-all duration-2 00`} />
+                <IoCaretDownOutline className={`${menu.submenu ? '' : 'hidden'} group-hover:rotate-180 ml-2 transition-all duration-2 00`} />
               </NavLink>
+
               {
-                menu.submenu && submenuOpen == menu.title && sideOpen && (
-                  <ul className='mx-4 px-2'>
+                menu.submenu && sideOpen && (
+                  <div className='relative flex-col w-full rounded-[5px] px-2 py-0 group-hover:py-2 bg-frameBG group-hover:border-[0.8px] border-inactive border-opacity-20 h-0 transition-all duration-200 group-hover:h-fit group-hover:flex'>
                     {menu.submenuItems.map((submenuItem, index) => (
-                      <li key={index} className='border-dotted border-b-[1px] pb-1 border-b-[#3F3E3D] my-2 hover:text-secondary transition-all duration-300 text-[#939393]'><NavLink to={submenuItem.link} className={({ isActive }) => isActive ? 'text-secondary' : ''}>{submenuItem.title}</NavLink></li>
+                      <NavLink to={submenuItem.link} key={index} className={({ isActive }) => isActive ? 'text-primary' : ''}> <div className={` px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex`}>{submenuItem.title}</div></NavLink>
                     ))}
-                  </ul>
+                  </div>
                 )
               }
             </div>
