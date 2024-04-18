@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Modal } from './Modal';
-import { TournModalComponent } from './TournModalComponent';
+import { Modal } from '../Modal';
+import { PubgTournModalComponent } from './PubgTournModalComponent';
 
 
-export const SquareTournamentCard = ({ tournament }) => {
+export const PubgSquareTournamentCard = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
     let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
     let joinPercent = parseInt((tournament.joinedPlayers * 100) / tournament.maxPlayers);
@@ -59,7 +59,7 @@ export const SquareTournamentCard = ({ tournament }) => {
 
             </div>
             <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-                <TournModalComponent tournament={tournament} />
+                <PubgTournModalComponent tournament={tournament} />
             </Modal>
         </div>
     )

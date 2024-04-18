@@ -1,0 +1,65 @@
+import React, { useState } from 'react'
+import { Modal } from '../Modal';
+import { FFTournModalComponent } from './FFTournModalComponent';
+
+
+export const FFSquareTournamentCard = ({ tournament }) => {
+    const [showModal, setShowModal] = useState(false);
+    let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
+    let joinPercent = parseInt((tournament.joinedPlayers * 100) / tournament.maxPlayers);
+    const cardStyles = {
+        backgroundImage: `url("${tournament.imgURL}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '5px',
+    };
+    return (
+        <div className='lg:w-96 md:w-[40vw] w-[85vw] h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
+            <div className={`flex flex-col justify-between rounded-br-none rounded-bl-none w-full h-52`} style={cardStyles}>
+                <label htmlFor="Game Title" className='self-end bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-2 right-2'>{tournament.gameTitle}</label>
+                <div className='bg-secondary bg-opacity-80 px-3 py-3'>
+                    <div className="flex justify-between  text-[13px] mb-1">
+                        <label htmlFor="" >Players Joined</label>
+                        <label htmlFor=""><span>{tournament.joinedPlayers}</span> / <span className='text-primary'>{tournament.maxPlayers}</span></label>
+                    </div>
+                    <div className='bg-gray w-full h-2 rounded-lg'>
+                        <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>
+                    </div>
+                </div>
+            </div>
+            <div className="pt-4 pb-3 px-3 text-sm">
+                <div className="flex justify-between">
+                    <div>
+                        <label htmlFor="" className='text-[12px] text-dimText'>ENTRY</label>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
+                    </div>
+                    <div>
+                        <label htmlFor="" className='text-[12px] text-dimText'>MODE</label>
+                        <div className='font-semibold'>{tournament.gameMode} - {tournament.gameType}</div>
+                    </div>
+                    <div>
+                        <label htmlFor="" className='text-[12px] text-dimText'>PRIZE POOL</label>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
+                    </div>
+                    <div>
+                        <label htmlFor="" className='text-[12px] text-dimText'>STATUS</label>
+                        <div className={`text-[12px] mt-[2px] font-bold ${tournament.status === "Open" ? 'text-green-700' : 'text-orange-700'} bg-secondaryLight w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                    </div>
+
+                </div>
+                <div className="h-[1px] bg-inactive bg-opacity-40 my-4"></div>
+                <div className="flex justify-between">
+                    <div>
+                        <label htmlFor="" className='text-[12px] text-dimText'>STARTING</label>
+                        <div className='font-semibold flex gap-2'><span>{tournament.startDate}</span> <span>.</span> <span>{tournament.startTime}</span></div>
+                    </div>
+                    <button onClick={() => setShowModal(true)} className='bg-secondaryLight px-5 py-2 hover:text-secondary border-[0.8px] border-inactive border-opacity-40 hover:border-primary transition-colors duration-200 ease-in-out rounded-[5px] font-bold hover:bg-primary'>View Details</button>
+                </div>
+
+            </div>
+            <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+                <FFTournModalComponent tournament={tournament} />
+            </Modal>
+        </div>
+    )
+}

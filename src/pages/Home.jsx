@@ -1,5 +1,6 @@
 import React from 'react'
-import { SquareTournamentCard } from '../components/SquareTournamentCard'
+import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard'
+import { PubgSquareTournamentCard } from '../components/PUBGComps/PubgSquareTournamentCard'
 import { Slider } from '../components/Slider'
 import { FaTrophy } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -190,7 +191,6 @@ export const Home = () => {
       watchLiveURL2: '',
       rulesDetails: '',
     },
-
   ]
 
   return (
@@ -200,7 +200,7 @@ export const Home = () => {
       <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[22px] text-xl text-offBlue'><FaTrophy /><h3>Free Fire Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View More »</Link></div>
       <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 my-3">
         {FFtournaments && FFtournaments.map((tournament, index) => (
-          <SquareTournamentCard key={index}
+          <FFSquareTournamentCard key={index}
             tournament={tournament}
           />
         ))}
@@ -211,7 +211,7 @@ export const Home = () => {
       <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[22px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View More »</Link></div>
       <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 my-3">
         {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
-          <SquareTournamentCard key={index}
+          <PubgSquareTournamentCard key={index}
             tournament={tournament}
           />
         ))}

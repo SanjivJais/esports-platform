@@ -4,16 +4,16 @@ import { Link } from 'react-router-dom';
 import { GoSearch } from "react-icons/go";
 import { useAuth } from '../utils/AuthContext';
 import { Modal } from './Modal';
-import { SquareTournamentCard } from './SquareTournamentCard';
+import { FFSquareTournamentCard } from './FFComps/FFSquareTournamentCard';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { IoIosLogOut } from 'react-icons/io';
 
 
-
 export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
-  // tournament data for the search results 
-  const tournaments = [
+  // tournament data for the search results | steps: first select the game then input tournament id for search
+  // example of Free Fire search results
+  const FFtournaments = [
     {
       gameTitle: 'Free Fire',
       imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
@@ -38,22 +38,24 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
       rulesDetails: '',
     },
     {
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://w0.peakpx.com/wallpaper/189/508/HD-wallpaper-pubg-squad.jpg',
-      maxPlayers: 100,
-      minPlayers: 80,
-      joinedPlayers: 90,
-      entryFree: 0,
-      gameMode: 'BR',
+      id: 'op23no90284#nod00',
+      gameTitle: 'Free Fire',
+      imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/9f72d23636bc8b9188a21fb62a0d3742.jpg',
+      tournTitle: 'EG Summar Clash #1',
+      maxPlayers: 48,
+      minPlayers: 25,
+      joinedPlayers: 40,
+      entryFree: 10,
+      gameMode: 'Clash Squad',
       gameType: 'Squad',
       rewardType: 'coin',
-      firstPrize: 50,
+      firstPrize: 70,
       secondPrize: 20,
       thirdPrize: 10,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
+      startDate: 'May 3, 2024',
+      startTime: '2:00 PM',
       host: 'EsportsGravity',
-      status: 'Open',
+      status: 'Closed',
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
@@ -62,7 +64,6 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
     },
 
   ]
-
 
   const { user, logoutUser } = useAuth();
   const [searchEnable, setSearchEnable] = useState(null);
@@ -106,8 +107,8 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
         <div className='md:w-[75vw] w-[90vw] h-[95vh] flex flex-col items-center'>
           <div className="flex mt-16 mb-10 md:w-[70%] w-[80%] rounded-3xl bg-secondaryLight items-center border-[1px] border-secondary px-6 py-2"><input type="text" className='bg-transparent text-offBlue texxt-sm focus:outline-none w-full placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
           <div className='overflow-auto mb-6 grid md:grid-cols-2 grid-cols-1 md:w-[80%] w-full gap-8 custom-scrollbar px-2'>
-            {tournaments && tournaments.map((tournament, index) => (
-              <SquareTournamentCard key={index}
+            {FFtournaments && FFtournaments.map((tournament, index) => (
+              <FFSquareTournamentCard key={index}
                 tournament={tournament}
               />
             ))}

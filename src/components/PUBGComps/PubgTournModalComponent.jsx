@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { MdInfo } from "react-icons/md";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import ReactHtmlParser from 'react-html-parser';
-import { Modal } from './Modal';
+import { Modal } from '../Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const TournModalComponent = ({ tournament }) => {
+export const PubgTournModalComponent = ({ tournament }) => {
     let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
     let joinPercent = parseInt((tournament.joinedPlayers * 100) / tournament.maxPlayers);
 
