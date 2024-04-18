@@ -1,10 +1,13 @@
 import React from 'react'
 import { SquareTournamentCard } from '../components/SquareTournamentCard'
 import { Slider } from '../components/Slider'
+import { FaTrophy } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 export const Home = () => {
   const tournaments = [
     {
+      id:'cwvweei829bjkb79',
       gameTitle: 'Free Fire',
       imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
       maxPlayers: 48,
@@ -58,6 +61,7 @@ export const Home = () => {
       `,
     },
     {
+      id:'biwoifh32##nco',
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://i.pinimg.com/originals/95/da/12/95da1295673f2bd19a23f3b61ea240a9.jpg',
       maxPlayers: 100,
@@ -73,7 +77,7 @@ export const Home = () => {
       startDate: 'May 4, 2024',
       startTime: '3:30 PM',
       host: 'EsportsGravity',
-      status: 'Closed',
+      status: 'Open',
       roomID: '',
       roomPass: '',
       ytLiveURL: 'https://www.youtube.com/watch?v=5x8vvKlwWsU&t=3s',
@@ -81,6 +85,7 @@ export const Home = () => {
       rulesDetails: '',
     },
     {
+      id:'op23no90284#nod00',
       gameTitle: 'Free Fire',
       imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
       maxPlayers: 48,
@@ -96,7 +101,7 @@ export const Home = () => {
       startDate: 'May 3, 2024',
       startTime: '2:00 PM',
       host: 'EsportsGravity',
-      status: 'Open',
+      status: 'Closed',
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
@@ -104,6 +109,7 @@ export const Home = () => {
       rulesDetails: '',
     },
     {
+      id:'iwef67jbo#bui',
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://w0.peakpx.com/wallpaper/189/508/HD-wallpaper-pubg-squad.jpg',
       maxPlayers: 100,
@@ -133,12 +139,43 @@ export const Home = () => {
     <div className='py-4 flex flex-col items-center w-full'>
       <div className='mb-2 w-full'><Slider /></div>
       <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full"></div>
-      <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 mt-6">
+      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[22px] text-xl text-offBlue'><FaTrophy /><h3>Active Tournaments</h3></span><Link to={'/tournaments'} className='text-primary text-sm'>View More »</Link></div>
+      <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 my-3">
         {tournaments && tournaments.map((tournament, index) => (
-          <SquareTournamentCard key={index}
-            tournament={tournament}
-          />
+          <>
+            {
+              tournament.status === "Open" && <SquareTournamentCard key={index}
+                tournament={tournament}
+              />
+            }
+          </>
         ))}
+      </div>
+      {/* promotional banner homepage  */}
+      <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
+      
+      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[22px] text-xl text-offBlue'><FaTrophy /><h3>Recent Tournaments</h3></span><Link to={'/tournaments'} className='text-primary text-sm'>View More »</Link></div>
+      <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 my-3">
+        {/* {tournaments && tournaments.map((tournament, index) => (
+          <>
+            {
+              tournament.status === "Closed" && <SquareTournamentCard key={index}
+                tournament={tournament}
+              />
+            }
+          </>
+        ))} */}
+        {tournaments && tournaments.some(tournament => tournament.status === "Closed") ? (
+          tournaments.map((tournament, index) => (
+            <>
+              {tournament.status === "Closed" && (
+                <SquareTournamentCard key={index} tournament={tournament} />
+              )}
+            </>
+          ))
+        ) : (
+          <div className='text-inactive'>No recent tournaments</div>
+        )}
       </div>
     </div>
   )

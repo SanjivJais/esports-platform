@@ -38,6 +38,7 @@ body::-webkit-scrollbar-thumb {
 
 .content-area {
   color: #B2C7E9;
+  padding: 0 0 1rem 0.5rem;
 }
 
 .content-area h2 {

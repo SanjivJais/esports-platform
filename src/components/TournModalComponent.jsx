@@ -71,7 +71,7 @@ export const TournModalComponent = ({ tournament }) => {
                                 <div className="grid lg:grid-cols-4 grid-cols-3 gap-x-4 gap-y-8">
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENTRY FEE </span></label>
-                                        <div className='font-medium flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
+                                        <div className='font-medium flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MODE </span><span><MdInfo /></span></label>
@@ -87,7 +87,7 @@ export const TournModalComponent = ({ tournament }) => {
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><span><MdInfo /></span></label>
-                                        <div className='font-medium flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {totalPrize}</div>
+                                        <div className='font-medium flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTING </span></label>
@@ -99,7 +99,7 @@ export const TournModalComponent = ({ tournament }) => {
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><span><MdInfo /></span></label>
-                                        <div className={`text-[12px] mt-[2px] border-[1px] ${tournament.status === "Open" ? 'border-green-700' : 'border-red-700'} bg-secondaryLight w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                                        <div className={`text-[12px] mt-[2px] font-bold ${tournament.status === "Open" ? 'text-green-700' : 'text-orange-700'} bg-secondaryLight w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                                     </div>
                                 </div>
 
@@ -136,9 +136,7 @@ export const TournModalComponent = ({ tournament }) => {
                         {activeTab === 2 &&
                             <div className='flex flex-col items-center gap-4'>
                                 {tournament.ytLiveURL &&
-                                    <iframe className='rounded-[10px] md:h-[310px] w-full h-auto'
-                                        width="560"
-                                        height="315"
+                                    <iframe className='rounded-[10px] md:h-[310px] max-w-[580px] w-full h-auto'
                                         src={`https://www.youtube.com/embed/${ytVidExtracter(tournament.ytLiveURL)}`}
                                         title="YouTube video player"
                                         frameborder="0"
@@ -161,7 +159,7 @@ export const TournModalComponent = ({ tournament }) => {
                             <h4 className='font-semibold text-xl mb-3'>Hosted By</h4>
                             <div className='flex justify-between items-center'>
                                 <div className='flex gap-3'>
-                                    <img src="/EsportsGravityIcon.svg" alt="EsportsGravity Logo" className='' />
+                                    <img src="/icons/EsportsGravityIcon.svg" alt="EsportsGravity Logo" className='' />
                                     <div className="flex flex-col justify-center">
                                         <h4 className='flex items-center gap-[6px]'><span>{tournament.host}</span>
                                             <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -207,18 +205,18 @@ export const TournModalComponent = ({ tournament }) => {
                         </div>
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex justify-between'>
-                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/firstTrophy.svg" alt="" /> <span>1<sup> st</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {tournament.firstPrize}</div>
+                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/firstTrophy.svg" alt="" /> <span>1<sup> st</sup> Place</span></h3>
+                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.firstPrize}</div>
                         </div>
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex justify-between'>
-                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/secondTrophy.svg" alt="" /> <span>2<sup> nd</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {tournament.secondPrize}</div>
+                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/secondTrophy.svg" alt="" /> <span>2<sup> nd</sup> Place</span></h3>
+                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.secondPrize}</div>
                         </div>
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex justify-between'>
-                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/thirdTrophy.svg" alt="" /> <span>3<sup> rd</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {tournament.thirdPrize}</div>
+                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/thirdTrophy.svg" alt="" /> <span>3<sup> rd</sup> Place</span></h3>
+                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.thirdPrize}</div>
                         </div>
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
@@ -237,7 +235,7 @@ export const TournModalComponent = ({ tournament }) => {
                         {/* confirmation modal  */}
                         <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
                             <div className='p-6 md:w-96 w-72'>
-                                <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'><img className='' src="/Coin.svg" alt="" />{tournament.entryFree}</span></p>
+                                <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'><img className='' src="/icons/Coin.svg" alt="" />{tournament.entryFree}</span></p>
                                 <div className="flex w-full justify-evenly mt-7">
                                     <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
                                     <button className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>

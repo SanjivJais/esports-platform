@@ -10,16 +10,12 @@ export const Slider = () => {
             targetLink: '#',
         },
         {
-            imgUrl: 'https://i.pinimg.com/originals/95/da/12/95da1295673f2bd19a23f3b61ea240a9.jpg',
+            imgUrl: '/images/DummySliderBanner.jpg',
             targetLink: '#',
 
         },
         {
             imgUrl: '/images/DummySliderBanner.jpg',
-            targetLink: '#',
-        },
-        {
-            imgUrl: 'https://i.pinimg.com/originals/95/da/12/95da1295673f2bd19a23f3b61ea240a9.jpg',
             targetLink: '#',
         },
     ]

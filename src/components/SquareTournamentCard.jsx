@@ -31,7 +31,7 @@ export const SquareTournamentCard = ({ tournament }) => {
                 <div className="flex justify-between">
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>ENTRY</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>MODE</label>
@@ -39,11 +39,11 @@ export const SquareTournamentCard = ({ tournament }) => {
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>PRIZE POOL</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/Coin.svg" alt="" />} {totalPrize}</div>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>STATUS</label>
-                        <div className={`text-[12px] mt-[2px] border-[1px] ${tournament.status === "Open" ? 'border-green-700' : 'border-red-700'} bg-secondaryLight w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                        <div className={`text-[12px] mt-[2px] font-bold ${tournament.status === "Open" ? 'text-green-700' : 'text-orange-700'} bg-secondaryLight w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                     </div>
 
                 </div>

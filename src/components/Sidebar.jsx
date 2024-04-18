@@ -67,8 +67,8 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
         <div className="flex flex-col h-[88%] px-4 overflow-y-auto custom-scrollbar text-inactive pt-3 font-semibold">
           <div className="bg-frameBG px-4 mb-2 py-3 my-1 rounded-[5px] border-[0.8px] border-inactive border-opacity-20">
             <div className='flex items-center'>
-              <img src="/Coin.svg" alt="" />
-              <label htmlFor="" className={`ml-2 hover:cursor-pointer`}>340</label>
+              <img src="/icons/Coin.svg" alt="" />
+              <label htmlFor="" className={`ml-2 text-offBlue hover:cursor-pointer`}>340</label>
             </div>
           </div>
           {Menus.map((menu, index) => (
