@@ -68,3 +68,16 @@ body::-webkit-scrollbar-thumb {
 .content-area p {
   margin-bottom: 15px;
 }
+
+.custom-dropdown {
+  background-color: #080F18;
+  color: #6C81A1;
+  padding: 6px;
+  border: 1px solid #6C81A130;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.custom-dropdown:focus{
+  outline: none;
+}

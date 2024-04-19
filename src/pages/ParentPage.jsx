@@ -21,7 +21,7 @@ export const ParentPage = ({ Page }) => {
                 <Sidebar sideOpen={sideOpen} mobSideOpen={mobSideOpen} mobToggleSidebar={mobToggleSidebar} />
                 <div className="flex flex-col w-full">
                     <Navbar toggleSidebar={toggleSidebar} mobToggleSidebar={mobToggleSidebar} />
-                    <div className='mb-6 max-w-[1280px] self-center'>
+                    <div className='mb-6 w-full max-w-[1600px] flex flex-col self-center'>
                         {Page}
                     </div>
                     <Footer />

@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { IoBulb, IoCaretDownOutline, IoClose } from "react-icons/io5";
-import { useAuth } from '../utils/AuthContext';
 import { FaTrophy } from "react-icons/fa";
 import { TiHome } from 'react-icons/ti';
 import { MdFeedback, MdOutlineHelp } from 'react-icons/md';
 import { GrAnnounce } from 'react-icons/gr';
 
 export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
-  const { logoutUser, user } = useAuth();
 
   const Menus = [
     {
