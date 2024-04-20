@@ -43,7 +43,8 @@ export const PubgSquareTournamentCard = ({ tournament }) => {
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>STATUS</label>
-                        <div className={`text-[12px] mt-[2px] font-bold ${tournament.status === "Open" ? 'text-green-700' : 'text-orange-700'} bg-secondaryLight w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-green-500' : 'bg-red-500'} bg-opacity-30 w-fit px-3 py-[2px] rounded-xl`}>{tournament.status}</div>
+
                     </div>
 
                 </div>

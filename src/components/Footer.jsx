@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 export const Footer = () => {
   return (
     <div className='w-full border-t-[1px] border-inactive border-opacity-20 px-6'>
-      <div className="grid grid-cols-12 my-8 md:gap-8 gap-4 gap-y-8">
-        <div className='flex flex-col md:col-span-5 col-span-12 items-start'>
+      <div className="grid grid-cols-10 my-8 md:gap-8 gap-4 gap-y-8">
+        <div className='flex flex-col md:col-span-4 col-span-5 items-start'>
           {/* logo  */}
           <Link to={'/'}>
             <div className="flex text-2xl items-center justify-center font-bold">
@@ -43,7 +43,15 @@ export const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col md:col-span-3 col-span-6">
+        <div className="flex flex-col md:col-span-2 col-span-5">
+          <h4 className='text-offWhite'>GAMES</h4>
+          <ul className='my-2 text-offBlue text-sm'>
+            <li className='w-fit my-2'><Link to={'/tournaments/pubg'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
+            <li className='w-fit my-2'><Link to={'/tournaments/freefire'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Garena Free Fire</span></Link></li>
+            
+          </ul>
+        </div>
+        <div className="flex flex-col md:col-span-2 col-span-5">
           <h4 className='text-offWhite'>USEFUL LINKS</h4>
           <ul className='my-2 text-offBlue text-sm'>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>About Us</span></Link></li>
@@ -53,7 +61,7 @@ export const Footer = () => {
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Disclaimer</span></Link></li>
           </ul>
         </div>
-        <div className="flex flex-col md:col-span-3 col-span-6">
+        <div className="flex flex-col md:col-span-2 col-span-5">
           <h4 className='text-offWhite'>SUPPORT</h4>
           <ul className='my-2 text-offBlue text-sm'>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Collaborate With Us</span></Link></li>
@@ -66,7 +74,8 @@ export const Footer = () => {
       </div>
       <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 text-sm'>
         <div className="grid grid-cols-12 text-offBlue gap-y-2">
-          <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='hover:text-primary transition-colors duration-300'> <span>EsportsGravity.com</span></Link><span><label htmlFor="version indication" className='text-dimText font-medium'> (v1.0.0)</label></span></div>
+          <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='text-primary transition-colors duration-300'> EsportsGravity.com</Link><span><label htmlFor="version indication" className='text-dimText font-medium'> (v1.0.0)</label></span></div>
+          {/* <p className='md:col-span-4 col-span-full text-center'>Designed by <a href="https://rajivjaiswal.com.np/" target='_blank' className='text-primary'>Rajiv Jaiswal</a></p> */}
           <div className="md:col-span-6 col-span-full"><span className='flex gap-2 md:justify-end justify-center'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Terms & Conditions</Link>|<Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Privacy Policy</Link></span></div>
         </div>
 

@@ -43,7 +43,7 @@ export const PubgTournModalComponent = ({ tournament }) => {
         <>
             <ToastContainer hideProgressBar position='top-center' theme="dark" />
 
-            <div className='h-[92vh] md:w-[72vw] w-[90vw]'>
+            <div className='h-[92vh] md:w-[72vw] w-[90vw] overflow-x-hidden custom-scrollbar'>
                 <div className='lg:h-[45%] md:h-[40%] h-[35%] flex flex-col justify-between' style={{
                     backgroundImage: `url("${tournament.imgURL}")`,
                     backgroundSize: 'cover',
@@ -53,7 +53,7 @@ export const PubgTournModalComponent = ({ tournament }) => {
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>{tournament.tournTitle}</h2>
-                            <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm overflow-x-auto">
+                            <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm overflow-x-auto custom-scrollbar">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch Live</label>
@@ -99,7 +99,7 @@ export const PubgTournModalComponent = ({ tournament }) => {
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><span><MdInfo /></span></label>
-                                        <div className={`text-[12px] mt-[2px] font-bold ${tournament.status === "Open" ? 'text-green-700' : 'text-orange-700'} bg-secondaryLight w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-green-500' : 'bg-red-500'} bg-opacity-30 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                                     </div>
                                 </div>
 

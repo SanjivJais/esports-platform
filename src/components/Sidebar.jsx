@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { IoBulb, IoCaretDownOutline, IoClose } from "react-icons/io5";
+import { IoBulb, IoCaretDownOutline, IoClose, IoWallet } from "react-icons/io5";
 import { FaTrophy } from "react-icons/fa";
 import { TiHome } from 'react-icons/ti';
 import { MdFeedback, MdOutlineHelp } from 'react-icons/md';
 import { GrAnnounce } from 'react-icons/gr';
+import { useAuth } from '../utils/AuthContext';
+
 
 export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
+
+  const { user } = useAuth();
 
   const Menus = [
     {
@@ -59,12 +63,17 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
         </Link>
 
         <div className="flex flex-col h-[88%] px-4 overflow-y-auto custom-scrollbar text-inactive pt-3 font-semibold">
-          <div className="bg-frameBG px-4 mb-2 py-3 my-1 rounded-[5px] border-[0.8px] border-inactive border-opacity-20">
-            <div className='flex items-center'>
-              <img src="/icons/Coin.svg" alt="" />
-              <label htmlFor="" className={`ml-2 text-offBlue hover:cursor-pointer`}>340</label>
+          {user &&
+            <div className="bg-frameBG px-4 mb-2 py-3 my-1 rounded-[5px] border-[0.8px] border-inactive border-opacity-20">
+              <div className="flex items-center justify-between">
+                <div className='flex items-center'>
+                  <img src="/icons/Coin.svg" alt="" />
+                  <label htmlFor="" className={`ml-2 text-offBlue`}>340</label>
+                </div>
+                <IoWallet title='Load EG Coins' className='text-xl hover:text-primary cursor-pointer transition-colors duration-200' />
+              </div>
             </div>
-          </div>
+          }
           {Menus.map((menu, index) => (
             <div key={index} className='group'>
               {menu.separator && <div className="h-[1px] bg-inactive bg-opacity-20 my-2"></div>}
