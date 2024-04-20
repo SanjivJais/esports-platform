@@ -20,9 +20,8 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       icon: <FaTrophy />,
       submenu: true,
       submenuItems: [
-        { title: 'PUBG', link: '/tournaments/pubg' },
+        { title: 'PUBG Mobile', link: '/tournaments/pubg' },
         { title: 'Free Fire', link: '/tournaments/freefire' },
-
       ]
     },
     {
@@ -46,10 +45,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       link: '/temp3/',
       icon: <MdFeedback />
     },
-
-
   ]
-
 
   return (
 

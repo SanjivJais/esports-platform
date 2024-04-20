@@ -161,7 +161,7 @@ export const FFTournaments = () => {
       watchLiveURL2: '',
       rulesDetails: '',
     },
-    
+
   ]
 
   return (
@@ -171,7 +171,7 @@ export const FFTournaments = () => {
       </div>
       <div className='w-full max-w-[1280px] px-6 self-center flex flex-col'>
         <div className="flex -mt-20 w-full">
-          <img src="/images/FF_DP.jpg" alt="" className='md:h-44 h-32 w-auto rounded-[5px]' />
+          <div className='md:h-44 h-32 w-36 rounded-[5px] bg-[url("/images/FF_DP.jpg")] bg-cover bg-center'></div>
           <div className="flex flex-col ml-4 self-end w-full">
             <h3 className='font-bold md:text-4xl text-2xl text-offWhite'>Garena Free Fire</h3>
             <div className="grid md:grid-cols-5 grid-cols-2 md:gap-4 gap-2 mt-4">
