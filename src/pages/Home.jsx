@@ -197,8 +197,8 @@ export const Home = () => {
     <div className='py-4 px-4 flex flex-col items-center self-center w-full max-w-[1440px]'>
       <div className='mb-2 w-full'><Slider /></div>
       <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full"></div>
-      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[22px] text-xl text-offBlue'><FaTrophy /><h3>Free Fire Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
-      <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-3 content-center">
+      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>Free Fire Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
+      <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
         {FFtournaments && FFtournaments.map((tournament, index) => (
           <FFSquareTournamentCard key={index}
             tournament={tournament}
@@ -208,8 +208,8 @@ export const Home = () => {
       {/* promotional banner homepage  */}
       <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
 
-      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[22px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View All »</Link></div>
-      <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-3 content-center">
+      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View All »</Link></div>
+      <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
         {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
           <PubgSquareTournamentCard key={index}
             tournament={tournament}

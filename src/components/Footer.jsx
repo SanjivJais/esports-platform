@@ -66,9 +66,10 @@ export const Footer = () => {
       </div>
       <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 text-sm'>
         <div className="grid grid-cols-12 text-offBlue gap-y-2">
-          <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='hover:text-primary transition-colors duration-300'> <span>EsportsGravity.com</span></Link></div>
+          <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='hover:text-primary transition-colors duration-300'> <span>EsportsGravity.com</span></Link><span><label htmlFor="version indication" className='text-dimText font-medium'> (v1.0.0)</label></span></div>
           <div className="md:col-span-6 col-span-full"><span className='flex gap-2 md:justify-end justify-center'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Terms & Conditions</Link>|<Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Privacy Policy</Link></span></div>
         </div>
+
       </div>
     </div>
   )
