@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { IoBulb, IoCaretDownOutline, IoClose, IoWallet } from "react-icons/io5";
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { IoBulb, IoCaretDownOutline, IoClose, IoGameController, IoWallet } from "react-icons/io5";
 import { FaTrophy } from "react-icons/fa";
 import { TiHome } from 'react-icons/ti';
 import { MdFeedback, MdOutlineHelp } from 'react-icons/md';
@@ -11,6 +11,9 @@ import { useAuth } from '../utils/AuthContext';
 export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
 
   const { user } = useAuth();
+  const location = useLocation();
+  const [submenuOpen, setSubmenuOpen] = useState(null);
+
 
   const Menus = [
     {
@@ -27,6 +30,11 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
         { title: 'PUBG Mobile', link: '/tournaments/pubg' },
         { title: 'Free Fire', link: '/tournaments/freefire' },
       ]
+    },
+    {
+      title: 'Games',
+      link: '/games',
+      icon: <IoGameController />,
     },
     {
       title: 'Guides',
@@ -62,7 +70,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
           </div>
         </Link>
 
-        <div className="flex flex-col h-[88%] px-4 overflow-y-auto custom-scrollbar text-inactive pt-3 font-semibold">
+        <div className="flex flex-col h-[100%] px-4 overflow-y-auto custom-scrollbar text-inactive pt-3 font-semibold">
           {user &&
             <div className="bg-frameBG px-4 mb-2 py-3 my-1 rounded-[5px] border-[0.8px] border-inactive border-opacity-20">
               <div className="flex items-center justify-between">
@@ -77,22 +85,24 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
           {Menus.map((menu, index) => (
             <div key={index} className='group'>
               {menu.separator && <div className="h-[1px] bg-inactive bg-opacity-20 my-2"></div>}
-              <NavLink to={menu.link} className={({ isActive }) => `${isActive ? 'bg-primary text-secondary' : 'hover:bg-secondaryLight hover:text-offBlue'} flex justify-between items-center px-4 hover:cursor-pointer  
-                py-3 my-1 rounded-[5px] transition-all ease-in-out duration-200 `}>
-                <div className='flex items-center'>
+              <div className={`${location.pathname == menu.link ? 'bg-primary text-secondary' : 'hover:bg-secondaryLight hover:text-offBlue'} flex justify-between items-center hover:cursor-pointer  
+                 my-1 h-[48px] rounded-[5px] transition-all ease-in-out duration-200 `}>
+                <Link to={menu.link} className='flex items-center py-3 pl-4 pr-2 h-full w-full'>
                   <div className={'text-[20px]'}>
                     {menu.icon}
                   </div>
                   <label htmlFor="" className={`ml-2 hover:cursor-pointer`}>{menu.title}</label>
-                </div>
-                <IoCaretDownOutline className={`${menu.submenu ? '' : 'hidden'} group-hover:rotate-180 ml-2 transition-all duration-2 00`} />
-              </NavLink>
+                </Link>
+                <div onClick={() => {
+                  setSubmenuOpen((prevSubmenu) => (prevSubmenu === menu.title ? null : menu.title));
+                }} className={`hover:bg-frameBG hover:bg-opacity-30 h-full w-14 flex justify-center items-center rounded-tr-[5px] rounded-br-[5px] ${menu.submenu ? '' : 'hidden'}`}><IoCaretDownOutline className={`${submenuOpen == menu.title ? 'rotate-180' : ''} duration-200 transition-transform`} /></div>
+              </div>
 
               {
-                menu.submenu && sideOpen && (
-                  <div className='relative flex-col w-full rounded-[5px] px-2 py-0 group-hover:py-2 bg-frameBG group-hover:border-[0.8px] border-inactive border-opacity-20 h-0 transition-all duration-200 group-hover:h-fit group-hover:flex'>
+                menu.submenu && submenuOpen == menu.title && sideOpen && (
+                  <div className={`relative flex-col w-full rounded-[5px] px-2 py-0 ${submenuOpen == menu.title ? 'py-2 border-[0.8px] h-fit flex' : ''} bg-frameBG border-inactive border-opacity-20 h-0 transition-all duration-200`}>
                     {menu.submenuItems.map((submenuItem, index) => (
-                      <NavLink to={submenuItem.link} key={index} className={({ isActive }) => isActive ? 'text-primary' : ''}> <div className={` px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex`}>{submenuItem.title}</div></NavLink>
+                      <NavLink to={submenuItem.link} key={index} className={({ isActive }) => isActive ? 'text-primary' : ''}> <div className={`px-2 py-2 ${submenuOpen == menu.title ? 'flex' : 'hidden'} hover:bg-secondaryLight cursor-pointer rounded-[5px]`}>{submenuItem.title}</div></NavLink>
                     ))}
                   </div>
                 )

@@ -143,20 +143,20 @@ export const PubgTournaments = () => {
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Entry Fee</label>
                 <select name="entry_fee_drop" id="" className='custom-dropdown'>
-                  <option value="free">Free</option>
+                  <option selected value="free">Free</option>
                   <option value="paid">Paid</option>
                 </select>
               </div>
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Game Mode</label>
                 <select name="game_mode" id="" className='custom-dropdown'>
-                  <option value="battle_royale">Battle Royale</option>
+                  <option selected value="battle_royale">Battle Royale</option>
                 </select>
               </div>
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Team Type</label>
                 <select name="team_type" id="" className='custom-dropdown'>
-                  <option value="solo">Solo</option>
+                  <option selected value="solo">Solo</option>
                   <option value="duo">Duo</option>
                   <option value="squad">Squad</option>
                 </select>
@@ -164,7 +164,7 @@ export const PubgTournaments = () => {
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Status</label>
                 <select name="status" id="" className='custom-dropdown'>
-                  <option value="open">Open</option>
+                  <option selected value="open">Open</option>
                   <option value="full">Full</option>
                   <option value="closed">Closed</option>
                 </select>

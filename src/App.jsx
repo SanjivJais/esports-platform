@@ -5,6 +5,7 @@ import { Route, Routes, Navigate, Outlet } from 'react-router-dom'
 import { Signup } from './pages/Signup'
 import { Login } from './pages/Login'
 import { Home } from './pages/Home'
+import { Games } from './pages/Games'
 import { Profile } from './pages/Profile'
 import { ParentPage } from "./pages/ParentPage"
 import { PubgTournaments } from './pages/PubgTournaments'
@@ -24,6 +25,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path='/' element={<ParentPage Page={<Home />} />} />
+          <Route path='/games' element={<ParentPage Page={<Games />} />} />
           <Route path='/tournaments' element={<ParentPage Page={<Tournaments />} />} />
           <Route path='/tournaments/pubg' element={<ParentPage Page={<PubgTournaments />} />} />
           <Route path='/tournaments/freefire' element={<ParentPage Page={<FFTournaments />} />} />

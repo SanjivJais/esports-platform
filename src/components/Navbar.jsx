@@ -70,10 +70,9 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   const handleSearchEnable = () => { setSearchEnable(!searchEnable); }
   return (
     <>
-      <nav className="sticky z-20 top-0 bg-secondary h-[72px] md:px-6 shadow-md flex items-center justify-between pl-0 pr-6">
+      <nav className="sticky z-20 top-0 bg-secondary h-[72px] md:px-4 shadow-md flex items-center justify-between pr-4">
         <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:block hidden' onClick={toggleSidebar} />
         <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:hidden' onClick={mobToggleSidebar} />
-
         <div className="flex gap-3 items-center">
           <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-[5px] border-[1px] border-secondary md:px-6 px-4 py-2"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
           <div className='group hover:cursor-pointer'>
@@ -103,17 +102,27 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
       </nav>
       <Modal isVisible={searchEnable} onClose={() => setSearchEnable(false)}>
-
         <div className='md:w-[75vw] w-[90vw] h-[95vh] flex flex-col items-center'>
-          <div className="flex mt-16 mb-10 md:w-[70%] w-[80%] rounded-3xl bg-secondaryLight items-center border-[1px] border-secondary px-6 py-2"><input type="text" className='bg-transparent text-offBlue texxt-sm focus:outline-none w-full placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
-          <div className='overflow-auto mb-6 grid md:grid-cols-2 grid-cols-1 md:w-[80%] w-full gap-8 custom-scrollbar px-2'>
+          <div className="flex items-center mt-16 mb-10 md:w-[70%] w-[90%] rounded-3xl bg-secondaryLight h-12">
+            <select name="" id="" className='bg-transparent focus:outline-none text-offBlue md:mx-6 mx-1'>
+              <option value="freefire" selected className='bg-secondaryLight'>Free Fire</option>
+              <option value="pubg" className='bg-secondaryLight'>PUBG Mobile</option>
+            </select>
+            <span className='h-full w-[0.8px] bg-inactive bg-opacity-30'></span>
+            <div className="flex gap-2 items-center md:px-6 px-2 py-2 h-full w-full">
+              <input type="text" className='bg-transparent text-offBlue focus:outline-none w-full placeholder:text-inactive' placeholder='Tournament ID or Title' />
+            </div>
+            <span className='h-full w-[0.8px] bg-inactive bg-opacity-20'></span>
+            <div className='md:px-6 px-2 hover:bg-frameBG h-full flex items-center cursor-pointer rounded-tr-3xl rounded-br-3xl transition-colors duration-200'><GoSearch className='text-lg text-inactive' /></div>
+          </div>
+          <div className='overflow-auto mb-6 grid md:grid-cols-2 grid-cols-1 w-full gap-8 custom-scrollbar md:px-10 px-2'>
+            {/* search results here  */}
             {FFtournaments && FFtournaments.map((tournament, index) => (
               <FFSquareTournamentCard key={index}
                 tournament={tournament}
               />
             ))}
           </div>
-
         </div>
       </Modal>
     </>
