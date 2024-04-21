@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../utils/AuthContext'
 import { FaCamera, FaRegEdit } from 'react-icons/fa';
-import { IoIosAddCircleOutline } from 'react-icons/io';
+import { IoIosAddCircleOutline, IoIosLogOut } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 
 export const Profile = () => {
@@ -123,12 +124,17 @@ export const Profile = () => {
                   <label htmlFor="user name" className='text-inactive'>Account Status</label>
                   <strong className={`text-offBlue w-fit text-sm px-4 py-1 font-medium bg-opacity-30 rounded-[15px] ${user.status ? 'bg-green-700' : 'bg-red-700'}`}>{user.status ? 'Active' : 'Closed'}</strong>
                 </div>
+                <button className='self-start border-[0.8px] border-inactive border-opacity-30 rounded-[5px] px-3 py-1 text-offBlue flex items-center gap-2'><span>Logout</span><IoIosLogOut /></button>
               </div>
               <FaRegEdit className='text-inactive text-xl cursor-pointer' />
             </div>
           </>
         }
       </div>
+
+      <Link to={'#'} className='md:h-[220px] h-[120px] w-full bg-[url("/images/DummySliderBanner.jpg")] mt-6 bg-cover rounded-[5px] bg-center'>
+
+      </Link>
 
 
     </div>

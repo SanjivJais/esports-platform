@@ -69,18 +69,8 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
           EsportsGravity <sup className='text-xs text-primary ml-2 font-normal'>Beta</sup>
         </Link>
 
-        <div className="flex flex-col h-[90%] px-4 pb-3 overflow-y-auto sidebar-scrollbar text-inactive font-semibold">
-          {user &&
-            <div className="bg-frameBG px-4 mb-2 py-3 my-1 rounded-[5px] border-[0.8px] border-inactive border-opacity-20">
-              <div className="flex items-center justify-between">
-                <div className='flex items-center'>
-                  <img src="/icons/Coin.svg" alt="" />
-                  <label htmlFor="" className={`ml-2 text-offBlue`}>340</label>
-                </div>
-                <IoWallet title='Load EG Coins' className='text-xl hover:text-primary cursor-pointer transition-colors duration-200' />
-              </div>
-            </div>
-          }
+        <div className="flex flex-col h-[90%] px-4 py-3 overflow-y-auto sidebar-scrollbar text-inactive font-semibold">
+
           {Menus.map((menu, index) => (
             <div key={index} className='group'>
               {menu.separator && <div className="h-[1px] bg-inactive bg-opacity-20 my-2"></div>}
@@ -99,16 +89,16 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
 
               {
                 menu.submenu && submenuOpen == menu.title && sideOpen && (
-                  <div className={`relative flex-col w-full rounded-[5px] px-2 py-0 ${submenuOpen == menu.title ? 'py-2 border-[0.8px] h-fit flex' : ''} bg-frameBG border-inactive border-opacity-20 h-0 transition-all duration-200`}>
+                  <div className={`relative flex-col w-full rounded-[5px] px-2  ${submenuOpen == menu.title ? 'py-2 border-[0.8px] h-fit flex' : 'py-0 h-0'} bg-frameBG border-inactive border-opacity-20 transition-all duration-200`}>
                     {menu.submenuItems.map((submenuItem, index) => (
-                      <NavLink to={submenuItem.link} key={index} className={({ isActive }) => `${isActive ? 'bg-primary text-secondary' : 'hover:bg-secondaryLight hover:text-offBlue'} rounded-[5px] px-2 py-2 my-1 transition-colors duration-200 ease-in-out`}> <div className={`${submenuOpen == menu.title ? 'flex' : 'hidden'} cursor-pointer`}>{submenuItem.title}</div></NavLink>
+                      <NavLink to={submenuItem.link} key={index} className={({ isActive }) => `${isActive ? 'bg-primary text-secondary' : 'hover:bg-secondaryLight hover:text-offBlue'} rounded-[5px] px-2 py-2 my-1 transition-all duration-200 ease-in-out`}> <div className={`${submenuOpen == menu.title ? 'flex' : 'hidden'} cursor-pointer`}>{submenuItem.title}</div></NavLink>
                     ))}
                   </div>
                 )
               }
             </div>
           ))}
-          <div className="h-[1px] bg-inactive bg-opacity-20 my-2"></div>
+          <div className="h-[0.8px] bg-inactive bg-opacity-20 my-2"></div>
           <div className='px-4 mt-2'>
             <label htmlFor="" className="text-[14px]">FOLLOW US</label>
             <div className="flex gap-2 justify-start mt-2">

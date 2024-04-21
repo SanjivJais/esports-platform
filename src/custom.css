@@ -34,7 +34,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .sidebar-scrollbar::-webkit-scrollbar-thumb{
-  background-color: #111d2c;
+  background-color: #0E1825;
   /* Set the color of the thumb (the draggable part) */
   border-radius: 4px;
   /* Set the border-radius for a rounded appearance */

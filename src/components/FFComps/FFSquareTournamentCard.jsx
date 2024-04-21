@@ -47,7 +47,7 @@ export const FFSquareTournamentCard = ({ tournament }) => {
                     </div>
 
                 </div>
-                <div className="h-[1px] bg-inactive bg-opacity-40 my-4"></div>
+                <div className="h-[0.8px] bg-inactive bg-opacity-30 my-4"></div>
                 <div className="flex justify-between">
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>STARTING</label>

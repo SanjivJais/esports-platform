@@ -6,7 +6,7 @@ export const Footer = () => {
   return (
     <div className='w-full border-t-[1px] border-inactive border-opacity-20 px-4'>
       <div className="grid grid-cols-10 my-8 md:gap-8 gap-4 gap-y-8">
-        <div className='flex flex-col lg:col-span-4 col-span-5 items-start'>
+        <div className='flex flex-col xl:col-span-4 col-span-5 items-start'>
           {/* logo  */}
           <Link to={'/'}>
             <div className="flex text-2xl items-center justify-center font-bold">
@@ -43,7 +43,7 @@ export const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col md:col-span-2 col-span-5">
+        <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>GAMES</h4>
           <ul className='my-2 text-offBlue text-sm'>
             <li className='w-fit my-2'><Link to={'/tournaments/pubg'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
@@ -51,7 +51,7 @@ export const Footer = () => {
             
           </ul>
         </div>
-        <div className="flex flex-col md:col-span-2 col-span-5">
+        <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>USEFUL LINKS</h4>
           <ul className='my-2 text-offBlue text-sm'>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>About Us</span></Link></li>
@@ -61,7 +61,7 @@ export const Footer = () => {
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Disclaimer</span></Link></li>
           </ul>
         </div>
-        <div className="flex flex-col md:col-span-2 col-span-5">
+        <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>SUPPORT</h4>
           <ul className='my-2 text-offBlue text-sm'>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Collaborate With Us</span></Link></li>
