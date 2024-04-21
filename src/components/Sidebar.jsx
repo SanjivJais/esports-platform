@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IoBulb, IoCaretDownOutline, IoClose, IoGameController, IoWallet } from "react-icons/io5";
 import { FaTrophy } from "react-icons/fa";
@@ -57,20 +57,19 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       link: '/temp3/',
       icon: <MdFeedback />
     },
+
   ]
 
   return (
 
     <>
       <div className={`w-64 lg:w-72 top-0 z-30 bg-secondary transition-all duration-300 h-screen md:text-[16px] text-[14px] ${sideOpen ? 'lg:sticky lg:left-0' : 'lg:fixed lg:-left-72'} fixed ${mobSideOpen ? 'left-0' : '-left-64'}`}>
-        <div className="flex w-full items-center justify-end mt-4 lg:hidden"><IoClose className={`text-lg cursor-pointer ${mobSideOpen ? '' : 'rotate-180 duration-100'}`} onClick={mobToggleSidebar} /></div>
-        <Link to={'/'}>
-          <div className="flex h-[72px] px-4 items-center justify-center text-lg font-bold">
-            EsportsGravity <sup className='text-xs text-primary ml-2 font-normal'>Beta</sup>
-          </div>
+        <div className="flex w-full absolute items-center justify-end top-4 right-3 lg:hidden"><IoClose className={`text-lg cursor-pointer ${mobSideOpen ? '' : 'rotate-180 duration-100'}`} onClick={mobToggleSidebar} /></div>
+        <Link to={'/'} className='h-[72px] flex px-4 items-center justify-center text-lg font-bold'>
+          EsportsGravity <sup className='text-xs text-primary ml-2 font-normal'>Beta</sup>
         </Link>
 
-        <div className="flex flex-col h-[100%] px-4 overflow-y-auto custom-scrollbar text-inactive pt-3 font-semibold">
+        <div className="flex flex-col h-[90%] px-4 pb-3 overflow-y-auto sidebar-scrollbar text-inactive font-semibold">
           {user &&
             <div className="bg-frameBG px-4 mb-2 py-3 my-1 rounded-[5px] border-[0.8px] border-inactive border-opacity-20">
               <div className="flex items-center justify-between">
@@ -102,14 +101,14 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
                 menu.submenu && submenuOpen == menu.title && sideOpen && (
                   <div className={`relative flex-col w-full rounded-[5px] px-2 py-0 ${submenuOpen == menu.title ? 'py-2 border-[0.8px] h-fit flex' : ''} bg-frameBG border-inactive border-opacity-20 h-0 transition-all duration-200`}>
                     {menu.submenuItems.map((submenuItem, index) => (
-                      <NavLink to={submenuItem.link} key={index} className={({ isActive }) => isActive ? 'text-primary' : ''}> <div className={`px-2 py-2 ${submenuOpen == menu.title ? 'flex' : 'hidden'} hover:bg-secondaryLight cursor-pointer rounded-[5px]`}>{submenuItem.title}</div></NavLink>
+                      <NavLink to={submenuItem.link} key={index} className={({ isActive }) => `${isActive ? 'bg-primary text-secondary' : 'hover:bg-secondaryLight hover:text-offBlue'} rounded-[5px] px-2 py-2 my-1 transition-colors duration-200 ease-in-out`}> <div className={`${submenuOpen == menu.title ? 'flex' : 'hidden'} cursor-pointer`}>{submenuItem.title}</div></NavLink>
                     ))}
                   </div>
                 )
               }
             </div>
           ))}
-          <div className="h-[0.8px] bg-inactive bg-opacity-20 my-2"></div>
+          <div className="h-[1px] bg-inactive bg-opacity-20 my-2"></div>
           <div className='px-4 mt-2'>
             <label htmlFor="" className="text-[14px]">FOLLOW US</label>
             <div className="flex gap-2 justify-start mt-2">

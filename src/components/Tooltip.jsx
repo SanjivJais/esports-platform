@@ -6,7 +6,7 @@ export const Tooltip = ({ content, children }) => {
             <div className="group hover:cursor-help relative">
                 <div className="relative flex">
                     {children}
-                    <div className="invisible opacity-0 top-3 -left-10 transition-all duration-200 w-36 bg-frameBG group-hover:visible group-hover:opacity-95 font-light text-offBlue px-[10px] py-[5px] text-sm rounded-[6px] absolute z-10">
+                    <div className="invisible opacity-0 top-3 -left-8 transition-all duration-200 w-36 bg-frameBG group-hover:visible group-hover:opacity-95 font-light text-offBlue px-[10px] py-[5px] text-sm rounded-[6px] absolute z-10">
                         {content}
                     </div>
                 </div>

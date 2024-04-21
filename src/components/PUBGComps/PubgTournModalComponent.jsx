@@ -5,6 +5,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { Modal } from '../Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Tooltip } from '../Tooltip';
 
 export const PubgTournModalComponent = ({ tournament }) => {
     let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
@@ -74,19 +75,19 @@ export const PubgTournModalComponent = ({ tournament }) => {
                                         <div className='font-medium flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MODE </span><span><MdInfo /></span></label>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MODE </span><Tooltip content={"Mode of the game the tournament will be played in."} children={<MdInfo />} /></label>
                                         <div className='font-medium'>{tournament.gameMode}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>TYPE </span><span><MdInfo /></span></label>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>TEAM TYPE </span><Tooltip content={"Number of players in a team. This can be solo (1 player), duo (2 players), squad (4 players)."} children={<MdInfo />} /></label>
                                         <div className='font-medium'>{tournament.gameType}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MIN / MAX </span><span><MdInfo /></span></label>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MIN / MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></label>
                                         <div className='font-medium'>{tournament.minPlayers} / {tournament.maxPlayers}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><span><MdInfo /></span></label>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><Tooltip content={"Total prize to be distributed among top performers."} children={<MdInfo />} /></label>
                                         <div className='font-medium flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
                                     </div>
                                     <div>
@@ -98,7 +99,7 @@ export const PubgTournModalComponent = ({ tournament }) => {
                                         <div className='font-medium flex items-center gap-1'>{tournament.startTime}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><span><MdInfo /></span></label>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></label>
                                         <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-green-500' : 'bg-red-500'} bg-opacity-30 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                                     </div>
                                 </div>
