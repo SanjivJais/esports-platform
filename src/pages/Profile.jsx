@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 
 export const Profile = () => {
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
 
   const tabs = document.getElementsByClassName("profileTab");
   let [activeTab, setActiveTab] = useState(0);
@@ -124,7 +124,7 @@ export const Profile = () => {
                   <label htmlFor="user name" className='text-inactive'>Account Status</label>
                   <strong className={`text-offBlue w-fit text-sm px-4 py-1 font-medium bg-opacity-30 rounded-[15px] ${user.status ? 'bg-green-700' : 'bg-red-700'}`}>{user.status ? 'Active' : 'Closed'}</strong>
                 </div>
-                <button className='self-start border-[0.8px] border-inactive border-opacity-30 rounded-[5px] px-3 py-1 text-offBlue flex items-center gap-2'><span>Logout</span><IoIosLogOut /></button>
+                <button onClick={logoutUser} className='self-start border-[0.8px] border-inactive border-opacity-30 rounded-[5px] px-3 py-1 text-offBlue flex items-center gap-2'><span>Logout</span><IoIosLogOut /></button>
               </div>
               <FaRegEdit className='text-inactive text-xl cursor-pointer' />
             </div>

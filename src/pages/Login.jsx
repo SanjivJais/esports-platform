@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../custom.css'
 import { IoMdClose } from "react-icons/io";
@@ -11,6 +11,43 @@ import 'react-toastify/dist/ReactToastify.css';
 export const Login = () => {
 
   const { loginUser, googleSignin } = useAuth();
+
+  const [countryCheck, setCountryCheck] = useState(true)
+
+  const fetchCountryFromIP = async () => {
+    try {
+      let cachedData = localStorage.getItem('userCountryData');
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        const { country, timestamp } = cachedData;
+        const expirationTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        if (Date.now() - timestamp < expirationTime) {
+          return country === 'NP'; // Check if country is Nepal
+        } else {
+          localStorage.removeItem('userCountryData'); // Remove expired data from storage
+        }
+      }
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      const country = data.country; // Get country code from API response
+      cachedData = {
+        country,
+        timestamp: Date.now()
+      };
+      localStorage.setItem('userCountryData', JSON.stringify(cachedData));
+      return country === 'NP'; // Check if country is Nepal
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+      return true; // Default to false if there's an error
+    }
+  };
+
+  useEffect(() => {
+    fetchCountryFromIP().then(isUserFromNepal => {
+      setCountryCheck(isUserFromNepal);
+    });
+  }, []); // Empty dependency array to run the effect once on component mount
+
   const [loginDetails, setLoginDetails] = useState({
     email: '',
     password: '',
@@ -48,7 +85,8 @@ export const Login = () => {
 
   const googleAuth = async (e) => {
     e.preventDefault();
-    await googleSignin();
+    if (countryCheck !== null && countryCheck)
+      await googleSignin();
   }
 
   return (

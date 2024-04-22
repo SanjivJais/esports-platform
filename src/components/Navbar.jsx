@@ -7,7 +7,6 @@ import { Modal } from './Modal';
 import { FFSquareTournamentCard } from './FFComps/FFSquareTournamentCard';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { IoIosLogOut } from 'react-icons/io';
-import { IoWallet } from 'react-icons/io5';
 
 
 export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
@@ -92,7 +91,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
                 <div className="flex items-center gap-2">
                   <img src="/icons/dummyProfilePic.png" alt="" className='h-8 w-auto rounded-2xl' />
                   <div className='items-center hidden md:flex'>
-                    <label htmlFor="user">{(user != null && (user.name))}</label>
+                    <label htmlFor="user" className='cursor-pointer'>{(user != null && (user.name))}</label>
                     <RiArrowDropDownLine className='text-2xl' />
                   </div>
                 </div>

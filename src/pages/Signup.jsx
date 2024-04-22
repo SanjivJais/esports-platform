@@ -12,8 +12,8 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 
 export const Signup = () => {
-
   const [countryCheck, setCountryCheck] = useState(true)
+
   const fetchCountryFromIP = async () => {
     try {
       let cachedData = localStorage.getItem('userCountryData');
@@ -103,7 +103,8 @@ export const Signup = () => {
 
   const googleAuth = async (e) => {
     e.preventDefault();
-    await googleSignin();
+    if (countryCheck !== null && countryCheck)
+      await googleSignin();
   }
 
 
@@ -111,7 +112,6 @@ export const Signup = () => {
   return (
     <>
       <ToastContainer hideProgressBar theme="dark" />
-
       <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
         <div className="bg-[url('/images/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>

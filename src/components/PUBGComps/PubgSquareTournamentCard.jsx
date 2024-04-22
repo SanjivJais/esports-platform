@@ -6,7 +6,7 @@ import { PubgTournModalComponent } from './PubgTournModalComponent';
 export const PubgSquareTournamentCard = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
     let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
-    let joinPercent = parseInt((tournament.joinedPlayers * 100) / tournament.maxPlayers);
+    let joinPercent = parseInt((tournament.joined * 100) / tournament.max);
     const cardStyles = {
         backgroundImage: `url("${tournament.imgURL}")`,
         backgroundSize: 'cover',
@@ -20,7 +20,7 @@ export const PubgSquareTournamentCard = ({ tournament }) => {
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>
                     <div className="flex justify-between  text-[13px] mb-1">
                         <label htmlFor="" >Players Joined</label>
-                        <label htmlFor=""><span>{tournament.joinedPlayers}</span> / <span className='text-primary'>{tournament.maxPlayers}</span></label>
+                        <label htmlFor=""><span>{tournament.joined}</span> / <span className='text-primary'>{tournament.max}</span></label>
                     </div>
                     <div className='bg-gray w-full h-2 rounded-lg'>
                         <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>
@@ -31,15 +31,15 @@ export const PubgSquareTournamentCard = ({ tournament }) => {
                 <div className="flex justify-between">
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>ENTRY</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFee !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFee == 0 ? 'Free Entry' : tournament.entryFee}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>MODE</label>
-                        <div className='font-semibold'>{tournament.gameMode} - {tournament.gameType}</div>
+                        <div className='font-semibold'>{tournament.gameMode} - {tournament.teamType}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>PRIZE POOL</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>STATUS</label>

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { PrivateRoutes } from './utils/PrivateRoutes'
 import { AuthProvider, useAuth } from './utils/AuthContext'
 import { Route, Routes, Navigate, Outlet } from 'react-router-dom'
@@ -20,6 +20,7 @@ const LoginStatusRouting = () => {
 };
 
 function App() {
+
   return (
     <>
       <AuthProvider>

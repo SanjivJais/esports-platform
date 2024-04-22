@@ -9,7 +9,7 @@ import { Tooltip } from '../Tooltip';
 
 export const PubgTournModalComponent = ({ tournament }) => {
     let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
-    let joinPercent = parseInt((tournament.joinedPlayers * 100) / tournament.maxPlayers);
+    let joinPercent = parseInt((tournament.joined * 100) / tournament.max);
 
     const tabs = document.getElementsByClassName("tournTab");
     let [activeTab, setActiveTab] = useState(0);
@@ -72,7 +72,7 @@ export const PubgTournModalComponent = ({ tournament }) => {
                                 <div className="grid lg:grid-cols-4 grid-cols-3 gap-x-4 gap-y-8">
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENTRY FEE </span></label>
-                                        <div className='font-medium flex items-center gap-1'>{tournament.entryFree !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFree == 0 ? 'Free Entry' : tournament.entryFree}</div>
+                                        <div className='font-medium flex items-center gap-1'>{tournament.entryFee !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFee == 0 ? 'Free Entry' : tournament.entryFee}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MODE </span><Tooltip content={"Mode of the game the tournament will be played in."} children={<MdInfo />} /></label>
@@ -80,15 +80,15 @@ export const PubgTournModalComponent = ({ tournament }) => {
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>TEAM TYPE </span><Tooltip content={"Number of players in a team. This can be solo (1 player), duo (2 players), squad (4 players)."} children={<MdInfo />} /></label>
-                                        <div className='font-medium'>{tournament.gameType}</div>
+                                        <div className='font-medium'>{tournament.teamType}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MIN / MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></label>
-                                        <div className='font-medium'>{tournament.minPlayers} / {tournament.maxPlayers}</div>
+                                        <div className='font-medium'>{tournament.min} / {tournament.max}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><Tooltip content={"Total prize to be distributed among top performers."} children={<MdInfo />} /></label>
-                                        <div className='font-medium flex items-center gap-1'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
+                                        <div className='font-medium flex items-center gap-1'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTING </span></label>
@@ -207,23 +207,23 @@ export const PubgTournModalComponent = ({ tournament }) => {
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex justify-between'>
                             <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/firstTrophy.svg" alt="" /> <span>1<sup> st</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.firstPrize}</div>
+                            <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.firstPrize}</div>
                         </div>
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex justify-between'>
                             <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/secondTrophy.svg" alt="" /> <span>2<sup> nd</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.secondPrize}</div>
+                            <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.secondPrize}</div>
                         </div>
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex justify-between'>
                             <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/thirdTrophy.svg" alt="" /> <span>3<sup> rd</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.thirdPrize}</div>
+                            <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.thirdPrize}</div>
                         </div>
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
                             <div className="flex justify-between text-[14px] mb-1">
                                 <label htmlFor="" >Players Joined</label>
-                                <label htmlFor=""><span>{tournament.joinedPlayers}</span> / <span className='text-primary'>{tournament.maxPlayers}</span></label>
+                                <label htmlFor=""><span>{tournament.joined}</span> / <span className='text-primary'>{tournament.max}</span></label>
                             </div>
                             <div className='bg-gray w-full h-2 rounded-lg'>
                                 <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>
@@ -236,7 +236,7 @@ export const PubgTournModalComponent = ({ tournament }) => {
                         {/* confirmation modal  */}
                         <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
                             <div className='p-6 md:w-96 w-72'>
-                                <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'><img className='' src="/icons/Coin.svg" alt="" />{tournament.entryFree}</span></p>
+                                <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'><img className='' src="/icons/Coin.svg" alt="" />{tournament.entryFee}</span></p>
                                 <div className="flex w-full justify-evenly mt-7">
                                     <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
                                     <button className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
