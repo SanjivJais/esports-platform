@@ -6,6 +6,7 @@ import { FaTrophy } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 export const Home = () => {
+  
   const FFtournaments = [
     {
       id: 'op23no90284#nod00',

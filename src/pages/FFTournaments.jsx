@@ -10,13 +10,13 @@ export const FFTournaments = () => {
       gameTitle: 'Free Fire',
       imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/50dbb24bb2ec17afbcb45f40f37ef414.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 48,
-      minPlayers: 25,
-      joinedPlayers: 30,
-      entryFree: 10,
+      max: 48,
+      min: 25,
+      joined: 30,
+      entryFee: 10,
       gameMode: 'Clash Squad',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 70,
       secondPrize: 20,
       thirdPrize: 10,
@@ -27,7 +27,7 @@ export const FFTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
     {
@@ -35,13 +35,13 @@ export const FFTournaments = () => {
       gameTitle: 'Free Fire',
       imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 48,
-      minPlayers: 30,
-      joinedPlayers: 10,
-      entryFree: 20,  // 0 for Free Entry OR some value for entry fee
+      max: 48,
+      min: 30,
+      joined: 10,
+      entryFee: 20,  // 0 for Free Entry OR some value for entry fee
       gameMode: 'BR',
-      gameType: 'Solo',
-      rewardType: 'coin', // "coin"
+      teamType: 'Solo',
+      rewardType: 'eg_coin', // "coin"
       firstPrize: 250,
       secondPrize: 20,
       thirdPrize: 10,
@@ -52,7 +52,7 @@ export const FFTournaments = () => {
       roomID: '98987537',
       roomPass: '8269418',
       ytLiveURL: 'https://www.youtube.com/watch?v=ncTquQE0kuk',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: `
       <section class="rules-details">
       <h2>Rules and Details</h2>
@@ -91,13 +91,13 @@ export const FFTournaments = () => {
       gameTitle: 'Free Fire',
       imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/55b3ad30807b60a84bf9890b9cbdaf70.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 48,
-      minPlayers: 25,
-      joinedPlayers: 40,
-      entryFree: 10,
+      max: 48,
+      min: 25,
+      joined: 40,
+      entryFee: 10,
       gameMode: 'Clash Squad',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 70,
       secondPrize: 20,
       thirdPrize: 10,
@@ -108,7 +108,7 @@ export const FFTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
     {
@@ -116,13 +116,13 @@ export const FFTournaments = () => {
       gameTitle: 'Free Fire',
       imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/fca500d29fb030c194fa14904ed2de1a.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 48,
-      minPlayers: 25,
-      joinedPlayers: 30,
-      entryFree: 10,
+      max: 48,
+      min: 25,
+      joined: 30,
+      entryFee: 10,
       gameMode: 'Clash Squad',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 70,
       secondPrize: 20,
       thirdPrize: 10,
@@ -133,7 +133,7 @@ export const FFTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
     {
@@ -141,13 +141,13 @@ export const FFTournaments = () => {
       gameTitle: 'Free Fire',
       imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/9f72d23636bc8b9188a21fb62a0d3742.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 48,
-      minPlayers: 25,
-      joinedPlayers: 40,
-      entryFree: 10,
+      max: 48,
+      min: 25,
+      joined: 40,
+      entryFee: 10,
       gameMode: 'Clash Squad',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 70,
       secondPrize: 20,
       thirdPrize: 10,
@@ -158,7 +158,7 @@ export const FFTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
 
@@ -178,21 +178,21 @@ export const FFTournaments = () => {
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Entry Fee</label>
                 <select name="entry_fee_drop" id="" className='custom-dropdown'>
-                  <option selected value="free">Free</option>
+                  <option value="free">Free</option>
                   <option value="paid">Paid</option>
                 </select>
               </div>
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Game Mode</label>
                 <select name="game_mode" id="" className='custom-dropdown'>
-                  <option selected value="battle_royale">Battle Royale</option>
+                  <option value="battle_royale">Battle Royale</option>
                   <option value="clash_squad">Clash Squad</option>
                 </select>
               </div>
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Team Type</label>
                 <select name="team_type" id="" className='custom-dropdown'>
-                  <option selected value="solo">Solo</option>
+                  <option value="solo">Solo</option>
                   <option value="duo">Duo</option>
                   <option value="squad">Squad</option>
                 </select>
@@ -200,7 +200,7 @@ export const FFTournaments = () => {
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Status</label>
                 <select name="status" id="" className='custom-dropdown'>
-                  <option selected value="open">Open</option>
+                  <option value="open">Open</option>
                   <option value="full">Full</option>
                   <option value="closed">Closed</option>
                 </select>

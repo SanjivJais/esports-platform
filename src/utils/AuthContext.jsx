@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, createContext } from "react";
-import { account, ID } from "../../config/Appwrite";
+import { account, ID, database, db_id } from "../../config/Appwrite";
 import { useNavigate } from "react-router-dom";
 import HashLoader from 'react-spinners/HashLoader'
 
@@ -12,11 +12,18 @@ export const AuthProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
+  const [userDetails, setUserDetails] = useState(null);
   const navigate = useNavigate()
 
   useEffect(() => {
     checkUserStatus()
   }, [])
+
+  useEffect(() => {
+    if (user)
+      userDetailsInitialization(); // Wait for userDetailsInitialization to complete
+  }, [user]);
+
 
   const loginUser = async (userInfo) => {
     try {
@@ -75,14 +82,40 @@ export const AuthProvider = ({ children }) => {
     try {
       let accoutDetails = await account.get()
       setUser(accoutDetails);
+
     } catch (error) {
 
     }
     setLoading(false)
   }
 
+  const userDetailsInitialization = async () => {
+    const userID = user.$id;
+    try {
+      let userDoc = await database.getDocument(
+        db_id,
+        'user_details',
+        userID,
+      )
+      setUserDetails(userDoc);
+    } catch (error) {
+      if (error.code == '404') {  // resource not found detection
+        try {
+          let response = await database.createDocument(db_id, 'user_details', userID, { 'ff_profile': false });
+          setUserDetails(response);
+        } catch (error) {
+
+        }
+
+      }
+    }
+
+  }
+
   const contextData = {
     user,
+    userDetails,
+    setUserDetails,
     loginUser,
     logoutUser,
     registerUser,

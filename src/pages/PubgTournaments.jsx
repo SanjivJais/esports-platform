@@ -8,13 +8,13 @@ export const PubgTournaments = () => {
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://i.pinimg.com/originals/95/da/12/95da1295673f2bd19a23f3b61ea240a9.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 100,
-      minPlayers: 80,
-      joinedPlayers: 90,
-      entryFree: 0,
+      max: 100,
+      min: 80,
+      joined: 90,
+      entryFee: 0,
       gameMode: 'BR',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 50,
       secondPrize: 20,
       thirdPrize: 0,
@@ -25,7 +25,7 @@ export const PubgTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: 'https://www.youtube.com/watch?v=5x8vvKlwWsU&t=3s',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
     {
@@ -33,13 +33,13 @@ export const PubgTournaments = () => {
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://w0.peakpx.com/wallpaper/189/508/HD-wallpaper-pubg-squad.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 100,
-      minPlayers: 80,
-      joinedPlayers: 90,
-      entryFree: 0,
+      max: 100,
+      min: 80,
+      joined: 90,
+      entryFee: 0,
       gameMode: 'BR',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 50,
       secondPrize: 20,
       thirdPrize: 10,
@@ -50,7 +50,7 @@ export const PubgTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
     {
@@ -58,13 +58,13 @@ export const PubgTournaments = () => {
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://images.hdqwalls.com/wallpapers/pubg-2023-5k-65.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 100,
-      minPlayers: 80,
-      joinedPlayers: 75,
-      entryFree: 60,
+      max: 100,
+      min: 80,
+      joined: 75,
+      entryFee: 60,
       gameMode: 'BR',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 510,
       secondPrize: 200,
       thirdPrize: 100,
@@ -75,7 +75,7 @@ export const PubgTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
     {
@@ -83,13 +83,13 @@ export const PubgTournaments = () => {
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://e1.pxfuel.com/desktop-wallpaper/889/543/desktop-wallpaper-gaming-for-pc-pubg-pubg-laptop.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 100,
-      minPlayers: 80,
-      joinedPlayers: 75,
-      entryFree: 60,
+      max: 100,
+      min: 80,
+      joined: 75,
+      entryFee: 60,
       gameMode: 'BR',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 510,
       secondPrize: 200,
       thirdPrize: 100,
@@ -100,7 +100,7 @@ export const PubgTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
     {
@@ -108,13 +108,13 @@ export const PubgTournaments = () => {
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://w0.peakpx.com/wallpaper/453/216/HD-wallpaper-pubg-lite-pc.jpg',
       tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 100,
-      minPlayers: 80,
-      joinedPlayers: 75,
-      entryFree: 60,
+      max: 100,
+      min: 80,
+      joined: 75,
+      entryFee: 60,
       gameMode: 'BR',
-      gameType: 'Squad',
-      rewardType: 'coin',
+      teamType: 'Squad',
+      rewardType: 'eg_coin',
       firstPrize: 510,
       secondPrize: 200,
       thirdPrize: 100,
@@ -125,7 +125,7 @@ export const PubgTournaments = () => {
       roomID: '',
       roomPass: '',
       ytLiveURL: '',
-      watchLiveURL2: '',
+      // watchLiveURL2: '',
       rulesDetails: '',
     },
   ]
@@ -143,20 +143,20 @@ export const PubgTournaments = () => {
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Entry Fee</label>
                 <select name="entry_fee_drop" id="" className='custom-dropdown'>
-                  <option selected value="free">Free</option>
+                  <option value="free">Free</option>
                   <option value="paid">Paid</option>
                 </select>
               </div>
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Game Mode</label>
                 <select name="game_mode" id="" className='custom-dropdown'>
-                  <option selected value="battle_royale">Battle Royale</option>
+                  <option value="battle_royale">Battle Royale</option>
                 </select>
               </div>
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Team Type</label>
                 <select name="team_type" id="" className='custom-dropdown'>
-                  <option selected value="solo">Solo</option>
+                  <option value="solo">Solo</option>
                   <option value="duo">Duo</option>
                   <option value="squad">Squad</option>
                 </select>
@@ -164,7 +164,7 @@ export const PubgTournaments = () => {
               <div className="flex flex-col col-span-1">
                 <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Status</label>
                 <select name="status" id="" className='custom-dropdown'>
-                  <option selected value="open">Open</option>
+                  <option value="open">Open</option>
                   <option value="full">Full</option>
                   <option value="closed">Closed</option>
                 </select>

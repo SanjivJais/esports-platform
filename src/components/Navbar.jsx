@@ -65,7 +65,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
   ]
 
-  const { user, logoutUser } = useAuth();
+  const { user, logoutUser, userDetails } = useAuth();
   const [searchEnable, setSearchEnable] = useState(null);
   const handleSearchEnable = () => { setSearchEnable(!searchEnable); }
   return (
@@ -81,7 +81,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
             <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 py-2 rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
               <div className='flex items-center gap-2'>
                 <img src="/icons/Coin.svg" alt="" className='h-4 w-auto' />
-                <label htmlFor="" className="cursor-pointer">340</label>
+                <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_coin}</label>
               </div>
             </div>
           }
@@ -89,7 +89,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
             {user != null &&
               <>
                 <div className="flex items-center gap-2">
-                  <img src="/icons/dummyProfilePic.png" alt="" className='h-8 w-auto rounded-2xl' />
+                  <img src={userDetails && userDetails.prof_pic_url ? userDetails.prof_pic_url : "/icons/dummyProfilePic.png"} alt="" className='h-8 w-auto rounded-2xl' />
                   <div className='items-center hidden md:flex'>
                     <label htmlFor="user" className='cursor-pointer'>{(user != null && (user.name))}</label>
                     <RiArrowDropDownLine className='text-2xl' />
@@ -115,7 +115,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
         <div className='md:w-[75vw] w-[90vw] h-[95vh] flex flex-col items-center'>
           <div className="flex items-center mt-16 mb-10 md:w-[70%] w-[90%] rounded-3xl bg-secondaryLight h-12">
             <select name="" id="" className='bg-transparent focus:outline-none text-offBlue md:mx-6 mx-1'>
-              <option value="freefire" selected className='bg-secondaryLight'>Free Fire</option>
+              <option value="freefire" className='bg-secondaryLight'>Free Fire</option>
               <option value="pubg" className='bg-secondaryLight'>PUBG Mobile</option>
             </select>
             <span className='h-full w-[0.8px] bg-inactive bg-opacity-30'></span>
