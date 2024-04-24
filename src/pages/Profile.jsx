@@ -5,8 +5,13 @@ import { IoIosAddCircleOutline, IoIosLogOut } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { storage, ID, database, db_id, account } from '../../config/Appwrite';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
+import { Modal } from '../components/Modal';
+
+
 
 export const Profile = () => {
+
   const { user, setUser, logoutUser, userDetails, setUserDetails } = useAuth();
 
   const tabs = document.getElementsByClassName("profileTab");
@@ -103,9 +108,62 @@ export const Profile = () => {
     setUsernameChangeEnable(false)
   }
 
+  const [ffProfile, setFFProfile] = useState(null)
+  const [pubgProfile, setPUBGProfile] = useState(null)
+  useEffect(() => {
+    if (userDetails && userDetails.ff_profile) {
+      const getFFProfile = async () => {
+        try {
+          const ffprofile = await database.getDocument(db_id, 'ff_profiles', user.$id)
+          setFFProfile(ffprofile);
+        } catch (error) {
+          toast.error(error.message)
+        }
+      }
+      getFFProfile();
+    }
+    if (userDetails && userDetails.pubg_profile) {
+      const getPubgProfile = async () => {
+        try {
+          const pubgprofile = await database.getDocument(db_id, 'pubg_profiles', user.$id)
+          setPUBGProfile(pubgprofile);
+        } catch (error) {
+          toast.error(error.message)
+        }
+      }
+      getPubgProfile();
+    }
+
+  }, [user, userDetails])
+
+  const [gameProfileModal, setGameProfileModal] = useState(false)
+  const handleGameProfileModal = () => { setGameProfileModal(!gameProfileModal) }
+
+  const handleGameSelection = (event) => {
+    let selection = event.target.value;
+    let ffProfileSetup = document.getElementById('ffProfileSetup')
+    let pubgProfileSetup = document.getElementById('pubgProfileSetup')
+    if (selection != '') {
+      if (selection == 'freefire') {
+        ffProfileSetup.style.display = 'flex';
+        pubgProfileSetup.style.display = 'none';
+      }
+      else {
+        ffProfileSetup.style.display = 'none';
+        pubgProfileSetup.style.display = 'flex';
+      }
+    } else {
+      ffProfileSetup.style.display = 'none';
+      pubgProfileSetup.style.display = 'none';
+    }
+  }
+
 
   return (
     <>
+      <Helmet>
+        <title>Profile - EsportsGravity</title>
+      </Helmet>
       <div className='flex flex-col w-full max-w-[1280px] self-center p-6'>
         <div className="flex">
           <div className="flex gap-4">
@@ -141,40 +199,34 @@ export const Profile = () => {
           {activeTab === 0 &&
             <>
               <div className="grid md:grid-cols-2 grid-cols-1 gap-6 w-full">
-                <div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px]">
-                  <div className="flex items-center gap-2 ">
-                    <div className='h-14 w-14 bg-[url("/images/FF_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
-                    <div className="flex flex-col">
-                      <h4 className='font-bold text-offWhite md:text-xl text-lg'>SanjivFF</h4>
-                      <h5 className='text-inactive font-medium'>UID: <span>478916489</span></h5>
+                {ffProfile &&
+                  (<div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px]">
+                    <div className="flex items-center gap-2 ">
+                      <div className='h-14 w-14 bg-[url("/images/FF_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
+                      <div className="flex flex-col">
+                        <h4 className='font-bold text-offWhite md:text-xl text-lg'>{ffProfile.ff_name}</h4>
+                        <h5 className='text-inactive font-medium'>UID: <span>{ffProfile.ff_uid}</span></h5>
+                      </div>
                     </div>
-                  </div>
-                  <FaRegEdit className='text-inactive cursor-pointer' />
-                </div>
-                <div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px]">
-                  <div className="flex items-center gap-2 ">
-                    <div className='h-14 w-14 bg-[url("/images/Pubg_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
-                    <div className="flex flex-col">
-                      <h4 className='font-bold text-offWhite md:text-xl text-lg'>RajivPUBG</h4>
-                      <h5 className='text-inactive font-medium'>UID: <span>7326598</span></h5>
+                    <FaRegEdit className='text-inactive cursor-pointer' />
+                  </div>)
+                }
+                {pubgProfile &&
+                  (<div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px]">
+                    <div className="flex items-center gap-2 ">
+                      <div className='h-14 w-14 bg-[url("/images/Pubg_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
+                      <div className="flex flex-col">
+                        <h4 className='font-bold text-offWhite md:text-xl text-lg'>{pubgProfile.pubg_name}</h4>
+                        <h5 className='text-inactive font-medium'>UID: <span>{pubgProfile.pubg_uid}</span></h5>
+                      </div>
                     </div>
-                  </div>
-                  <FaRegEdit className='text-inactive cursor-pointer' />
-                </div>
-                <div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px]">
-                  <div className="flex items-center gap-2 ">
-                    <div className='h-14 w-14 bg-[url("/images/Valorant_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
-                    <div className="flex flex-col">
-                      <h4 className='font-bold text-offWhite md:text-xl text-lg'>TenZ</h4>
-                      <h5 className='text-inactive font-medium'>UID: <span>46207124</span></h5>
-                    </div>
-                  </div>
-                  <FaRegEdit className='text-inactive cursor-pointer' />
-                </div>
-                <div className="flex col-span-1 cursor-pointer hover:bg-secondaryLight transition-colors duration-150 justify-center items-center p-3 bg-secondary rounded-[5px]">
+                    <FaRegEdit className='text-inactive cursor-pointer' />
+                  </div>)
+                }
+                <div onClick={handleGameProfileModal} className="flex col-span-1 cursor-pointer hover:bg-secondaryLight transition-colors duration-150 justify-center items-center p-3 bg-secondary rounded-[5px]">
                   <div className="flex gap-2 items-center text-offBlue">
                     <IoIosAddCircleOutline className='text-xl' />
-                    <span>Add New Game</span>
+                    <span>Create Game Profile</span>
                   </div>
                 </div>
               </div>
@@ -243,6 +295,44 @@ export const Profile = () => {
 
         </Link>
       </div>
+
+      <Modal isVisible={gameProfileModal} onClose={() => setGameProfileModal(false)}>
+        <div className='w-72 px-4'>
+          <div className="flex flex-col my-12 mx-6 gap-3">
+            <select onChange={handleGameSelection} name="" id="gameSelection" className='custom-dropdown'>
+              <option value="">Select game</option>
+              <option value="freefire">Free Fire</option>
+              <option value="pubgmobile">PUBG Mobile</option>
+            </select>
+
+            <div id='ffProfileSetup' className="hidden flex-col gap-3">
+              <div className='flex flex-col gap-1'>
+                <div className='text-sm text-inactive'>In-game Name</div>
+                <input type="text" placeholder='Your name in Free Fire' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <div className='text-sm text-inactive'>UID</div>
+                <input type="text" placeholder='Your Free Fire UID' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+              </div>
+              <button className='bg-primary px-2 py-2 rounded-[5px] text-secondary text-sm font-bold'>Create Profile</button>
+            </div>
+
+            <div id='pubgProfileSetup' className="hidden flex-col gap-3">
+              <div className='flex flex-col gap-1'>
+                <div className='text-sm text-inactive'>In-game Name</div>
+                <input type="text" placeholder='Your name in PUBG Mobile' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <div className='text-sm text-inactive'>UID</div>
+                <input type="text" placeholder='Your PUBG Mobile UID' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+              </div>
+              <button className='bg-primary px-2 py-2 rounded-[5px] text-secondary text-sm font-bold'>Create Profile</button>
+            </div>
+
+
+          </div>
+        </div>
+      </Modal>
 
     </>
   )
