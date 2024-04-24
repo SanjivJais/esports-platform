@@ -5,8 +5,7 @@ import { IoMdClose } from "react-icons/io";
 import { useAuth } from '../utils/AuthContext';
 import { Alert } from '../components/Alert';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 
@@ -111,7 +110,6 @@ export const Signup = () => {
 
   return (
     <>
-      <ToastContainer hideProgressBar theme="dark" />
       <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
         <div className="bg-[url('/images/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>

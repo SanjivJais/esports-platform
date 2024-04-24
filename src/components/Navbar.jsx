@@ -89,7 +89,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
             {user != null &&
               <>
                 <div className="flex items-center gap-2">
-                  <img src={userDetails && userDetails.prof_pic_url ? userDetails.prof_pic_url : "/icons/dummyProfilePic.png"} alt="" className='h-8 w-auto rounded-2xl' />
+                  <img src={userDetails && userDetails.prof_pic_url ? userDetails.prof_pic_url : "/icons/dummyProfilePic.png"} alt="" className='h-8 w-8 rounded-2xl object-cover' />
                   <div className='items-center hidden md:flex'>
                     <label htmlFor="user" className='cursor-pointer'>{(user != null && (user.name))}</label>
                     <RiArrowDropDownLine className='text-2xl' />

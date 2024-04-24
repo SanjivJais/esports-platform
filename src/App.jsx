@@ -13,6 +13,8 @@ import { Tournaments } from './pages/Tournaments'
 import { FFTournaments } from './pages/FFTournaments'
 import { Announcements } from "./pages/Announcements"
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -23,6 +25,8 @@ function App() {
 
   return (
     <>
+      <ToastContainer hideProgressBar position='top-center' theme="dark" />
+
       <AuthProvider>
         <Routes>
           <Route path='/' element={<ParentPage Page={<Home />} />} />

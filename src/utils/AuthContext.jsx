@@ -3,8 +3,7 @@ import { account, ID, database, db_id } from "../../config/Appwrite";
 import { useNavigate } from "react-router-dom";
 import HashLoader from 'react-spinners/HashLoader'
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const AuthContext = createContext();
 
@@ -114,6 +113,7 @@ export const AuthProvider = ({ children }) => {
 
   const contextData = {
     user,
+    setUser,
     userDetails,
     setUserDetails,
     loginUser,
@@ -125,7 +125,6 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={contextData} >
       {loading ? <div className="flex justify-center items-center h-[100vh] w-screen"><HashLoader color="#F88B26" /></div> : children}
-      <ToastContainer hideProgressBar theme="dark" />
     </AuthContext.Provider>
   )
 }
