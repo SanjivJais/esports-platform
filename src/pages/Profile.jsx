@@ -261,12 +261,51 @@ export const Profile = () => {
 
   // game profile edits 
   const [ffProfileEditEnable, setFFProfileEditEnable] = useState(false)
-  const [tempFFprofile, setTempFFProfile] = useState(null)
-
-
-  const handleFFProfileEdit = async () => {
-
+  const ffProfileEdit = async () => {
+    const ffProfileEditName = document.getElementById('ffProfileEditName').value
+    const ffProfileEditUID = document.getElementById('ffProfileEditUID').value
+    if (ffProfileEditName != '' && ffProfileEditUID != '') {
+      try {
+        await database.updateDocument(db_id, 'ff_profiles', user.$id, { 'ff_name': ffProfileEditName, 'ff_uid': ffProfileEditUID })
+        setFFProfile({
+          'ff_name': ffProfileEditName,
+          'ff_uid': ffProfileEditUID
+        })
+        toast.success("Profile updated")
+        setFFProfileEditEnable(false)
+      } catch (error) {
+        toast.error("An error occurred")
+      }
+    }
+    else
+      toast.info('One or more fields are empty')
   }
+
+  const [pubgProfileEditEnable, setPubgProfileEditEnable] = useState(false)
+  const pubgProfileEdit = async () => {
+    const pubgProfileEditName = document.getElementById('pubgProfileEditName').value
+    const pubgProfileEditUID = document.getElementById('pubgProfileEditUID').value
+    if (pubgProfileEditName != '' && pubgProfileEditUID != '') {
+      try {
+        await database.updateDocument(db_id, 'pubg_profiles', user.$id, { 'pubg_name': pubgProfileEditName, 'pubg_uid': pubgProfileEditUID })
+        setPUBGProfile({
+          'pubg_name': pubgProfileEditName,
+          'pubg_uid': pubgProfileEditUID
+        })
+        toast.success("Profile updated")
+        setPubgProfileEditEnable(false)
+      } catch (error) {
+        toast.error("An error occurred")
+      }
+    }
+    else
+      toast.info('One or more fields are empty')
+  }
+
+
+
+
+
 
   return (
     <>
@@ -316,16 +355,16 @@ export const Profile = () => {
                       <div className='h-14 w-14 bg-[url("/images/FF_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
                       <div className={`flex flex-col ${ffProfileEditEnable ? 'gap-2' : ''}`}>
                         {ffProfileEditEnable ?
-                          (<input type='text' placeholder={ffProfile.ff_name} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          (<input id='ffProfileEditName' type='text' placeholder={ffProfile.ff_name} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
                           : <h4 className='font-bold text-offWhite md:text-xl text-lg'>{ffProfile.ff_name}</h4>
                         }
                         {ffProfileEditEnable ?
-                          (<input type='text' placeholder={ffProfile.ff_uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          (<input id='ffProfileEditUID' type='text' placeholder={ffProfile.ff_uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
                           : <h5 className='text-inactive font-medium'>FF UID: <span>{ffProfile.ff_uid}</span></h5>
                         }
                         {ffProfileEditEnable && <>
                           <div className="flex gap-2 text-sm">
-                            <button className='px-2 py-1 rounded-[5px] bg-primary text-secondary font-semibold'>Update</button>
+                            <button onClick={ffProfileEdit} className='px-2 py-1 rounded-[5px] bg-primary text-secondary font-semibold'>Update</button>
                             <button onClick={() => setFFProfileEditEnable(false)} className='px-2 py-1 rounded-[5px] bg-secondaryLight'>Cancel</button>
                           </div>
                         </>}
@@ -341,13 +380,26 @@ export const Profile = () => {
                   (<div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px] group">
                     <div className="flex items-center gap-2 ">
                       <div className='h-14 w-14 bg-[url("/images/Pubg_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
-                      <div className="flex flex-col">
-                        <h4 className='font-bold text-offWhite md:text-xl text-lg'>{pubgProfile.pubg_name}</h4>
-                        <h5 className='text-inactive font-medium'>PUBG UID: <span>{pubgProfile.pubg_uid}</span></h5>
+
+                      <div className={`flex flex-col ${pubgProfileEditEnable ? 'gap-2' : ''}`}>
+                        {pubgProfileEditEnable ?
+                          (<input id='pubgProfileEditName' type='text' placeholder={pubgProfile.pubg_name} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          : <h4 className='font-bold text-offWhite md:text-xl text-lg'>{pubgProfile.pubg_name}</h4>
+                        }
+                        {pubgProfileEditEnable ?
+                          (<input id='pubgProfileEditUID' type='text' placeholder={pubgProfile.pubg_uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          : <h5 className='text-inactive font-medium'>PUBG UID: <span>{pubgProfile.pubg_uid}</span></h5>
+                        }
+                        {pubgProfileEditEnable && <>
+                          <div className="flex gap-2 text-sm">
+                            <button onClick={pubgProfileEdit} className='px-2 py-1 rounded-[5px] bg-primary text-secondary font-semibold'>Update</button>
+                            <button onClick={() => setPubgProfileEditEnable(false)} className='px-2 py-1 rounded-[5px] bg-secondaryLight'>Cancel</button>
+                          </div>
+                        </>}
                       </div>
                     </div>
                     <div className="group-hover:flex hidden gap-1 text-inactive">
-                      <FaRegEdit className='cursor-pointer' />
+                      <FaRegEdit onClick={() => setPubgProfileEditEnable(true)} className='cursor-pointer' />
                       <MdDelete onClick={() => setDeletePubgProfileModal(true)} className='cursor-pointer' />
                     </div>
                   </div>)
@@ -423,14 +475,13 @@ export const Profile = () => {
         </div>
 
         <Link to={'#'} className='md:h-[220px] h-[120px] w-full bg-[url("/images/DummySliderBanner.jpg")] mt-6 bg-cover rounded-[5px] bg-center'>
-
         </Link>
       </div>
 
       <Modal isVisible={gameProfileModal} onClose={() => setGameProfileModal(false)}>
         <div className='w-72 px-4'>
           <div className="flex flex-col my-12 mx-6 gap-3">
-            <select onChange={handleGameSelection} name="" id="gameSelection" className='custom-dropdown'>
+            <select onChange={handleGameSelection} name="" id="gameSelection" className='custom-dropdown bg-secondaryLight'>
               <option value="">Select game</option>
               {userDetails && !userDetails.ff_profile && <option value="freefire">Free Fire</option>}
               {userDetails && !userDetails.pubg_profile && <option value="pubgmobile">PUBG Mobile</option>}
@@ -441,6 +492,7 @@ export const Profile = () => {
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>In-game Name</div>
                 <input onChange={handleFFProfileInput} name='ff_name' type="text" placeholder='Your name in Free Fire' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+                <span className='text-[12px] text-offBlue'>(<span className='text-primary'> Note: </span>This name should match the actual in-game name as far as possible, including styles. )</span>
               </div>
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>UID</div>
