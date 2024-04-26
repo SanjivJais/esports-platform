@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard'
 import { PubgSquareTournamentCard } from '../components/PUBGComps/PubgSquareTournamentCard'
 import { Slider } from '../components/Slider'
 import { FaTrophy } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import LoadingBar from 'react-top-loading-bar'
 
 export const Home = () => {
-  
+
   const FFtournaments = [
     {
       id: 'op23no90284#nod00',
       gameTitle: 'Free Fire',
       imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/50dbb24bb2ec17afbcb45f40f37ef414.jpg',
-      tournTitle:'EG Summar Clash #1',
+      tournTitle: 'EG Summar Clash #1',
       max: 48,
       min: 25,
       joined: 30,
@@ -37,7 +38,7 @@ export const Home = () => {
       id: 'cwvweei829bjkb79',
       gameTitle: 'Free Fire',
       imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
-      tournTitle:'EG Summar Clash #1',
+      tournTitle: 'EG Summar Clash #1',
       max: 48,
       min: 30,
       joined: 10,
@@ -88,12 +89,12 @@ export const Home = () => {
       </section>
       `,
     },
-    
+
     {
       id: 'op23no90284#nod00',
       gameTitle: 'Free Fire',
       imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/9f72d23636bc8b9188a21fb62a0d3742.jpg',
-      tournTitle:'EG Summar Clash #1',
+      tournTitle: 'EG Summar Clash #1',
       max: 48,
       min: 25,
       joined: 40,
@@ -121,7 +122,7 @@ export const Home = () => {
       id: 'biwoifh32##nco',
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://i.pinimg.com/originals/95/da/12/95da1295673f2bd19a23f3b61ea240a9.jpg',
-      tournTitle:'EG Summar Clash #1',
+      tournTitle: 'EG Summar Clash #1',
       max: 100,
       min: 80,
       joined: 90,
@@ -146,7 +147,7 @@ export const Home = () => {
       id: 'iwef67jbo#bui',
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://w0.peakpx.com/wallpaper/189/508/HD-wallpaper-pubg-squad.jpg',
-      tournTitle:'EG Summar Clash #1',
+      tournTitle: 'EG Summar Clash #1',
       max: 100,
       min: 80,
       joined: 90,
@@ -171,7 +172,7 @@ export const Home = () => {
       id: 'iwef67jbo#bui',
       gameTitle: 'PUBG Mobile',
       imgURL: 'https://images.hdqwalls.com/wallpapers/pubg-2023-5k-65.jpg',
-      tournTitle:'EG Summar Clash #1',
+      tournTitle: 'EG Summar Clash #1',
       max: 100,
       min: 80,
       joined: 75,
@@ -194,29 +195,46 @@ export const Home = () => {
     },
   ]
 
-  return (
-    <div className='py-4 px-4 flex flex-col items-center self-center w-full max-w-[1440px]'>
-      <div className='mb-2 w-full'><Slider /></div>
-      <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full"></div>
-      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>Free Fire Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
-      <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
-        {FFtournaments && FFtournaments.map((tournament, index) => (
-          <FFSquareTournamentCard key={index}
-            tournament={tournament}
-          />
-        ))}
-      </div>
-      {/* promotional banner homepage  */}
-      <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
+  // top loading progress bar
+  const [progress, setProgress] = useState(0)
+  useEffect(() => {
+    setProgress(50)
+    setTimeout(() => {
+      setProgress(100)
+    }, 1000)
+  }, [])
 
-      <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View All »</Link></div>
-      <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
-        {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
-          <PubgSquareTournamentCard key={index}
-            tournament={tournament}
-          />
-        ))}
+  return (
+    <>
+      <LoadingBar
+        color='#F88B26'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
+      <div className='py-4 px-4 flex flex-col items-center self-center w-full max-w-[1440px]'>
+        <div className='mb-2 w-full'><Slider /></div>
+        <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full"></div>
+        <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>Free Fire Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
+        <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
+          {FFtournaments && FFtournaments.map((tournament, index) => (
+            <FFSquareTournamentCard key={index}
+              tournament={tournament}
+            />
+          ))}
+        </div>
+        {/* promotional banner homepage  */}
+        <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
+
+        <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View All »</Link></div>
+        <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
+          {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
+            <PubgSquareTournamentCard key={index}
+              tournament={tournament}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
+
   )
 }

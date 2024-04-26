@@ -1,7 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import LoadingBar from 'react-top-loading-bar'
 
 export const Announcements = () => {
+
+  const [progress, setProgress] = useState(0)
+  useEffect(() => {
+    setProgress(50)
+    setTimeout(() => {
+      setProgress(100)
+    }, 1000)
+  }, [])
+
   return (
-    <div>Announcements</div>
+    <>
+      <LoadingBar
+        color='#F88B26'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
+      <div>Announcements</div>
+    </>
   )
 }

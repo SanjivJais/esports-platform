@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useAuth } from '../utils/AuthContext'
 import { FaCamera, FaRegEdit } from 'react-icons/fa';
 import { IoIosAddCircleOutline, IoIosLogOut } from 'react-icons/io';
@@ -8,12 +8,23 @@ import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 import { Modal } from '../components/Modal';
 import { MdDelete } from 'react-icons/md';
-
+import LoadingBar from 'react-top-loading-bar';
 
 
 export const Profile = () => {
 
   const { user, setUser, logoutUser, userDetails, setUserDetails } = useAuth();
+
+  // adding top bar loading effect
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    setProgress(60)
+    setTimeout(() => {
+      setProgress(100)
+    }, 1000)
+  }, [])
+
 
   const tabs = document.getElementsByClassName("profileTab");
   let [activeTab, setActiveTab] = useState(0);
@@ -304,11 +315,13 @@ export const Profile = () => {
 
 
 
-
-
-
   return (
     <>
+      <LoadingBar
+        color='#F88B26'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <Helmet>
         <title>Profile - EsportsGravity</title>
         <meta name="robots" content="noindex" />
@@ -336,10 +349,11 @@ export const Profile = () => {
 
         <div className='mb-6'>
           <div className="flex max-md:justify-between md:gap-8 gap-4 custom-scrollbar overflow-x-auto">
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Game Profiles</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Load Balance</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Withdraw</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Account Details</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Tournaments</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Game Profiles</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Load Balance</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Withdraw</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 4 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Account Details</div>
           </div>
           <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
         </div>
@@ -347,6 +361,12 @@ export const Profile = () => {
         <div className="flex flex-col w-full">
 
           {activeTab === 0 &&
+            <>
+              Joined Tournaments
+            </>
+          }
+
+          {activeTab === 1 &&
             <>
               <div className="grid md:grid-cols-2 grid-cols-1 gap-6 w-full">
                 {userDetails && userDetails.ff_profile && ffProfile &&
@@ -413,17 +433,17 @@ export const Profile = () => {
               </div>
             </>
           }
-          {activeTab === 1 &&
+          {activeTab === 2 &&
             <>
               Load balance
             </>
           }
-          {activeTab === 2 &&
+          {activeTab === 3 &&
             <>
               Withdraw
             </>
           }
-          {activeTab === 3 &&
+          {activeTab === 4 &&
             <>
               <div className="flex w-full justify-between">
                 <div className="flex flex-col gap-6">

@@ -27,6 +27,7 @@ function App() {
     <>
       <ToastContainer hideProgressBar position='top-center' theme="dark" />
 
+
       <AuthProvider>
         <Routes>
           <Route path='/' element={<ParentPage Page={<Home />} />} />
