@@ -172,7 +172,6 @@ export const Profile = () => {
     }
   }
 
-
   // game profile creation 
   const handleFFProfileInput = (event) => {
     setFFProfile((prevData) => ({
@@ -181,6 +180,7 @@ export const Profile = () => {
     }))
   }
   const createFFProfile = async () => {
+    setProgress(40)
     if (userDetails && !userDetails.ff_profile) {
       if (ffProfile && ffProfile.ff_name != '' && ffProfile.ff_uid != '') {
         try {
@@ -190,6 +190,7 @@ export const Profile = () => {
             ...prevData,
             ff_profile: true
           }))
+          setProgress(70)
           toast.success("Free Fire profile created")
           setGameProfileModal(false)
         } catch (error) {
@@ -199,6 +200,8 @@ export const Profile = () => {
         toast.info("Free Fire name or UID missing!")
       }
     }
+    setProgress(100)
+
   }
 
   const handlePubgProfileInput = (event) => {
@@ -209,6 +212,7 @@ export const Profile = () => {
 
   }
   const createPubgProfile = async () => {
+    setProgress(40)
     if (userDetails && !userDetails.pubg_profile) {
       if (pubgProfile && pubgProfile.pubg_name != '' && pubgProfile.pubg_uid != '') {
         try {
@@ -218,6 +222,8 @@ export const Profile = () => {
             ...prevData,
             pubg_profile: true
           }))
+          setProgress(70)
+
           setGameProfileModal(false)
           toast.success("PUBG Mobile profile created")
         } catch (error) {
@@ -227,11 +233,13 @@ export const Profile = () => {
         toast.info("PUBG Mobile name or UID missing!")
       }
     }
+    setProgress(100)
   }
 
   // game profile deletion
   const [deleteFFProfileModal, setDeleteFFProfileModal] = useState(false)
   const handleFFProfileDeletion = async () => {
+    setProgress(40)
     try {
       await database.deleteDocument(db_id, 'ff_profiles', user.$id)
       try {
@@ -240,6 +248,7 @@ export const Profile = () => {
           ...prevData,
           ff_profile: false
         }))
+        setProgress(70)
         setFFProfile(null)
         setDeleteFFProfileModal(false);
       } catch (error) {
@@ -248,10 +257,12 @@ export const Profile = () => {
     } catch (error) {
       toast.error("An error occurred")
     }
+    setProgress(100)
   }
 
   const [deletePubgProfileModal, setDeletePubgProfileModal] = useState(false)
   const handlePubgProfileDeletion = async () => {
+    setProgress(40)
     try {
       await database.deleteDocument(db_id, 'pubg_profiles', user.$id)
       try {
@@ -260,6 +271,7 @@ export const Profile = () => {
           ...prevData,
           pubg_profile: false
         }))
+        setProgress(70)
         setPUBGProfile(null)
         setDeletePubgProfileModal(false);
       } catch (error) {
@@ -268,6 +280,8 @@ export const Profile = () => {
     } catch (error) {
       toast.error("An error occurred")
     }
+    setProgress(100)
+
   }
 
   // game profile edits 

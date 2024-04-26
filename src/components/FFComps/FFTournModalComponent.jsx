@@ -8,8 +8,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Tooltip } from '../Tooltip';
 
 export const FFTournModalComponent = ({ tournament }) => {
-    let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
-    let joinPercent = parseInt((tournament.joined * 100) / tournament.max);
+    let totalPrize = 0;
+    for (let index = 0; index < tournament.prizes.length; index++) {
+        totalPrize += tournament.prizes[index];
+
+    }
+
+    let joinPercent = parseInt((tournament.participants.length * 100) / tournament.max);
+
+    // formatting datetime 
+    const formatDateTime = (dateTimeString) => {
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+        const dateTime = new Date(dateTimeString);
+        const date = dateTime.toLocaleDateString('en-US', options);
+        const time = dateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+        return { date, time };
+    };
 
     const tabs = document.getElementsByClassName("tournTab");
     let [activeTab, setActiveTab] = useState(0);
@@ -50,7 +65,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}>
-                    <div className='self-start bg-secondary h-fit bg-opacity-60 relative text-[12px] px-3 py-[3px] rounded-xl top-3 left-3'>{tournament.gameTitle}</div>
+                    <div className='self-start bg-secondary h-fit bg-opacity-60 relative text-[12px] px-3 py-[3px] rounded-xl top-3 left-3'>Free Fire</div>
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>{tournament.tournTitle}</h2>
@@ -79,6 +94,10 @@ export const FFTournModalComponent = ({ tournament }) => {
                                         <div className='font-medium'>{tournament.gameMode}</div>
                                     </div>
                                     <div>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MAP </span></label>
+                                        <div className='font-medium'>{tournament.map}</div>
+                                    </div>
+                                    <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>TEAM TYPE </span><Tooltip content={"Number of players in a team. This can be solo (1 player), duo (2 players), squad (4 players)."} children={<MdInfo />} /></label>
                                         <div className='font-medium'>{tournament.teamType}</div>
                                     </div>
@@ -91,12 +110,16 @@ export const FFTournModalComponent = ({ tournament }) => {
                                         <div className='font-medium flex items-center gap-1'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {totalPrize}</div>
                                     </div>
                                     <div>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MATCHES </span><Tooltip content={"Total number of matches to be played to decide winners."} children={<MdInfo />} /></label>
+                                        <div className='font-medium flex items-center gap-1'> {tournament.matches}</div>
+                                    </div>
+                                    <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTING </span></label>
-                                        <div className='font-medium flex items-center gap-1'>{tournament.startDate}</div>
+                                        <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.startTime).date}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>TIME </span></label>
-                                        <div className='font-medium flex items-center gap-1'>{tournament.startTime}</div>
+                                        <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.startTime).time}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></label>
@@ -202,28 +225,21 @@ export const FFTournModalComponent = ({ tournament }) => {
 
                         <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
                             <h3 className='font-bold text-lg text-offBlue'>Prize Pool</h3>
-                            <div>{tournament.startTime} / {tournament.startDate}</div>
+                            <div>{formatDateTime(tournament.startTime).time} / {formatDateTime(tournament.startTime).date}</div>
                         </div>
-                        <div className="h-[1px] bg-black bg-opacity-25"></div>
-                        <div className='py-4 px-4 flex justify-between'>
-                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/firstTrophy.svg" alt="" /> <span>1<sup> st</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.firstPrize}</div>
-                        </div>
-                        <div className="h-[1px] bg-black bg-opacity-25"></div>
-                        <div className='py-4 px-4 flex justify-between'>
-                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/secondTrophy.svg" alt="" /> <span>2<sup> nd</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.secondPrize}</div>
-                        </div>
-                        <div className="h-[1px] bg-black bg-opacity-25"></div>
-                        <div className='py-4 px-4 flex justify-between'>
-                            <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'><img src="/icons/thirdTrophy.svg" alt="" /> <span>3<sup> rd</sup> Place</span></h3>
-                            <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.thirdPrize}</div>
-                        </div>
+
+                        {tournament.prizes && tournament.prizes.map((prize, index) => (
+                            <div key={index} className='py-4 px-4 flex justify-between'>
+                                <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{index + 1}<sup> {index == 0 && <>st</>}{index == 1 && <>nd</>}{index == 2 && <>rd</>}{index > 2 && <>th</>}</sup> Place</span></h3>
+                                <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {prize}</div>
+                            </div>
+                        ))}
+
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
                             <div className="flex justify-between text-[14px] mb-1">
-                                <label htmlFor="" >Players Joined</label>
-                                <label htmlFor=""><span>{tournament.joined}</span> / <span className='text-primary'>{tournament.max}</span></label>
+                                <label htmlFor="" >Participants Joined</label>
+                                <label htmlFor=""><span>{tournament.participants.length}</span> / <span className='text-primary'>{tournament.max}</span></label>
                             </div>
                             <div className='bg-gray w-full h-2 rounded-lg'>
                                 <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>

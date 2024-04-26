@@ -5,8 +5,24 @@ import { FFTournModalComponent } from './FFTournModalComponent';
 
 export const FFSquareTournamentCard = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
-    let totalPrize = tournament.firstPrize + tournament.secondPrize + tournament.thirdPrize;
-    let joinPercent = parseInt((tournament.joined * 100) / tournament.max);
+    let totalPrize = 0;
+    for (let index = 0; index < tournament.prizes.length; index++) {
+        totalPrize += tournament.prizes[index];
+    }
+
+    let joinPercent = parseInt((tournament.participants.length * 100) / tournament.max);
+
+    // formatting datetime
+    const formatDateTime = (dateTimeString) => {
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+        const dateTime = new Date(dateTimeString);
+        const date = dateTime.toLocaleDateString('en-US', options);
+        const time = dateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+        return { date, time };
+    };
+
+
     const cardStyles = {
         backgroundImage: `url("${tournament.imgURL}")`,
         backgroundSize: 'cover',
@@ -16,11 +32,11 @@ export const FFSquareTournamentCard = ({ tournament }) => {
     return (
         <div className='w-full h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
             <div className={`flex flex-col justify-between rounded-br-none rounded-bl-none w-full h-52`} style={cardStyles}>
-                <label htmlFor="Game Title" className='self-end bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-2 right-2'>{tournament.gameTitle}</label>
+                <label htmlFor="Game Title" className='self-end bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-2 right-2'>Free Fire</label>
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>
                     <div className="flex justify-between  text-[13px] mb-1">
-                        <label htmlFor="" >Players Joined</label>
-                        <label htmlFor=""><span>{tournament.joined}</span> / <span className='text-primary'>{tournament.max}</span></label>
+                        <label htmlFor="" >Participants Joined</label>
+                        <label htmlFor=""><span>{tournament.participants.length}</span> / <span className='text-primary'>{tournament.max}</span></label>
                     </div>
                     <div className='bg-gray w-full h-2 rounded-lg'>
                         <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>
@@ -51,7 +67,7 @@ export const FFSquareTournamentCard = ({ tournament }) => {
                 <div className="flex justify-between">
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>STARTING</label>
-                        <div className='font-semibold flex gap-2'><span>{tournament.startDate}</span> <span>.</span> <span>{tournament.startTime}</span></div>
+                        <div className='font-semibold flex gap-2'><span>{formatDateTime(tournament.startTime).date} . {formatDateTime(tournament.startTime).time}</span> </div>
                     </div>
                     <button onClick={() => setShowModal(true)} className='bg-secondaryLight px-5 py-2 hover:text-secondary border-[0.8px] border-inactive border-opacity-40 hover:border-primary transition-colors duration-200 ease-in-out rounded-[5px] font-bold hover:bg-primary'>View Details</button>
                 </div>
