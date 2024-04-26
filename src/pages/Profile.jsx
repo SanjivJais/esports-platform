@@ -19,10 +19,11 @@ export const Profile = () => {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    setProgress(50)
     setProgress(60)
     setTimeout(() => {
       setProgress(100)
-    }, 1000)
+    }, 800)
   }, [])
 
 

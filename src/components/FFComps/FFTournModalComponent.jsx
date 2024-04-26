@@ -48,10 +48,14 @@ export const FFTournModalComponent = ({ tournament }) => {
 
     const [joinConfirmationModal, setJoinConfirmationModal] = useState(null);
     const handleJoinConfirmation = () => {
-        if (tournament.status === "Open")
-            setJoinConfirmationModal(!joinConfirmationModal);
+        if (tournament.participants.length <= tournament.max) {
+            if (tournament.status === "Open")
+                setJoinConfirmationModal(!joinConfirmationModal);
+            else
+                toast.info("Tournament is already closed!")
+        }
         else
-            toast.info("Tournament is already closed!")
+            toast.info("Match already full")
     }
 
 
@@ -132,7 +136,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                         }
                         {activeTab === 1 &&
                             <>
-                                {tournament.roomID !== '' ?
+                                {tournament.roomID ?
                                     <div className="grid grid-cols-2 gap-x-4 gap-y-8">
                                         <div>
                                             <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM ID </span></label>
@@ -149,8 +153,8 @@ export const FFTournModalComponent = ({ tournament }) => {
                                         <AiFillEyeInvisible className='text-inactive text-opacity-35 text-[4rem] self-center' />
                                         <p className='text-offBlue text-[0.9rem]'>
                                             <span className='text-primary'>NOTE: </span>
-                                            Room ID and Room Password will be visible here just
-                                            <span className='text-offWhite'> 15 minutes </span>
+                                            Room ID and Room Password will be visible here around
+                                            <span className='text-offWhite'> 10 minutes </span>
                                             before starting time of match. Please check back in time!
                                         </p>
                                     </div>
