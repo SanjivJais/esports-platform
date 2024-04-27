@@ -47,7 +47,7 @@ export const FFSquareTournamentCard = ({ tournament }) => {
                 <div className="flex justify-between">
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>ENTRY</label>
-                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFee !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFee == 0 ? 'Free Entry' : tournament.entryFee}</div>
+                        <div className='font-semibold flex items-center gap-1'>{tournament.entryFee !== 0 && <img className='' src="/icons/Coin.svg" alt="" />}{tournament.entryFee == 0 ? 'Free' : tournament.entryFee}</div>
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>MODE</label>

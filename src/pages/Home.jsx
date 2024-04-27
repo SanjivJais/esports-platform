@@ -8,6 +8,7 @@ import LoadingBar from 'react-top-loading-bar'
 import { Helmet } from 'react-helmet'
 import { ID, database, db_id } from '../../config/Appwrite';
 import { toast } from 'react-toastify'
+import { Query } from 'appwrite'
 
 
 export const Home = () => {
@@ -104,7 +105,7 @@ export const Home = () => {
   useEffect(() => {
     const fetchFFTournaments = async () => {
       try {
-        const response = await database.listDocuments(db_id, 'ff_tournaments', [])
+        const response = await database.listDocuments(db_id, 'ff_tournaments', [Query.limit(3)])
         setFFtournaments(response.documents)
       } catch (error) {
         toast.error("An error occurred")

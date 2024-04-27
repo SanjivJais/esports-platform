@@ -9,11 +9,13 @@ import { Helmet } from 'react-helmet';
 import { Modal } from '../components/Modal';
 import { MdDelete } from 'react-icons/md';
 import LoadingBar from 'react-top-loading-bar';
+import GameProfileContext from '../utils/GameProfileContext';
 
 
 export const Profile = () => {
 
   const { user, setUser, logoutUser, userDetails, setUserDetails } = useAuth();
+  const { ffProfile, setFFProfile, pubgProfile, setPUBGProfile } = useContext(GameProfileContext);
 
   // adding top bar loading effect
   const [progress, setProgress] = useState(0)
@@ -120,36 +122,6 @@ export const Profile = () => {
     }
     setUsernameChangeEnable(false)
   }
-
-
-  // fetch game profiles if exist
-  const [ffProfile, setFFProfile] = useState(null)
-  const [pubgProfile, setPUBGProfile] = useState(null)
-  useEffect(() => {
-    if (userDetails && userDetails.ff_profile) {
-      const getFFProfile = async () => {
-        try {
-          const ffprofile = await database.getDocument(db_id, 'ff_profiles', user.$id)
-          setFFProfile(ffprofile);
-        } catch (error) {
-          toast.error(error.message)
-        }
-      }
-      getFFProfile();
-    }
-    if (userDetails && userDetails.pubg_profile) {
-      const getPubgProfile = async () => {
-        try {
-          const pubgprofile = await database.getDocument(db_id, 'pubg_profiles', user.$id)
-          setPUBGProfile(pubgprofile);
-        } catch (error) {
-          toast.error(error.message)
-        }
-      }
-      getPubgProfile();
-    }
-
-  }, [user, userDetails])
 
   const [gameProfileModal, setGameProfileModal] = useState(false)
   const handleGameProfileModal = () => { setGameProfileModal(!gameProfileModal) }
@@ -363,12 +335,12 @@ export const Profile = () => {
         </div>
 
         <div className='mb-6'>
-          <div className="flex max-md:justify-between md:gap-8 gap-4 custom-scrollbar overflow-x-auto">
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Tournaments</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Game Profiles</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Load Balance</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Withdraw</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab md:text-base text-[13px] ${activeTab === 4 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Account Details</div>
+          <div className="flex max-md:justify-between md:gap-8 gap-4 custom-scrollbar whitespace-nowrap overflow-x-auto">
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Tournaments</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Game Profiles</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Load Balance</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Withdraw</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Account Details</div>
           </div>
           <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
         </div>
@@ -391,7 +363,7 @@ export const Profile = () => {
                       <div className={`flex flex-col ${ffProfileEditEnable ? 'gap-2' : ''}`}>
                         {ffProfileEditEnable ?
                           (<input id='ffProfileEditName' type='text' placeholder={ffProfile.ff_name} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
-                          : <h4 className='font-bold text-offWhite md:text-xl text-lg'>{ffProfile.ff_name}</h4>
+                          : <h4 className='font-bold text-offWhite md:text-xl'>{ffProfile.ff_name}</h4>
                         }
                         {ffProfileEditEnable ?
                           (<input id='ffProfileEditUID' type='text' placeholder={ffProfile.ff_uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
@@ -405,7 +377,7 @@ export const Profile = () => {
                         </>}
                       </div>
                     </div>
-                    <div className="hidden group-hover:flex gap-1 text-inactive">
+                    <div className="md:hidden md:group-hover:flex flex gap-1 text-inactive">
                       <FaRegEdit onClick={() => setFFProfileEditEnable(true)} className='cursor-pointer' />
                       <MdDelete onClick={() => setDeleteFFProfileModal(true)} className='cursor-pointer' />
                     </div>
@@ -419,7 +391,7 @@ export const Profile = () => {
                       <div className={`flex flex-col ${pubgProfileEditEnable ? 'gap-2' : ''}`}>
                         {pubgProfileEditEnable ?
                           (<input id='pubgProfileEditName' type='text' placeholder={pubgProfile.pubg_name} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
-                          : <h4 className='font-bold text-offWhite md:text-xl text-lg'>{pubgProfile.pubg_name}</h4>
+                          : <h4 className='font-bold text-offWhite md:text-xl'>{pubgProfile.pubg_name}</h4>
                         }
                         {pubgProfileEditEnable ?
                           (<input id='pubgProfileEditUID' type='text' placeholder={pubgProfile.pubg_uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
@@ -433,7 +405,7 @@ export const Profile = () => {
                         </>}
                       </div>
                     </div>
-                    <div className="group-hover:flex hidden gap-1 text-inactive">
+                    <div className="md:group-hover:flex md:hidden flex gap-1 text-inactive">
                       <FaRegEdit onClick={() => setPubgProfileEditEnable(true)} className='cursor-pointer' />
                       <MdDelete onClick={() => setDeletePubgProfileModal(true)} className='cursor-pointer' />
                     </div>

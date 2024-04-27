@@ -15,6 +15,7 @@ import { Announcements } from "./pages/Announcements"
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GameProfileProvider } from "./utils/GameProfileContext"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -26,27 +27,27 @@ function App() {
   return (
     <>
       <ToastContainer hideProgressBar position='top-center' theme="dark" />
-
-
       <AuthProvider>
-        <Routes>
-          <Route path='/' element={<ParentPage Page={<Home />} />} />
-          <Route path='/games' element={<ParentPage Page={<Games />} />} />
-          <Route path='/tournaments' element={<ParentPage Page={<Tournaments />} />} />
-          <Route path='/tournaments/pubg' element={<ParentPage Page={<PubgTournaments />} />} />
-          <Route path='/tournaments/freefire' element={<ParentPage Page={<FFTournaments />} />} />
-          <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
+        <GameProfileProvider>
+          <Routes>
+            <Route path='/' element={<ParentPage Page={<Home />} />} />
+            <Route path='/games' element={<ParentPage Page={<Games />} />} />
+            <Route path='/tournaments' element={<ParentPage Page={<Tournaments />} />} />
+            <Route path='/tournaments/pubg' element={<ParentPage Page={<PubgTournaments />} />} />
+            <Route path='/tournaments/freefire' element={<ParentPage Page={<FFTournaments />} />} />
+            <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
 
-          <Route element={<LoginStatusRouting />}>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-          </Route>
+            <Route element={<LoginStatusRouting />}>
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+            </Route>
 
-          {/* private routes  */}
-          <Route element={<PrivateRoutes />} >
-            <Route path='/profile' element={<ParentPage Page={<Profile />} />} />
-          </Route>
-        </Routes>
+            {/* private routes  */}
+            <Route element={<PrivateRoutes />} >
+              <Route path='/profile' element={<ParentPage Page={<Profile />} />} />
+            </Route>
+          </Routes>
+        </GameProfileProvider>
       </AuthProvider>
     </>
   )

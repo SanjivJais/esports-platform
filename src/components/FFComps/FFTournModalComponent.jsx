@@ -11,7 +11,6 @@ export const FFTournModalComponent = ({ tournament }) => {
     let totalPrize = 0;
     for (let index = 0; index < tournament.prizes.length; index++) {
         totalPrize += tournament.prizes[index];
-
     }
 
     let joinPercent = parseInt((tournament.participants.length * 100) / tournament.max);
@@ -37,7 +36,6 @@ export const FFTournModalComponent = ({ tournament }) => {
         setActiveTab(activeTab)
     ), [activeTab])
 
-
     // YT video id extraction
     const ytVidExtracter = (url) => {
         let splited = url.split("v=");
@@ -49,15 +47,11 @@ export const FFTournModalComponent = ({ tournament }) => {
     const [joinConfirmationModal, setJoinConfirmationModal] = useState(null);
     const handleJoinConfirmation = () => {
         if (tournament.participants.length <= tournament.max) {
-            if (tournament.status === "Open")
-                setJoinConfirmationModal(!joinConfirmationModal);
-            else
-                toast.info("Tournament is already closed!")
+            setJoinConfirmationModal(!joinConfirmationModal);
         }
         else
             toast.info("Match already full")
     }
-
 
     return (
         <>
@@ -73,10 +67,10 @@ export const FFTournModalComponent = ({ tournament }) => {
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>{tournament.tournTitle}</h2>
-                            <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm overflow-x-auto custom-scrollbar">
+                            <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch Live</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</label>
                             </div>
                             <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
@@ -163,7 +157,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                         }
                         {activeTab === 2 &&
                             <div className='flex flex-col items-center gap-4'>
-                                {tournament.ytLiveURL &&
+                                {tournament.ytLiveURL ?
                                     <iframe className='rounded-[10px] md:h-[310px] max-w-[580px] w-full h-auto'
                                         src={`https://www.youtube.com/embed/${ytVidExtracter(tournament.ytLiveURL)}`}
                                         title="YouTube video player"
@@ -172,7 +166,8 @@ export const FFTournModalComponent = ({ tournament }) => {
                                         referrerPolicy="strict-origin-when-cross-origin"
                                         allowFullScreen>
                                     </iframe>
-
+                                    :
+                                    <div className='text-inactive my-10'>No videos available right now!</div>
                                 }
                             </div>
                         }
@@ -240,7 +235,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                         ))}
 
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
-                        <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
+                        {tournament.status == 'Open' && <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
                             <div className="flex justify-between text-[14px] mb-1">
                                 <label htmlFor="" >Participants Joined</label>
                                 <label htmlFor=""><span>{tournament.participants.length}</span> / <span className='text-primary'>{tournament.max}</span></label>
@@ -248,9 +243,13 @@ export const FFTournModalComponent = ({ tournament }) => {
                             <div className='bg-gray w-full h-2 rounded-lg'>
                                 <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>
                             </div>
-                        </div>
+                        </div>}
                         <div className='p-2 flex flex-col justify-between'>
-                            <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>
+                            {tournament.status == 'Open' ?
+                                <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>
+                                :
+                                <button disabled className='bg-primary bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>
+                            }
                         </div>
 
                         {/* confirmation modal  */}

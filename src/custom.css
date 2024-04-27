@@ -13,31 +13,27 @@
 .custom-scrollbar::-webkit-scrollbar,
 body::-webkit-scrollbar {
   width: 8px;
-  /* Set the width of the scrollbar */
+  height: 4px;
   background-color: rgba(50, 50, 50, 0.732);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
   background-color: #696666;
-  /* Set the color of the thumb (the draggable part) */
-  border-radius: 4px;
-  /* Set the border-radius for a rounded appearance */
+  border-radius: 8px;
 }
 
-.sidebar-scrollbar::-webkit-scrollbar{
+
+/* sidebar scrollbar  */
+.sidebar-scrollbar::-webkit-scrollbar {
   width: 8px;
   border-radius: 4px;
-
-  /* Set the width of the scrollbar */
   background-color: transparent;
 }
 
-.sidebar-scrollbar::-webkit-scrollbar-thumb{
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
   background-color: #0E1825;
-  /* Set the color of the thumb (the draggable part) */
   border-radius: 4px;
-  /* Set the border-radius for a rounded appearance */
 }
 
 
@@ -94,8 +90,6 @@ body::-webkit-scrollbar-thumb {
   border-radius: 5px;
 }
 
-.custom-dropdown:focus{
+.custom-dropdown:focus {
   outline: none;
 }
-
-

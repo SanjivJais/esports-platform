@@ -78,7 +78,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
         </div>
         <div className="flex gap-5 items-center">
           {user &&
-            <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 py-2 rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
+            <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
               <div className='flex items-center gap-2'>
                 <img src="/icons/Coin.svg" alt="" className='h-4 w-auto' />
                 <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_coin}</label>

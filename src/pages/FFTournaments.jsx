@@ -11,22 +11,26 @@ import { toast } from 'react-toastify'
 export const FFTournaments = () => {
   const { user } = useAuth()
   const [progress, setProgress] = useState(0)
+  useEffect(() => {
+    setProgress(50)
+    setProgress(60)
+    setTimeout(() => {
+      setProgress(100)
+    }, 800)
+  }, [])
 
   // fetching tournament data
   const [FFtournaments, setFFtournaments] = useState([])
   useEffect(() => {
-    setProgress(30)
     const fetchTournaments = async () => {
       try {
         const response = await database.listDocuments(db_id, 'ff_tournaments', [])
         setFFtournaments(response.documents)
-        setProgress(60)
       } catch (error) {
         toast.error("An error occurred")
       }
     }
     fetchTournaments()
-    setProgress(100)
   }, [])
 
 
