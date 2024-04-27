@@ -59,7 +59,7 @@ export const FFSquareTournamentCard = ({ tournament }) => {
                     </div>
                     <div>
                         <label htmlFor="" className='text-[12px] text-dimText'>STATUS</label>
-                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-green-500' : 'bg-red-500'} bg-opacity-30 w-fit px-3 py-[2px] rounded-xl`}>{tournament.status}</div>
+                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                     </div>
 
                 </div>

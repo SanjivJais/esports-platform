@@ -10,6 +10,7 @@ import { Modal } from '../components/Modal';
 import { MdDelete } from 'react-icons/md';
 import LoadingBar from 'react-top-loading-bar';
 import GameProfileContext from '../utils/GameProfileContext';
+import { TbTournament } from 'react-icons/tb';
 
 
 export const Profile = () => {
@@ -301,6 +302,12 @@ export const Profile = () => {
   }
 
 
+  // fetching joined tournaments
+  const [joinedTournaments, setJoinedTournaments] = useState(null)
+  // useEffect(() => {
+
+  // }, [])
+
 
   return (
     <>
@@ -336,11 +343,11 @@ export const Profile = () => {
 
         <div className='mb-6'>
           <div className="flex max-md:justify-between md:gap-8 gap-4 custom-scrollbar whitespace-nowrap overflow-x-auto">
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Tournaments</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Game Profiles</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Load Balance</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Withdraw</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-bold cursor-pointer`}>Account Details</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Tournaments</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Game Profiles</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Load Balance</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Withdraw</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account Details</div>
           </div>
           <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
         </div>
@@ -349,7 +356,13 @@ export const Profile = () => {
 
           {activeTab === 0 &&
             <>
-              Joined Tournaments
+              {!joinedTournaments && <div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
+                <div className='flex flex-col gap-3 items-center'>
+                  <TbTournament className='text-4xl' />
+                  You haven't joined any tournament!
+                  <Link to={'/tournaments'}><button className='bg-primary text-secondary px-3 py-2 rounded-[5px] font-semibold'>Explore Tournaments</button></Link>
+                </div>
+              </div>}
             </>
           }
 

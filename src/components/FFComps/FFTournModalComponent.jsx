@@ -72,6 +72,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 4 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Participants</label>
                             </div>
                             <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
                         </div>
@@ -121,7 +122,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></label>
-                                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-green-500' : 'bg-red-500'} bg-opacity-30 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                                     </div>
                                 </div>
 
@@ -174,6 +175,11 @@ export const FFTournModalComponent = ({ tournament }) => {
                         {activeTab === 3 &&
                             <div className='content-area'>
                                 {ReactHtmlParser(tournament.rulesDetails)}
+                            </div>
+                        }
+                        {activeTab === 4 &&
+                            <div className=''>
+                                Participants will be displayed here
                             </div>
                         }
 
@@ -245,11 +251,11 @@ export const FFTournModalComponent = ({ tournament }) => {
                             </div>
                         </div>}
                         <div className='p-2 flex flex-col justify-between'>
-                            {tournament.status == 'Open' ?
-                                <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>
-                                :
-                                <button disabled className='bg-primary bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>
-                            }
+                            {tournament.status == 'Open' && <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>}
+                            {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                            {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                            {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+
                         </div>
 
                         {/* confirmation modal  */}
