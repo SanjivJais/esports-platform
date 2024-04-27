@@ -11,6 +11,7 @@ import { MdDelete } from 'react-icons/md';
 import LoadingBar from 'react-top-loading-bar';
 import GameProfileContext from '../utils/GameProfileContext';
 import { TbTournament } from 'react-icons/tb';
+import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard';
 
 
 export const Profile = () => {
@@ -23,10 +24,10 @@ export const Profile = () => {
 
   useEffect(() => {
     setProgress(50)
-    setProgress(60)
+    setProgress(70)
     setTimeout(() => {
       setProgress(100)
-    }, 800)
+    }, 700)
   }, [])
 
 
@@ -113,7 +114,7 @@ export const Profile = () => {
           ...prevData,
           username: usernameChange
         }))
-        toast.success("Username changed successfully");
+        toast.success("Username claimed");
       } catch (error) {
         if (error.code == '409')
           toast.error("Username already taken, choose another")
@@ -302,11 +303,25 @@ export const Profile = () => {
   }
 
 
-  // fetching joined tournaments
-  const [joinedTournaments, setJoinedTournaments] = useState(null)
-  // useEffect(() => {
-
-  // }, [])
+  // fetching joined FF tournaments
+  const [joinedFFTournaments, setJoinedFFTournaments] = useState([])
+  useEffect(() => {
+    if (userDetails) {
+      const fetchJoinedFFTournaments = async () => {
+        try {
+          const tournamentPromises = userDetails.ffTournaments.map(async tournID => {
+            const tournDetail = await database.getDocument(db_id, 'ff_tournaments', tournID, []);
+            return tournDetail;
+          });
+          const tournamentsData = await Promise.all(tournamentPromises);
+          setJoinedFFTournaments(tournamentsData);
+        } catch (error) {
+          toast.error("Error occurred loading joined tournaments")
+        }
+      }
+      fetchJoinedFFTournaments()
+    }
+  }, [userDetails])
 
 
   return (
@@ -334,8 +349,20 @@ export const Profile = () => {
             <div className="flex flex-col gap-1 md:mt-4 mt-2">
               <h3 className='text-offBlue font-bold md:text-2xl text-xl'>{user.name}</h3>
               {userDetails && userDetails.username ?
-                <div htmlFor="" className='text-inactive'>@{userDetails.username}</div>
-                : <div htmlFor="" className='text-inactive'>{user.email}</div>
+                <div className='text-inactive'>@{userDetails.username}</div>
+                : <>
+                  {usernameChangeEnable ?
+                    <div className="flex flex-col gap-1">
+                      <div className="flex gap-2">
+                        <input onChange={handleUsernameinput} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' placeholder="Create a username" type="text" name="" id="" />
+                        <button onClick={handleUsernameEdit} className='bg-primary px-2 py-1 rounded-[5px] text-secondary text-sm font-bold'>Claim</button>
+                        <button onClick={() => setUsernameChangeEnable(false)} className='bg-secondaryLight px-2 py-1 rounded-[5px] text-inactive text-sm font-bold'>Cancel</button>
+                      </div>
+                      <div className='text-sm text-inactive '>*Username cannot be changed later!</div>
+                    </div>
+                    :
+                    <div onClick={() => setUsernameChangeEnable(true)} className='text-primary cursor-pointer'>Claim username</div>
+                  }</>
               }
             </div>
           </div>
@@ -345,7 +372,7 @@ export const Profile = () => {
           <div className="flex max-md:justify-between md:gap-8 gap-4 custom-scrollbar whitespace-nowrap overflow-x-auto">
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Tournaments</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Game Profiles</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Load Balance</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Add Funds</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Withdraw</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account Details</div>
           </div>
@@ -356,13 +383,20 @@ export const Profile = () => {
 
           {activeTab === 0 &&
             <>
-              {!joinedTournaments && <div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
-                <div className='flex flex-col gap-3 items-center'>
-                  <TbTournament className='text-4xl' />
-                  You haven't joined any tournament!
-                  <Link to={'/tournaments'}><button className='bg-primary text-secondary px-3 py-2 rounded-[5px] font-semibold'>Explore Tournaments</button></Link>
-                </div>
-              </div>}
+              {joinedFFTournaments.length >= 1 ?
+                <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">{joinedFFTournaments.map((tournament, index) => (
+                  <FFSquareTournamentCard key={index}
+                    tournament={tournament}
+                  />
+                ))}</div>
+                :
+                <div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
+                  <div className='flex flex-col gap-3 items-center'>
+                    <TbTournament className='text-4xl' />
+                    You haven't joined any tournament!
+                    <Link to={'/tournaments'}><button className='bg-primary text-secondary px-3 py-2 rounded-[5px] font-semibold'>Explore Tournaments</button></Link>
+                  </div>
+                </div>}
             </>
           }
 
@@ -459,20 +493,10 @@ export const Profile = () => {
                     }
                   </div>
                   <div className='flex flex-col gap-[2px]'>
-                    <div className='text-inactive flex items-center gap-2'><span>Username</span>{userDetails && userDetails.username == null && <FaRegEdit onClick={() => setUsernameChangeEnable(true)} className='cursor-pointer' />}</div>
+                    <div className='text-inactive flex items-center gap-2'>Username</div>
                     {userDetails && userDetails.username ?
                       <strong className='text-offBlue'>{userDetails.username}</strong>
-                      : <>{usernameChangeEnable ?
-                        <div className="flex flex-col gap-1">
-                          <div className="flex gap-2">
-                            <input onChange={handleUsernameinput} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' placeholder="Choose a username" type="text" name="" id="" />
-                            <button onClick={handleUsernameEdit} className='bg-primary px-2 py-1 rounded-[5px] text-secondary text-sm font-bold'>Update</button>
-                            <button onClick={() => setUsernameChangeEnable(false)} className='bg-secondaryLight px-2 py-1 rounded-[5px] text-inactive text-sm font-bold'>Cancel</button>
-                          </div>
-                          <div className='text-sm text-inactive '>*Username cannot be changed later!</div>
-                        </div>
-                        : <div className='text-offBlue'>Claim a username</div>
-                      }</>
+                      : <>Not claimed</>
                     }
                   </div>
                   <div className='flex flex-col gap-[2px]'>

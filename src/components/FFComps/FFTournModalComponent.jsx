@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MdInfo } from "react-icons/md";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import ReactHtmlParser from 'react-html-parser';
@@ -6,6 +6,14 @@ import { Modal } from '../Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Tooltip } from '../Tooltip';
+import { useAuth } from '../../utils/AuthContext'
+import GameProfileContext from '../../utils/GameProfileContext';
+import { Link } from 'react-router-dom';
+import { database, db_id } from '../../../config/Appwrite';
+import { Query } from 'appwrite';
+import { BiSolidExit } from 'react-icons/bi';
+
+
 
 export const FFTournModalComponent = ({ tournament }) => {
     let totalPrize = 0;
@@ -44,14 +52,78 @@ export const FFTournModalComponent = ({ tournament }) => {
         return videoId;
     }
 
-    const [joinConfirmationModal, setJoinConfirmationModal] = useState(null);
-    const handleJoinConfirmation = () => {
-        if (tournament.participants.length <= tournament.max) {
-            setJoinConfirmationModal(!joinConfirmationModal);
+
+    const { user, userDetails } = useAuth();
+    const { ffProfile } = useContext(GameProfileContext);
+
+    const [joinStatus, setJoinStatus] = useState(false)
+    useEffect(() => {
+        if (user && userDetails) {
+            const status = userDetails.ffTournaments.includes(tournament.$id)
+            setJoinStatus(status)
         }
-        else
-            toast.info("Match already full")
+    }, [])
+
+    const [joinConfirmationModal, setJoinConfirmationModal] = useState(null);
+
+
+
+    const handleJoinConfirmation = () => {
+        if (user) {
+            if (userDetails && userDetails.username) {
+                if (ffProfile) {
+                    if (userDetails.eg_coin >= tournament.entryFee) {
+                        if (tournament.participants.length <= tournament.max) {
+                            setJoinConfirmationModal(!joinConfirmationModal);
+                        }
+                        else
+                            toast.info("Match is already full")
+                    } else {
+                        toast.info(<>Insufficient coins, please <Link to={'/profile'} className='text-primary'>load coins</Link> to participate </>)
+                    }
+                } else {
+                    toast.info(<>You don't have Free Fire Game Profile. Create it in <Link to={'/profile'} className='text-primary'>Profile Section</Link></>)
+                }
+            } else {
+                toast.info(<>Claim your EsportsGravity username first. Go to <Link to={'/profile'} className='text-primary'>Profile Section</Link></>)
+            }
+        } else {
+            toast.info(<>Please <Link to={'/login'} className='text-primary'>Login</Link> to particpate</>)
+        }
+
     }
+
+    const handleFinalJoin = async () => {
+        try {
+
+        } catch (error) {
+            toast.error("Error occurred")
+        }
+    }
+
+    const handleExitConfirmation = () => {
+        //check if the exiting time is valid 
+    }
+
+
+    // loading participants 
+    const [participantDetails, setParticipantDetails] = useState(null)
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
+                const userDetailsPromises = tournament.participants.map(async participantId => {
+                    const userDetail = await database.getDocument(db_id, 'user_details', participantId, []);
+                    return userDetail;
+                });
+                const userDetailsData = await Promise.all(userDetailsPromises);
+                setParticipantDetails(userDetailsData);
+            } catch (error) {
+                toast.error("Error fetching participant details", error);
+            }
+
+        };
+        fetchUserDetails();
+    }, []);
 
     return (
         <>
@@ -178,8 +250,18 @@ export const FFTournModalComponent = ({ tournament }) => {
                             </div>
                         }
                         {activeTab === 4 &&
-                            <div className=''>
-                                Participants will be displayed here
+                            <div className='flex flex-col gap-4'>
+                                {participantDetails && participantDetails.map((participant, index) => (
+                                    <div key={index} className="flex gap-4 items-center">
+                                        <div>{index + 1}</div>
+                                        <div className="flex items-center gap-4">
+                                            <img src={participant.prof_pic_url} alt="" className='h-10 w-10 object-cover rounded-[50%]' />
+                                            <div className="text-offBlue">{participant.username}</div>
+                                        </div>
+
+
+                                    </div>
+                                ))}
                             </div>
                         }
 
@@ -251,7 +333,8 @@ export const FFTournModalComponent = ({ tournament }) => {
                             </div>
                         </div>}
                         <div className='p-2 flex flex-col justify-between'>
-                            {tournament.status == 'Open' && <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>}
+                            {tournament.status == 'Open' && !joinStatus && <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>}
+                            {tournament.status == 'Open' && joinStatus && <button className='bg-abortedStatus text-secondary font-bold p-2 rounded-[5px] flex items-center justify-center gap-2'><span>Exit</span><BiSolidExit /></button>}
                             {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
                             {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
                             {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
