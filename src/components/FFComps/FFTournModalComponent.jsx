@@ -12,6 +12,9 @@ import { Link } from 'react-router-dom';
 import { database, db_id } from '../../../config/Appwrite';
 import { Query } from 'appwrite';
 import { BiSolidExit } from 'react-icons/bi';
+import { FaCircleCheck, FaPeopleGroup } from 'react-icons/fa6';
+import LoadingBar from 'react-top-loading-bar';
+
 
 
 
@@ -33,6 +36,8 @@ export const FFTournModalComponent = ({ tournament }) => {
         return { date, time };
     };
 
+    const [progress, setProgress] = useState(0)
+
     const tabs = document.getElementsByClassName("tournTab");
     let [activeTab, setActiveTab] = useState(0);
     const handleTabs = (event) => {
@@ -53,7 +58,7 @@ export const FFTournModalComponent = ({ tournament }) => {
     }
 
 
-    const { user, userDetails } = useAuth();
+    const { user, userDetails, setUserDetails } = useAuth();
     const { ffProfile } = useContext(GameProfileContext);
 
     const [joinStatus, setJoinStatus] = useState(false)
@@ -77,7 +82,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                             setJoinConfirmationModal(!joinConfirmationModal);
                         }
                         else
-                            toast.info("Match is already full")
+                            toast.info("Tournament is already full")
                     } else {
                         toast.info(<>Insufficient coins, please <Link to={'/profile'} className='text-primary'>load coins</Link> to participate </>)
                     }
@@ -94,10 +99,56 @@ export const FFTournModalComponent = ({ tournament }) => {
     }
 
     const handleFinalJoin = async () => {
-        try {
+        if (user) {
+            setProgress(30)
+            try {
+                const tourn = await database.getDocument(db_id, 'ff_tournaments', tournament.$id, [Query.select(['max', 'participants', 'entryFee'])])
+                const user_details = await database.getDocument(db_id, 'user_details', user.$id, [Query.select(['eg_coin', 'ffTournaments'])])
+                if (tourn && user_details) {
+                    setProgress(50)
+                    if (tourn.participants.length < tourn.max) {
+                        if (user_details.eg_coin >= tourn.entryFee) {
+                            try {
+                                tourn.participants.push(user.$id);
+                                let updatedEGCoin = user_details.eg_coin - tournament.entryFee;
+                                user_details.ffTournaments.push(tournament.$id)
 
-        } catch (error) {
-            toast.error("Error occurred")
+                                await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, { 'participants': tourn.participants })
+
+                                await database.updateDocument(db_id, 'user_details', user.$id, { 'ffTournaments': user_details.ffTournaments, 'eg_coin': updatedEGCoin })
+
+                                setProgress(80)
+
+                                setJoinConfirmationModal(false)
+                                setUserDetails((prevData) => ({
+                                    ...prevData,
+                                    'eg_coin': updatedEGCoin,
+                                    'ffTournaments': user_details.ffTournaments
+                                }))
+                                toast.success("Tournament joined!");
+                                setJoinStatus(true)
+                                setProgress(100)
+
+
+
+
+                            } catch (error) {
+                                toast.error("Something went wrong")
+                            }
+
+                        } else {
+                            toast.info("Insufficient funds!")
+                        }
+                    } else {
+                        toast.info("Tournament is already full")
+                    }
+                } else {
+                    setProgress(80)
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error("Error occurred")
+            }
         }
     }
 
@@ -107,12 +158,12 @@ export const FFTournModalComponent = ({ tournament }) => {
 
 
     // loading participants 
-    const [participantDetails, setParticipantDetails] = useState(null)
+    const [participantDetails, setParticipantDetails] = useState([])
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
                 const userDetailsPromises = tournament.participants.map(async participantId => {
-                    const userDetail = await database.getDocument(db_id, 'user_details', participantId, []);
+                    const userDetail = await database.getDocument(db_id, 'user_details', participantId, [Query.select(['prof_pic_url', 'username'])]);
                     return userDetail;
                 });
                 const userDetailsData = await Promise.all(userDetailsPromises);
@@ -127,7 +178,12 @@ export const FFTournModalComponent = ({ tournament }) => {
 
     return (
         <>
-            <ToastContainer hideProgressBar position='top-center' theme="dark" />
+            {/* <ToastContainer hideProgressBar position='top-center' theme="dark" /> */}
+            <LoadingBar
+                color='#F88B26'
+                progress={progress}
+                onLoaderFinished={() => setProgress(0)}
+            />
 
             <div className='h-[92vh] md:w-[72vw] w-[90vw] overflow-x-hidden custom-scrollbar'>
                 <div className='lg:h-[45%] md:h-[40%] h-[35%] flex flex-col justify-between' style={{
@@ -251,17 +307,25 @@ export const FFTournModalComponent = ({ tournament }) => {
                         }
                         {activeTab === 4 &&
                             <div className='flex flex-col gap-4'>
-                                {participantDetails && participantDetails.map((participant, index) => (
-                                    <div key={index} className="flex gap-4 items-center">
-                                        <div>{index + 1}</div>
-                                        <div className="flex items-center gap-4">
-                                            <img src={participant.prof_pic_url} alt="" className='h-10 w-10 object-cover rounded-[50%]' />
-                                            <div className="text-offBlue">{participant.username}</div>
+                                {participantDetails.length >= 1 ?
+                                    <>
+                                        {participantDetails.map((participant, index) => (
+                                            <div key={index} className="flex gap-4 items-center">
+                                                <div>{index + 1}</div>
+                                                <div className="flex items-center gap-4">
+                                                    <img src={participant.prof_pic_url} alt="" className='h-10 w-10 object-cover rounded-[50%]' />
+                                                    <div className="text-offBlue">{participant.username}</div>
+                                                </div>
+                                            </div>
+                                        ))}</>
+                                    :
+                                    <><div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
+                                        <div className='flex flex-col gap-3 items-center'>
+                                            <FaPeopleGroup className='text-4xl' />
+                                            Be the first to join it!
                                         </div>
-
-
-                                    </div>
-                                ))}
+                                    </div></>
+                                }
                             </div>
                         }
 
@@ -334,7 +398,12 @@ export const FFTournModalComponent = ({ tournament }) => {
                         </div>}
                         <div className='p-2 flex flex-col justify-between'>
                             {tournament.status == 'Open' && !joinStatus && <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>}
-                            {tournament.status == 'Open' && joinStatus && <button className='bg-abortedStatus text-secondary font-bold p-2 rounded-[5px] flex items-center justify-center gap-2'><span>Exit</span><BiSolidExit /></button>}
+                            {tournament.status == 'Open' && joinStatus &&
+                                <div className=''>
+                                    <div className='bg-openStatus text-secondary font-bold p-2 rounded-[5px] flex items-center justify-center gap-2'><span>Joined</span><FaCircleCheck /></div>
+                                    <div onClick={handleExitConfirmation} className='flex cursor-pointer hover:text-red-500 transition-colors duration-200 font-semibold my-2 justify-center items-center gap-1 text-sm text-offBlue'><span>Exit from this tournament</span><span><BiSolidExit /></span></div>
+                                </div>
+                            }
                             {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
                             {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
                             {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
@@ -347,7 +416,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                                 <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'><img className='' src="/icons/Coin.svg" alt="" />{tournament.entryFee}</span></p>
                                 <div className="flex w-full justify-evenly mt-7">
                                     <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
-                                    <button className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
+                                    <button onClick={handleFinalJoin} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
                                 </div>
                             </div>
 
