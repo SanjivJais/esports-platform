@@ -77,15 +77,7 @@ export const FFTournModalComponent = ({ tournament }) => {
         if (user) {
             if (userDetails && userDetails.username) {
                 if (ffProfile) {
-                    if (userDetails.eg_coin >= tournament.entryFee) {
-                        if (tournament.participants.length <= tournament.max) {
-                            setJoinConfirmationModal(!joinConfirmationModal);
-                        }
-                        else
-                            toast.info("Tournament is already full")
-                    } else {
-                        toast.info(<>Insufficient coins, please <Link to={'/profile'} className='text-primary'>load coins</Link> to participate </>)
-                    }
+                    setJoinConfirmationModal(!joinConfirmationModal);
                 } else {
                     toast.info(<>You don't have Free Fire Game Profile. Create it in <Link to={'/profile'} className='text-primary'>Profile Section</Link></>)
                 }
@@ -118,7 +110,6 @@ export const FFTournModalComponent = ({ tournament }) => {
                                 await database.updateDocument(db_id, 'user_details', user.$id, { 'ffTournaments': user_details.ffTournaments, 'eg_coin': updatedEGCoin })
 
                                 setProgress(80)
-
                                 setJoinConfirmationModal(false)
                                 setUserDetails((prevData) => ({
                                     ...prevData,
@@ -128,10 +119,6 @@ export const FFTournModalComponent = ({ tournament }) => {
                                 toast.success("Tournament joined!");
                                 setJoinStatus(true)
                                 setProgress(100)
-
-
-
-
                             } catch (error) {
                                 toast.error("Something went wrong")
                             }
@@ -152,6 +139,7 @@ export const FFTournModalComponent = ({ tournament }) => {
         }
     }
 
+    const [exitConfirmationModal, setExitConfirmationModal] = useState(false)
     const handleExitConfirmation = () => {
         //check if the exiting time is valid 
     }
@@ -178,7 +166,6 @@ export const FFTournModalComponent = ({ tournament }) => {
 
     return (
         <>
-            {/* <ToastContainer hideProgressBar position='top-center' theme="dark" /> */}
             <LoadingBar
                 color='#F88B26'
                 progress={progress}
@@ -196,11 +183,11 @@ export const FFTournModalComponent = ({ tournament }) => {
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>{tournament.tournTitle}</h2>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 4 ? 'border-b-2 border-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Participants</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Participants</label>
                             </div>
                             <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
                         </div>
@@ -259,28 +246,42 @@ export const FFTournModalComponent = ({ tournament }) => {
                         }
                         {activeTab === 1 &&
                             <>
-                                {tournament.roomID ?
-                                    <div className="grid grid-cols-2 gap-x-4 gap-y-8">
-                                        <div>
-                                            <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM ID </span></label>
-                                            <div className='font-medium'>{tournament.roomID}</div>
-                                        </div>
-                                        <div>
-                                            <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM PASS </span></label>
-                                            <div className='font-medium'>{tournament.roomPass}</div>
-                                        </div>
 
-                                    </div>
+                                {joinStatus ?
+                                    <>
+                                        {tournament.roomID ?
+                                            <div className="grid grid-cols-2 gap-x-4 gap-y-8">
+                                                <div>
+                                                    <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM ID </span></label>
+                                                    <div className='font-medium'>{tournament.roomID}</div>
+                                                </div>
+                                                <div>
+                                                    <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM PASS </span></label>
+                                                    <div className='font-medium'>{tournament.roomPass}</div>
+                                                </div>
+
+                                            </div>
+                                            :
+                                            <div className='flex flex-col gap-6'>
+                                                <AiFillEyeInvisible className='text-inactive text-opacity-35 text-[4rem] self-center' />
+                                                <p className='text-offBlue text-[0.9rem]'>
+                                                    <span className='text-primary'>NOTE: </span>
+                                                    Room ID and Room Password will be visible here around
+                                                    <span className='text-offWhite'> 10 minutes </span>
+                                                    before starting time of match. Please check back in time!
+                                                </p>
+                                            </div>
+                                        }
+                                    </>
                                     :
-                                    <div className='flex flex-col gap-6'>
-                                        <AiFillEyeInvisible className='text-inactive text-opacity-35 text-[4rem] self-center' />
-                                        <p className='text-offBlue text-[0.9rem]'>
-                                            <span className='text-primary'>NOTE: </span>
-                                            Room ID and Room Password will be visible here around
-                                            <span className='text-offWhite'> 10 minutes </span>
-                                            before starting time of match. Please check back in time!
-                                        </p>
-                                    </div>
+                                    <>
+                                        <div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
+                                            <div className='flex flex-col gap-3 items-center'>
+                                                <AiFillEyeInvisible className='text-4xl' />
+                                                You haven't joined this tournament!
+                                            </div>
+                                        </div>
+                                    </>
                                 }
                             </>
                         }
@@ -307,17 +308,31 @@ export const FFTournModalComponent = ({ tournament }) => {
                         }
                         {activeTab === 4 &&
                             <div className='flex flex-col gap-4'>
+
                                 {participantDetails.length >= 1 ?
                                     <>
-                                        {participantDetails.map((participant, index) => (
-                                            <div key={index} className="flex gap-4 items-center">
-                                                <div>{index + 1}</div>
-                                                <div className="flex items-center gap-4">
-                                                    <img src={participant.prof_pic_url} alt="" className='h-10 w-10 object-cover rounded-[50%]' />
-                                                    <div className="text-offBlue">{participant.username}</div>
-                                                </div>
-                                            </div>
-                                        ))}</>
+                                        <div className="overflow-auto custom-scrollbar rounded-[5px]">
+                                            <table className="table-auto w-full ">
+                                                <thead className='bg-secondaryLight text-offBlue text-left'>
+                                                    <tr className="">
+                                                        <th className="px-4 py-3">#</th>
+                                                        <th className="px-4 py-3">Player/Team</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {participantDetails.map((participant, index) => (
+                                                        <tr key={index} className="">
+                                                            <td className='px-4 py-3'>{index + 1}</td>
+                                                            <td className="px-4 py-3 flex items-center gap-3">
+                                                                <img src={participant.prof_pic_url} alt="" className='h-8 w-8 object-cover rounded-[50%]' />
+                                                                <div className="text-offBlue">{participant.username}</div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </>
                                     :
                                     <><div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
                                         <div className='flex flex-col gap-3 items-center'>
