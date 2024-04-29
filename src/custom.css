@@ -93,3 +93,7 @@ body::-webkit-scrollbar-thumb {
 .custom-dropdown:focus {
   outline: none;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator, input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Invert color to white */
+}

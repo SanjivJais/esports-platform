@@ -3,7 +3,7 @@ import { MdInfo } from "react-icons/md";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import ReactHtmlParser from 'react-html-parser';
 import { Modal } from '../Modal';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Tooltip } from '../Tooltip';
 import { useAuth } from '../../utils/AuthContext'
@@ -14,6 +14,7 @@ import { Query } from 'appwrite';
 import { BiSolidExit } from 'react-icons/bi';
 import { FaCircleCheck, FaPeopleGroup } from 'react-icons/fa6';
 import LoadingBar from 'react-top-loading-bar';
+import { PiShareFatFill } from 'react-icons/pi';
 
 
 
@@ -164,6 +165,17 @@ export const FFTournModalComponent = ({ tournament }) => {
         fetchUserDetails();
     }, []);
 
+
+    // copy tournament ID functionality 
+    const handleShareClick = () => {
+        navigator.clipboard.writeText(tournament.$id)
+            .then(() => {
+                toast.success("Tournament ID copied. Please use it for searching this tournament.")
+            })
+            .catch((error) => toast.error('Error copying tournament ID:', error));
+
+    }
+
     return (
         <>
             <LoadingBar
@@ -181,7 +193,10 @@ export const FFTournModalComponent = ({ tournament }) => {
                     <div className='self-start bg-secondary h-fit bg-opacity-60 relative text-[12px] px-3 py-[3px] rounded-xl top-3 left-3'>Free Fire</div>
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">
-                            <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite mb-4'>{tournament.tournTitle}</h2>
+                            <div className="flex gap-4 items-center mb-4">
+                                <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite'>{tournament.tournTitle}</h2>
+                                 <div onClick={handleShareClick} className='bg-offBlue text-secondary flex items-center justify-center h-6 w-6 rounded cursor-pointer'><PiShareFatFill className='text-base' /></div>
+                            </div>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
@@ -337,7 +352,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                                     <><div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
                                         <div className='flex flex-col gap-3 items-center'>
                                             <FaPeopleGroup className='text-4xl' />
-                                            Be the first to join it!
+                                            Be the first to join!
                                         </div>
                                     </div></>
                                 }

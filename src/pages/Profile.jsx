@@ -12,6 +12,7 @@ import LoadingBar from 'react-top-loading-bar';
 import GameProfileContext from '../utils/GameProfileContext';
 import { TbTournament } from 'react-icons/tb';
 import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard';
+import { CreateFFTourn } from '../components/FFComps/CreateFFTourn';
 
 
 export const Profile = () => {
@@ -324,6 +325,24 @@ export const Profile = () => {
   }, [userDetails])
 
 
+  // handle create tournament 
+
+  const [chooseGameModal, setChooseGameModal] = useState(false)
+  const [createFFTournModal, setCreateFFTournModal] = useState(false)
+  const [createPUBGTournModal, setCreatePUBGTournModal] = useState(false)
+
+  const handleFFCreateTournGameSelection = () => {
+    setCreateFFTournModal(true)
+    setChooseGameModal(false)
+  }
+  const handlePUBGCreateTournGameSelection = () => {
+    setCreatePUBGTournModal(true)
+    setChooseGameModal(false)
+  }
+
+
+
+
   return (
     <>
       <LoadingBar
@@ -519,7 +538,10 @@ export const Profile = () => {
           }
           {activeTab === 5 &&
             <>
-              Hosted tournaments
+              <div className="flex flex-col">
+                <div className="flex justify-end"><button onClick={() => setChooseGameModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200'>Create Tournament</button></div>
+
+              </div>
             </>
           }
         </div>
@@ -591,6 +613,34 @@ export const Profile = () => {
             </div>
           </div>
         </div>
+      </Modal>
+
+
+      <Modal isVisible={chooseGameModal} onClose={() => setChooseGameModal(false)}>
+        <div className='p-4'>
+          <div className='mt-8 mx-2 flex flex-col gap-3'>
+            <h5 className='font-bold text-xl text-offBlue'>Choose game</h5>
+            <div className="flex gap-8">
+              <div onClick={handleFFCreateTournGameSelection} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
+                <img src="/images/FF_DP.jpg" alt="" className='h-28 w-24 rounded-lg border-2 border-inactive border-opacity-40 group-hover:border-primary object-cover' />
+                <div className='text-offBlue'>Free Fire</div>
+              </div>
+              <div onClick={handlePUBGCreateTournGameSelection} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
+                <img src="/images/PUBG_DP.jpg" alt="" className='h-28 w-24 rounded-lg border-2 border-inactive border-opacity-40 group-hover:border-primary object-cover' />
+                <div className='text-offBlue'>PUBG Mobile</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      // modal for FF tournament creation
+      <Modal isVisible={createFFTournModal} onClose={() => setCreateFFTournModal(false)}>
+        <CreateFFTourn />
+      </Modal>
+
+      <Modal isVisible={createPUBGTournModal} onClose={() => setCreatePUBGTournModal(false)}>
+
       </Modal>
 
 
