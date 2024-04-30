@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet'
 import { ID, database, db_id } from '../../config/Appwrite';
 import { useAuth } from '../utils/AuthContext'
 import { toast } from 'react-toastify'
+import { Query } from 'appwrite'
 
 
 export const FFTournaments = () => {
@@ -24,7 +25,7 @@ export const FFTournaments = () => {
   useEffect(() => {
     const fetchTournaments = async () => {
       try {
-        const response = await database.listDocuments(db_id, 'ff_tournaments', [])
+        const response = await database.listDocuments(db_id, 'ff_tournaments', [Query.orderDesc('$createdAt')])
         setFFtournaments(response.documents)
       } catch (error) {
         toast.error("An error occurred")

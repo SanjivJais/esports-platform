@@ -634,9 +634,9 @@ export const Profile = () => {
         </div>
       </Modal>
 
-      // modal for FF tournament creation
+       {/* modal for FF tournament creation */}
       <Modal isVisible={createFFTournModal} onClose={() => setCreateFFTournModal(false)}>
-        <CreateFFTourn />
+        <CreateFFTourn onClose={() => setCreateFFTournModal(false)} />
       </Modal>
 
       <Modal isVisible={createPUBGTournModal} onClose={() => setCreatePUBGTournModal(false)}>

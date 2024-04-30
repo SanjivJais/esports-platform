@@ -105,7 +105,7 @@ export const Home = () => {
   useEffect(() => {
     const fetchFFTournaments = async () => {
       try {
-        const response = await database.listDocuments(db_id, 'ff_tournaments', [Query.limit(3)])
+        const response = await database.listDocuments(db_id, 'ff_tournaments', [Query.limit(3), Query.orderDesc('$createdAt')])
         setFFtournaments(response.documents)
       } catch (error) {
         toast.error("An error occurred")
@@ -138,7 +138,7 @@ export const Home = () => {
             />
           ))}
         </div>
-        
+
         {/* promotional banner homepage  */}
         <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
 

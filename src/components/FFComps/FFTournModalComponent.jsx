@@ -17,8 +17,6 @@ import LoadingBar from 'react-top-loading-bar';
 import { PiShareFatFill } from 'react-icons/pi';
 
 
-
-
 export const FFTournModalComponent = ({ tournament }) => {
     let totalPrize = 0;
     for (let index = 0; index < tournament.prizes.length; index++) {
@@ -29,12 +27,20 @@ export const FFTournModalComponent = ({ tournament }) => {
 
     // formatting datetime 
     const formatDateTime = (dateTimeString) => {
-        const options = { month: 'long', day: 'numeric', year: 'numeric' };
-        const dateTime = new Date(dateTimeString);
-        const date = dateTime.toLocaleDateString('en-US', options);
-        const time = dateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        // Split the input string into date and time parts
+        const [datePart, timePart] = dateTimeString.split('T');
 
-        return { date, time };
+        const [year, month, day] = datePart.split('-');
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const formattedDate = `${months[parseInt(month, 10) - 1]} ${parseInt(day, 10)}, ${year}`;
+
+        // Parse the time part
+        const [hours, minutes] = timePart.split(':');
+        const hour = parseInt(hours, 10) > 12 ? parseInt(hours, 10) - 12 : parseInt(hours, 10);
+        const ampm = parseInt(hours, 10) >= 12 ? 'PM' : 'AM';
+        const formattedTime = `${hour}:${minutes} ${ampm}`;
+
+        return { date: formattedDate, time: formattedTime };
     };
 
     const [progress, setProgress] = useState(0)
@@ -143,6 +149,7 @@ export const FFTournModalComponent = ({ tournament }) => {
     const [exitConfirmationModal, setExitConfirmationModal] = useState(false)
     const handleExitConfirmation = () => {
         //check if the exiting time is valid 
+        // console.log(tournament);
     }
 
 
@@ -174,6 +181,7 @@ export const FFTournModalComponent = ({ tournament }) => {
             })
             .catch((error) => toast.error('Error copying tournament ID:', error));
 
+
     }
 
     return (
@@ -195,7 +203,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <div className="flex gap-4 items-center mb-4">
                                 <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite'>{tournament.tournTitle}</h2>
-                                 <div onClick={handleShareClick} className='bg-offBlue text-secondary flex items-center justify-center h-6 w-6 rounded cursor-pointer'><PiShareFatFill className='text-base' /></div>
+                                <div onClick={handleShareClick} className='bg-offBlue text-secondary flex items-center justify-center h-6 w-6 rounded cursor-pointer'><PiShareFatFill className='text-base' /></div>
                             </div>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
@@ -410,9 +418,11 @@ export const FFTournModalComponent = ({ tournament }) => {
                         </div>
 
                         {tournament.prizes && tournament.prizes.map((prize, index) => (
-                            <div key={index} className='py-4 px-4 flex justify-between'>
-                                <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{index + 1}<sup> {index == 0 && <>st</>}{index == 1 && <>nd</>}{index == 2 && <>rd</>}{index > 2 && <>th</>}</sup> Place</span></h3>
-                                <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {prize}</div>
+                            <div key={index}>
+                                {prize != 0 && <div className='py-4 px-4 flex justify-between'>
+                                    <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{index + 1}<sup> {index == 0 && <>st</>}{index == 1 && <>nd</>}{index == 2 && <>rd</>}{index > 2 && <>th</>}</sup> Place</span></h3>
+                                    <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {prize}</div>
+                                </div>}
                             </div>
                         ))}
 
