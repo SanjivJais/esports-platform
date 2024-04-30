@@ -7,12 +7,14 @@ import { storage, ID, database, db_id, account } from '../../config/Appwrite';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 import { Modal } from '../components/Modal';
-import { MdDelete } from 'react-icons/md';
+import { MdAddBox, MdDelete } from 'react-icons/md';
 import LoadingBar from 'react-top-loading-bar';
 import GameProfileContext from '../utils/GameProfileContext';
 import { TbTournament } from 'react-icons/tb';
 import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard';
 import { CreateFFTourn } from '../components/FFComps/CreateFFTourn';
+import { FFTournHostPreview } from '../components/FFComps/FFTournHostPreview';
+import { Query } from 'appwrite';
 
 
 export const Profile = () => {
@@ -341,6 +343,24 @@ export const Profile = () => {
   }
 
 
+  // fetching tournaments for host
+  const [ffTournamentsHost, setFFTournamentsHost] = useState([])
+  useEffect(() => {
+    if (activeTab == 5) {
+      setProgress(40)
+      const fetchTournaments = async () => {
+        try {
+          const tourns = await database.listDocuments(db_id, 'ff_tournaments', [Query.orderDesc('$createdAt')])
+          setFFTournamentsHost(tourns.documents)
+        } catch (error) {
+          toast.error(error.message)
+        }
+      }
+      fetchTournaments();
+      setProgress(100)
+    }
+  }, [activeTab])
+
 
 
   return (
@@ -539,7 +559,14 @@ export const Profile = () => {
           {activeTab === 5 &&
             <>
               <div className="flex flex-col">
-                <div className="flex justify-end"><button onClick={() => setChooseGameModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200'>Create Tournament</button></div>
+                <div className="flex justify-end"><button onClick={() => setChooseGameModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200 flex items-center gap-2'><span>Create Tournament</span><MdAddBox /> </button></div>
+                <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
+
+                  {ffTournamentsHost && ffTournamentsHost.map((tournament, index) => (
+
+                    <FFTournHostPreview key={index} tournament={tournament} />
+                  ))}
+                </div>
 
               </div>
             </>
@@ -617,9 +644,9 @@ export const Profile = () => {
 
 
       <Modal isVisible={chooseGameModal} onClose={() => setChooseGameModal(false)}>
-        <div className='p-4'>
-          <div className='mt-8 mx-2 flex flex-col gap-3'>
-            <h5 className='font-bold text-xl text-offBlue'>Choose game</h5>
+        <div className='p-4 md:w-96 w-[90vw] h-72'>
+          <div className='mt-8 mx-2 flex flex-col gap-3 items-center'>
+            <h5 className='font-bold text-xl text-offBlue my-2'>Choose game</h5>
             <div className="flex gap-8">
               <div onClick={handleFFCreateTournGameSelection} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
                 <img src="/images/FF_DP.jpg" alt="" className='h-28 w-24 rounded-lg border-2 border-inactive border-opacity-40 group-hover:border-primary object-cover' />
@@ -634,7 +661,7 @@ export const Profile = () => {
         </div>
       </Modal>
 
-       {/* modal for FF tournament creation */}
+      {/* modal for FF tournament creation */}
       <Modal isVisible={createFFTournModal} onClose={() => setCreateFFTournModal(false)}>
         <CreateFFTourn onClose={() => setCreateFFTournModal(false)} />
       </Modal>

@@ -77,11 +77,6 @@ export const CreateFFTourn = ({ onClose }) => {
 
 
 
-
-
-
-
-
     return (
         <div className='p-4 lg:w-[50vw] md:w-[60vw] w-[90vw] h-[90vh] overflow-x-hidden custom-scrollbar'>
             <div className="flex flex-col gap-4 mt-8 mx-4 pb-8">

@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { database, db_id } from '../../../config/Appwrite';
 import { Query } from 'appwrite';
 import { BiSolidExit } from 'react-icons/bi';
-import { FaCircleCheck, FaPeopleGroup } from 'react-icons/fa6';
+import { FaCircleCheck, FaPeopleGroup, FaRegClock } from 'react-icons/fa6';
 import LoadingBar from 'react-top-loading-bar';
 import { PiShareFatFill } from 'react-icons/pi';
 
@@ -41,6 +41,28 @@ export const FFTournModalComponent = ({ tournament }) => {
         const formattedTime = `${hour}:${minutes} ${ampm}`;
 
         return { date: formattedDate, time: formattedTime };
+    };
+
+    const calculateTimeLeft = (targetDateTime) => {
+        // Parse the target date and time
+        const [dateString, timeString] = targetDateTime.split('T');
+        const [year, month, day] = dateString.split('-').map(Number);
+        const [hour, minute] = timeString.split(':').map(Number);
+
+        // Create a new Date object using the extracted components
+        const targetDate = new Date(year, month - 1, day, hour, minute);
+
+        // Get the current date and time
+        const currentDate = new Date();
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = targetDate - currentDate;
+
+        // Calculate days and hours left
+        const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        return { daysLeft, hoursLeft };
     };
 
     const [progress, setProgress] = useState(0)
@@ -184,6 +206,8 @@ export const FFTournModalComponent = ({ tournament }) => {
 
     }
 
+
+
     return (
         <>
             <LoadingBar
@@ -198,12 +222,15 @@ export const FFTournModalComponent = ({ tournament }) => {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}>
-                    <div className='self-start bg-secondary h-fit bg-opacity-60 relative text-[12px] px-3 py-[3px] rounded-xl top-3 left-3'>Free Fire</div>
+                    <div className="flex gap-2 items-center pt-3 pl-3">
+                        <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Free Fire</div>
+                        <div title='Time left to start' className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>
+                    </div>
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <div className="flex gap-4 items-center mb-4">
-                                <h2 className='lg:text-4xl md:text-3xl text-2xl font-semibold text-offWhite'>{tournament.tournTitle}</h2>
-                                <div onClick={handleShareClick} className='bg-offBlue text-secondary flex items-center justify-center h-6 w-6 rounded cursor-pointer'><PiShareFatFill className='text-base' /></div>
+                                <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite'>{tournament.tournTitle}</h2>
+                                <div onClick={handleShareClick} className='bg-offBlue text-secondary flex items-center justify-center md:h-6 h-5 md:w-6 w-5  rounded cursor-pointer'><PiShareFatFill className='md:text-base text-sm' /></div>
                             </div>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>

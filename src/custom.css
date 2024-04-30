@@ -97,3 +97,7 @@ body::-webkit-scrollbar-thumb {
 input[type="date"]::-webkit-calendar-picker-indicator, input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* Invert color to white */
 }
+
+input:disabled{
+  background-color: #0E1825;
+}
