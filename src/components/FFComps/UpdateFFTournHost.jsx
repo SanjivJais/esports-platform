@@ -5,6 +5,7 @@ import { database, db_id } from '../../../config/Appwrite';
 import { toast } from 'react-toastify';
 import { Query } from 'appwrite';
 import LoadingBar from 'react-top-loading-bar';
+import { Modal } from '../Modal'
 
 export const UpdateFFTournHost = ({ tournament }) => {
 
@@ -75,7 +76,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
 
                 setParticipantDetails(updatedParticipantDetails);
             } catch (error) {
-                toast.error(`Error fetching participant details: ${error}`);
+                toast.error(`Error fetching participant details: ${error.message}`);
             }
             setProgress(100)
 
@@ -94,7 +95,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
     }
 
     // handle winners
-    const [winnerData, setWinnerData] = useState(tournament.winners);
+    const [winnerData, setWinnerData] = useState([]);
     useEffect(() => {
         setUpdatedTournament((prevData) => ({
             ...prevData,
@@ -102,18 +103,56 @@ export const UpdateFFTournHost = ({ tournament }) => {
         }))
     }, [winnerData])
 
+    useEffect(() => {
+        if (updatedTournament.status !== 'Finished') {
+            setWinnerData([]);
+        }
+    }, [updatedTournament.status])
+
     const handleWinnerChange = (index, value) => {
-        if (value == "") { value = null }
         const updatedWinner = [...winnerData];
         updatedWinner[index] = value;
         setWinnerData(updatedWinner);
     };
 
+    const handleInputChange = (e) => {
+        e.preventDefault()
+        let { name, value, type } = e.target;
+        if (value == "") value = null
 
-    const handleUpdate = async () => {
-        console.log(updatedTournament);
-
+        setUpdatedTournament((prevData) => ({
+            ...prevData,
+            [name]: type === 'number' ? parseInt(value, 10) : value
+        }))
     }
+
+
+    const [confirmationModal, setConfirmationModal] = useState(false)
+    const handleUpdate = () => {
+        if (updatedTournament.status == "Finished") {
+            if (updatedTournament.winners.filter(item => item.trim() !== '').length == updatedTournament.prizes.length) {
+                setConfirmationModal(true)
+            } else {
+                toast.info("Winners must be specified")
+            }
+        } else {
+            setConfirmationModal(true)
+        }
+    }
+
+    // const handleFinalUpdate = async () => {
+    //     // yet to implement prize distribution on finished status
+    //     setProgress(60)
+    //     try {
+    //         await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, updatedTournament)
+    //         toast.success("Tournament updated successfully")
+    //     } catch (error) {
+    //         toast.error(error.message)
+    //     }
+    //     setConfirmationModal(false)
+    //     setProgress(100)
+
+    // }
 
     return (
         <>
@@ -127,19 +166,19 @@ export const UpdateFFTournHost = ({ tournament }) => {
             <div className='xl:w-[76vw] lg:w-[82vw] w-[95vw] h-[92vh] '>
                 <div className='md:m-6 m-4 flex flex-col pb-4'>
                     <div className="grid grid-cols-12 gap-4">
-                        <img src={tournament.imgURL} alt="" className='md:col-span-5 col-span-12 rounded-[5px]' />
+                        <img src={updatedTournament.imgURL} alt="" className='md:col-span-5 col-span-12 rounded-[5px]' />
                         <div className='grid md:grid-cols-2 grid-cols-1 md:col-span-7 col-span-12 gap-x-3 gap-y-2'>
                             <div className="flex flex-col gap-1">
                                 <div>Entry Fee</div>
-                                <input disabled={participantDetails.length != 0} name='entryFee' type="number" value={tournament.entryFee} placeholder='Eg. 0' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='entryFee' type="number" value={updatedTournament.entryFee} placeholder='Eg. 0' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Game Mode</div>
-                                <input disabled name='gameMode' type="text" value={tournament.gameMode} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled name='gameMode' type="text" value={updatedTournament.gameMode} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Team Type</div>
-                                <select disabled name="teamType" id="" value={tournament.teamType} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                <select onChange={(e) => handleInputChange(e)} disabled name="teamType" id="" value={updatedTournament.teamType} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                     <option value="Solo">Solo</option>
                                     <option value="Duo">Duo</option>
                                     <option value="Squad">Squad</option>
@@ -147,32 +186,32 @@ export const UpdateFFTournHost = ({ tournament }) => {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Reward Type</div>
-                                <select disabled={participantDetails.length != 0} name="rewardType" id="" value={tournament.rewardType} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                <select onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name="rewardType" id="" value={updatedTournament.rewardType} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                     <option value="eg_coin">EG Coin</option>
                                 </select>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Start Time</div>
-                                <div className='bg-secondaryLight py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none'>{formatDateTime(tournament.startTime).date} / {formatDateTime(tournament.startTime).time} </div>
+                                <div className='bg-secondaryLight py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none'>{formatDateTime(updatedTournament.startTime).date} / {formatDateTime(updatedTournament.startTime).time} </div>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Change Time</div>
-                                <input disabled={participantDetails.length != 0} name='startTime' type="datetime-local" className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='startTime' type="datetime-local" className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                         </div>
                     </div>
                     <div className="grid md:grid-cols-3 grid-cols-1 mt-5 gap-3">
                         <div className="flex flex-col gap-1">
                             <div>Matches</div>
-                            <input disabled={participantDetails.length != 0} name='matches' type="number" value={tournament.matches} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                            <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='matches' type="number" value={updatedTournament.matches} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                         </div>
                         <div className="flex flex-col gap-1">
                             <div>Map</div>
-                            <input disabled={participantDetails.length != 0} name='map' type="text" value={tournament.map} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                            <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='map' type="text" value={updatedTournament.map} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                         </div>
                         <div className="flex flex-col gap-1">
                             <div>Hosted By</div>
-                            <div className='bg-secondaryLight py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none'>{tournament.host} </div>
+                            <div className='bg-secondaryLight py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none'>{updatedTournament.host} </div>
                         </div>
                     </div>
 
@@ -201,54 +240,52 @@ export const UpdateFFTournHost = ({ tournament }) => {
                         </div>
                     </div>
                     <div className="grid grid-cols-12 mt-5 gap-3">
-                        <div className="flex flex-col gap-3 md:col-span-6 col-span-12 bg-openStatus bg-opacity-10 p-3 border-[1px] border-inactive border-opacity-30 rounded-[5px]">
+                        <div className="flex flex-col gap-3 md:col-span-6 col-span-12 bg-slate-500 bg-opacity-15 p-3 border-[1px] border-inactive border-opacity-30 rounded-[5px]">
                             <div className="flex flex-col gap-1">
-                                <div>Tournament Title</div>
-                                <input name='tournTitle' type="text" value={tournament.tournTitle} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <div>updatedTournament Title</div>
+                                <input onChange={(e) => handleInputChange(e)} name='tournTitle' type="text" value={updatedTournament.tournTitle} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Thumbnail URL</div>
-                                <input name='imgURL' type="text" value={tournament.imgURL} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} name='imgURL' type="url" value={updatedTournament.imgURL} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Max Participants</div>
-                                <input name='max' type="number" value={tournament.max} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} name='max' type="number" value={updatedTournament.max} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Min Participants</div>
-                                <input name='min' type="number" value={tournament.min} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} name='min' type="number" value={updatedTournament.min} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Room ID</div>
-                                <input name='roomID' type="text" value={tournament.roomID || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} name='roomID' type="text" value={updatedTournament.roomID || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Room Pass</div>
-                                <input name='roomPass' type="text" value={tournament.roomPass || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} name='roomPass' type="text" value={updatedTournament.roomPass || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>YT Video URL</div>
-                                <input name='ytLiveURL' type="text" value={tournament.ytLiveURL || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} name='ytLiveURL' type="url" value={updatedTournament.ytLiveURL || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Is Featured?</div>
-                                <select name="isFeatured" id="" value={tournament.isFeatured} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                <select onChange={(e) => handleInputChange(e)} name="isFeatured" id="" value={updatedTournament.isFeatured} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                     <option value="false">No</option>
                                     <option value="true">Yes</option>
                                 </select>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Rules & Details</div>
-                                <textarea value={tournament.rulesDetails} name="rulesDetails" id="" cols="30" rows="12" placeholder='Rules, Details, and Guides' className='bg-secondary custom-scrollbar py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
+                                <textarea onChange={(e) => handleInputChange(e)} value={updatedTournament.rulesDetails} name="rulesDetails" id="" cols="30" rows="12" placeholder='Rules, Details, and Guides' className='bg-secondary custom-scrollbar py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
                             </div>
 
                         </div>
 
-                        <div className="flex flex-col gap-3 md:col-span-6 col-span-12 bg-openStatus bg-opacity-10 p-3 border-[1px] border-inactive border-opacity-30 rounded-[5px]">
-
+                        <div className="flex flex-col gap-3 md:col-span-6 col-span-12 bg-slate-500 bg-opacity-15 p-3 border-[1px] border-inactive border-opacity-30 rounded-[5px]">
                             <div className="flex flex-col gap-1">
                                 <div>Participants</div>
-
                                 {participantDetails && participantDetails.length >= 1 ?
                                     <>
                                         <div className="overflow-auto max-h-[80vh] custom-scrollbar bg-secondary rounded-[5px]">
@@ -292,7 +329,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
                                     {tournament.prizes.map((prize, index) => (
                                         <div key={index} className="flex gap-3 items-center bg-secondary rounded-[5px] border-2 border-inactive border-opacity-20">
                                             <div className='ml-3'>#{index + 1}</div>
-                                            <input disabled={(tournament.winners[index] != null)} value={tournament.winners[index]} onChange={(e) => handleWinnerChange(index, e.target.value)} type="text" placeholder={`EG Username of #${index + 1}`} className='bg-transparent w-full py-2 px-3  placeholder:text-sm placeholder:text-inactive focus:outline-none' />
+                                            <input disabled={updatedTournament.status != "Finished"} value={winnerData[index] || ''} onChange={(e) => handleWinnerChange(index, e.target.value)} type="text" placeholder={`EG Username of #${index + 1}`} className='bg-transparent w-full py-2 px-3  placeholder:text-sm placeholder:text-inactive focus:outline-none' />
                                         </div>
                                     ))}
 
@@ -302,7 +339,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
 
                             <div className="flex flex-col gap-1">
                                 <div>Status</div>
-                                <select name="status" id="" value={tournament.status} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                <select onChange={handleInputChange} name="status" id="" value={updatedTournament.status} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                     <option value="Open">Open</option>
                                     <option value="Ongoing">Ongoing</option>
                                     <option value="Finished">Finished</option>
@@ -315,9 +352,21 @@ export const UpdateFFTournHost = ({ tournament }) => {
 
                     </div>
 
-                    <button onClick={handleUpdate} className='self-end mt-4 bg-primary w-48 px-3 py-2 rounded-[5px] font-semibold text-secondary'>Update</button>
+                    {(tournament.status === "Open" || tournament.status === "Ongoing") && <button onClick={handleUpdate} className='self-center mt-4 hover:bg-primary transition-colors hover:text-secondary duration-300 bg-secondaryLight w-48 px-3 py-2 rounded-[5px] font-bold text-offBlue'>Update</button>}
                 </div>
             </div>
+
+            <Modal isVisible={confirmationModal} onClose={() => setConfirmationModal(false)}>
+                <div className='p-6 md:w-96 w-72'>
+                    {(updatedTournament.status === 'Open' || updatedTournament.status === 'Ongoing') && <p className='mt-4 flex justify-center'>Are you sure? </p>}
+                    {(updatedTournament.status === 'Finished' || updatedTournament.status === 'Aborted') && <p className='mt-4 flex justify-center text-center'>Are you sure? You can't update '{updatedTournament.status}' tournament later.</p>}
+                    <div className="flex w-full justify-evenly mt-7">
+                        <button onClick={() => setConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
+                        <button onClick={handleFinalUpdate} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Yes</button>
+                    </div>
+                </div>
+
+            </Modal>
         </>
 
     )
