@@ -202,8 +202,6 @@ export const FFTournModalComponent = ({ tournament }) => {
                 toast.success("Tournament ID copied. Please use it for searching this tournament.")
             })
             .catch((error) => toast.error('Error copying tournament ID:', error));
-
-
     }
 
 
