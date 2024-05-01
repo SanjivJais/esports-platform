@@ -64,7 +64,6 @@ export const CreateFFTourn = ({ onClose }) => {
     // creating tournament 
     const createTournament = async () => {
         try {
-            console.log(tournament);
             await database.createDocument(db_id, 'ff_tournaments', ID.unique(), tournament)
             toast.success("Tournament created")
             onClose()
