@@ -438,18 +438,42 @@ export const FFTournModalComponent = ({ tournament }) => {
                     <div className='h-fit lg:w-[36%] md:w-[42%] bg-frameBG rounded-[5px] flex flex-col md:-mt-12'>
 
                         <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
-                            <h3 className='font-bold text-lg text-offBlue'>Prize Pool</h3>
-                            <div>{formatDateTime(tournament.startTime).time} / {formatDateTime(tournament.startTime).date}</div>
+                            <h3 className='font-bold text-lg text-offBlue'>{tournament.status === "Finished" ? 'Results' : tournament.status === "Aborted" ? 'Aborted' : 'Prize Pool'}</h3>
+                            {(tournament.status === "Open" || tournament.status === "Ongoing") && <div> {formatDateTime(tournament.startTime).time} / {formatDateTime(tournament.startTime).date} </div>}
+                            {tournament.status === "Finished" && <div className='font-bold text-lg text-offBlue'>Prizes</div>}
                         </div>
 
-                        {tournament.prizes && tournament.prizes.map((prize, index) => (
-                            <div key={index}>
-                                {prize != 0 && <div className='py-4 px-4 flex justify-between'>
-                                    <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{index + 1}<sup> {index == 0 && <>st</>}{index == 1 && <>nd</>}{index == 2 && <>rd</>}{index > 2 && <>th</>}</sup> Place</span></h3>
-                                    <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {prize}</div>
-                                </div>}
-                            </div>
-                        ))}
+                        {
+                            tournament.status === "Finished" ?
+                                <>
+                                    {tournament.winners && tournament.winners.map((winner, index) => (
+                                        <div key={index}>
+                                            <div className='py-4 px-4 flex justify-between'>
+                                                <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{winner}</span></h3>
+                                                <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.prizes[index]}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                                :
+                                tournament.status === "Aborted" ?
+                                    <>
+
+                                    </>
+                                    :
+                                    <>
+                                        {tournament.prizes && tournament.prizes.map((prize, index) => (
+                                            <div key={index}>
+                                                {prize != 0 && <div className='py-4 px-4 flex justify-between'>
+                                                    <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{index + 1}<sup> {index == 0 && <>st</>}{index == 1 && <>nd</>}{index == 2 && <>rd</>}{index > 2 && <>th</>}</sup> Place</span></h3>
+                                                    <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {prize}</div>
+                                                </div>}
+                                            </div>
+                                        ))}
+                                    </>
+                        }
+
+
 
                         <div className="h-[1px] bg-black bg-opacity-25"></div>
                         {tournament.status == 'Open' && <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
@@ -488,7 +512,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                         </Modal>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

@@ -51,6 +51,29 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
         winners: tournament.winners,
         ytLiveURL: tournament.ytLiveURL,
     })
+    const [tempTournament, setTempTournament] = useState({
+        entryFee: tournament.entryFee,
+        gameMode: tournament.gameMode,
+        host: tournament.host,
+        imgURL: tournament.imgURL,
+        isFeatured: tournament.isFeatured,
+        map: tournament.map,
+        matches: tournament.matches,
+        max: tournament.max,
+        min: tournament.min,
+        participants: tournament.participants,
+        prizes: tournament.prizes,
+        rewardType: tournament.rewardType,
+        roomID: tournament.roomID,
+        roomPass: tournament.roomPass,
+        rulesDetails: tournament.rulesDetails,
+        startTime: tournament.startTime,
+        status: tournament.status,
+        teamType: tournament.teamType,
+        tournTitle: tournament.tournTitle,
+        winners: tournament.winners,
+        ytLiveURL: tournament.ytLiveURL,
+    })
 
 
     const [prizesData, setPrizesData] = useState(tournament.prizes); // Initial state with a number
@@ -169,10 +192,32 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
 
     const handleFinalUpdate = async () => {
         // yet to implement prize distribution on finished status
-        setProgress(60)
+        setProgress(40)
+        if (updatedTournament.status === "Finished") {
+            try {
+                const prizeValues = await database.getDocument(db_id, 'ff_tournaments', tournament.$id, [Query.select('prizes')])
+                for (let index = 0; index < winnerData.length; index++) {
+                    const winnerUsername = winnerData[index];
+                    const userData = await database.listDocuments(db_id, 'user_details', [Query.equal('username', winnerUsername)])
+
+                    if (userData.total == 1) {
+                        let coin = userData.documents[0].eg_coin;
+                        let prize = prizeValues.prizes[index]
+
+                        let updatedCoin = coin + prize;
+                        await database.updateDocument(db_id, 'user_details', userData.documents[0].$id, { 'eg_coin': updatedCoin })
+                    } else {
+                        toast.error("Multiple users found with same EG username!")
+                    }
+                }
+                toast.success("Prize distributed successively!")
+            } catch (error) {
+                toast.error(error.message)
+            }
+        }
         try {
             await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, updatedTournament)
-            toast.success("Tournament updated successfully")
+            toast.success("Tournament updated")
         } catch (error) {
             toast.error(error.message)
         }
@@ -380,7 +425,7 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
 
                     </div>
 
-                    {tournament.status !== "Aborted" && <button onClick={handleUpdate} className='self-center mt-4 hover:bg-primary transition-colors hover:text-secondary duration-300 bg-secondaryLight w-48 px-3 py-2 rounded-[5px] font-bold text-offBlue'>Update</button>}
+                    {tournament.status !== "Aborted" && <button onClick={handleUpdate} className={`self-center mt-4 bg-primary transition-colors text-secondary duration-300  w-48 px-3 py-2 rounded-[5px] font-bold `}>Update</button>}
                 </div>
             </div>
 
