@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Modal } from '../Modal';
-import { FFTournModalComponent } from './FFTournModalComponent';
 import { FaRegClock } from 'react-icons/fa6';
 import { HiMiniTrophy } from 'react-icons/hi2';
 import { UpdateFFTournHost } from './UpdateFFTournHost';
@@ -117,7 +116,7 @@ export const FFTournHostPreview = ({ tournament }) => {
 
             </div>
             <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-                <UpdateFFTournHost tournament={tournament} />
+                <UpdateFFTournHost tournament={tournament} onClose={() => setShowModal(false)} />
             </Modal>
         </div>
     )

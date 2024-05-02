@@ -7,7 +7,7 @@ import { Query } from 'appwrite';
 import LoadingBar from 'react-top-loading-bar';
 import { Modal } from '../Modal'
 
-export const UpdateFFTournHost = ({ tournament }) => {
+export const UpdateFFTournHost = ({ tournament, onClose }) => {
 
     // formatting datetime 
     const formatDateTime = (dateTimeString) => {
@@ -27,7 +27,32 @@ export const UpdateFFTournHost = ({ tournament }) => {
         return { date: formattedDate, time: formattedTime };
     };
 
-    const [updatedTournament, setUpdatedTournament] = useState(tournament)
+
+    const [updatedTournament, setUpdatedTournament] = useState({
+        entryFee: tournament.entryFee,
+        gameMode: tournament.gameMode,
+        host: tournament.host,
+        imgURL: tournament.imgURL,
+        isFeatured: tournament.isFeatured,
+        map: tournament.map,
+        matches: tournament.matches,
+        max: tournament.max,
+        min: tournament.min,
+        participants: tournament.participants,
+        prizes: tournament.prizes,
+        rewardType: tournament.rewardType,
+        roomID: tournament.roomID,
+        roomPass: tournament.roomPass,
+        rulesDetails: tournament.rulesDetails,
+        startTime: tournament.startTime,
+        status: tournament.status,
+        teamType: tournament.teamType,
+        tournTitle: tournament.tournTitle,
+        winners: tournament.winners,
+        ytLiveURL: tournament.ytLiveURL,
+    })
+
+
     const [prizesData, setPrizesData] = useState(tournament.prizes); // Initial state with a number
 
     const addPrize = () => {
@@ -95,7 +120,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
     }
 
     // handle winners
-    const [winnerData, setWinnerData] = useState([]);
+    const [winnerData, setWinnerData] = useState(tournament.winners);
     useEffect(() => {
         setUpdatedTournament((prevData) => ({
             ...prevData,
@@ -106,6 +131,8 @@ export const UpdateFFTournHost = ({ tournament }) => {
     useEffect(() => {
         if (updatedTournament.status !== 'Finished') {
             setWinnerData([]);
+        } else {
+            setWinnerData(tournament.winners)
         }
     }, [updatedTournament.status])
 
@@ -140,19 +167,19 @@ export const UpdateFFTournHost = ({ tournament }) => {
         }
     }
 
-    // const handleFinalUpdate = async () => {
-    //     // yet to implement prize distribution on finished status
-    //     setProgress(60)
-    //     try {
-    //         await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, updatedTournament)
-    //         toast.success("Tournament updated successfully")
-    //     } catch (error) {
-    //         toast.error(error.message)
-    //     }
-    //     setConfirmationModal(false)
-    //     setProgress(100)
-
-    // }
+    const handleFinalUpdate = async () => {
+        // yet to implement prize distribution on finished status
+        setProgress(60)
+        try {
+            await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, updatedTournament)
+            toast.success("Tournament updated successfully")
+        } catch (error) {
+            toast.error(error.message)
+        }
+        setConfirmationModal(false)
+        onClose();
+        setProgress(100)
+    }
 
     return (
         <>
@@ -170,7 +197,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
                         <div className='grid md:grid-cols-2 grid-cols-1 md:col-span-7 col-span-12 gap-x-3 gap-y-2'>
                             <div className="flex flex-col gap-1">
                                 <div>Entry Fee</div>
-                                <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='entryFee' type="number" value={updatedTournament.entryFee} placeholder='Eg. 0' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0 || tournament.status === "Finished"} name='entryFee' type="number" value={updatedTournament.entryFee} placeholder='Eg. 0' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Game Mode</div>
@@ -186,7 +213,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Reward Type</div>
-                                <select onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name="rewardType" id="" value={updatedTournament.rewardType} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                <select onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0 || tournament.status === "Finished"} name="rewardType" id="" value={updatedTournament.rewardType} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                     <option value="eg_coin">EG Coin</option>
                                 </select>
                             </div>
@@ -196,18 +223,18 @@ export const UpdateFFTournHost = ({ tournament }) => {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Change Time</div>
-                                <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='startTime' type="datetime-local" className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0 || tournament.status === "Finished"} name='startTime' type="datetime-local" className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                         </div>
                     </div>
                     <div className="grid md:grid-cols-3 grid-cols-1 mt-5 gap-3">
                         <div className="flex flex-col gap-1">
                             <div>Matches</div>
-                            <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='matches' type="number" value={updatedTournament.matches} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                            <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0 || tournament.status === "Finished"} name='matches' type="number" value={updatedTournament.matches} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                         </div>
                         <div className="flex flex-col gap-1">
                             <div>Map</div>
-                            <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0} name='map' type="text" value={updatedTournament.map} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                            <input onChange={(e) => handleInputChange(e)} disabled={participantDetails.length != 0 || tournament.status === "Finished"} name='map' type="text" value={updatedTournament.map} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                         </div>
                         <div className="flex flex-col gap-1">
                             <div>Hosted By</div>
@@ -228,6 +255,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
                                         value={prize}
                                         onChange={(e) => handlePrizeChange(index, e.target.value)}
                                         min={0}
+                                        disabled={tournament.status === "Finished"}
                                     />
                                     {index === prizesData.length - 1 && (
                                         <div onClick={addPrize} className='w-14 h-11 text-xl flex justify-center items-center bg-secondaryLight cursor-pointer rounded'>
@@ -242,8 +270,8 @@ export const UpdateFFTournHost = ({ tournament }) => {
                     <div className="grid grid-cols-12 mt-5 gap-3">
                         <div className="flex flex-col gap-3 md:col-span-6 col-span-12 bg-slate-500 bg-opacity-15 p-3 border-[1px] border-inactive border-opacity-30 rounded-[5px]">
                             <div className="flex flex-col gap-1">
-                                <div>updatedTournament Title</div>
-                                <input onChange={(e) => handleInputChange(e)} name='tournTitle' type="text" value={updatedTournament.tournTitle} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <div>Tournament Title</div>
+                                <input onChange={(e) => handleInputChange(e)} disabled={tournament.status === "Finished"} name='tournTitle' type="text" value={updatedTournament.tournTitle} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Thumbnail URL</div>
@@ -251,19 +279,19 @@ export const UpdateFFTournHost = ({ tournament }) => {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Max Participants</div>
-                                <input onChange={(e) => handleInputChange(e)} name='max' type="number" value={updatedTournament.max} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={tournament.status === "Finished"} name='max' type="number" value={updatedTournament.max} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Min Participants</div>
-                                <input onChange={(e) => handleInputChange(e)} name='min' type="number" value={updatedTournament.min} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={tournament.status === "Finished"} name='min' type="number" value={updatedTournament.min} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Room ID</div>
-                                <input onChange={(e) => handleInputChange(e)} name='roomID' type="text" value={updatedTournament.roomID || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={tournament.status === "Finished"} name='roomID' type="text" value={updatedTournament.roomID || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Room Pass</div>
-                                <input onChange={(e) => handleInputChange(e)} name='roomPass' type="text" value={updatedTournament.roomPass || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
+                                <input onChange={(e) => handleInputChange(e)} disabled={tournament.status === "Finished"} name='roomPass' type="text" value={updatedTournament.roomPass || ''} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>YT Video URL</div>
@@ -278,7 +306,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <div>Rules & Details</div>
-                                <textarea onChange={(e) => handleInputChange(e)} value={updatedTournament.rulesDetails} name="rulesDetails" id="" cols="30" rows="12" placeholder='Rules, Details, and Guides' className='bg-secondary custom-scrollbar py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
+                                <textarea onChange={(e) => handleInputChange(e)} disabled={tournament.status === "Finished"} value={updatedTournament.rulesDetails} name="rulesDetails" id="" cols="30" rows="12" placeholder='Rules, Details, and Guides' className='bg-secondary custom-scrollbar py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
                             </div>
 
                         </div>
@@ -329,7 +357,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
                                     {tournament.prizes.map((prize, index) => (
                                         <div key={index} className="flex gap-3 items-center bg-secondary rounded-[5px] border-2 border-inactive border-opacity-20">
                                             <div className='ml-3'>#{index + 1}</div>
-                                            <input disabled={updatedTournament.status != "Finished"} value={winnerData[index] || ''} onChange={(e) => handleWinnerChange(index, e.target.value)} type="text" placeholder={`EG Username of #${index + 1}`} className='bg-transparent w-full py-2 px-3  placeholder:text-sm placeholder:text-inactive focus:outline-none' />
+                                            <input disabled={updatedTournament.status != "Finished" || tournament.status === "Finished"} value={winnerData[index] || ''} onChange={(e) => handleWinnerChange(index, e.target.value)} type="text" placeholder={`EG Username of #${index + 1}`} className='bg-transparent w-full py-2 px-3  placeholder:text-sm placeholder:text-inactive focus:outline-none' />
                                         </div>
                                     ))}
 
@@ -339,7 +367,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
 
                             <div className="flex flex-col gap-1">
                                 <div>Status</div>
-                                <select onChange={handleInputChange} name="status" id="" value={updatedTournament.status} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                <select disabled={tournament.status === "Finished"} onChange={handleInputChange} name="status" id="" value={updatedTournament.status} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                     <option value="Open">Open</option>
                                     <option value="Ongoing">Ongoing</option>
                                     <option value="Finished">Finished</option>
@@ -352,7 +380,7 @@ export const UpdateFFTournHost = ({ tournament }) => {
 
                     </div>
 
-                    {(tournament.status === "Open" || tournament.status === "Ongoing") && <button onClick={handleUpdate} className='self-center mt-4 hover:bg-primary transition-colors hover:text-secondary duration-300 bg-secondaryLight w-48 px-3 py-2 rounded-[5px] font-bold text-offBlue'>Update</button>}
+                    {tournament.status !== "Aborted" && <button onClick={handleUpdate} className='self-center mt-4 hover:bg-primary transition-colors hover:text-secondary duration-300 bg-secondaryLight w-48 px-3 py-2 rounded-[5px] font-bold text-offBlue'>Update</button>}
                 </div>
             </div>
 
