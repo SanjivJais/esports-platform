@@ -3,10 +3,12 @@ import { Modal } from '../Modal';
 import { FaRegClock } from 'react-icons/fa6';
 import { HiMiniTrophy } from 'react-icons/hi2';
 import { UpdateFFTournHost } from './UpdateFFTournHost';
+import { FFTournModalComponent } from './FFTournModalComponent'
 
 
 export const FFTournHostPreview = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
+    const [showUserviewModal, setShowUserviewModal] = useState(false);
     let totalPrize = 0;
     for (let index = 0; index < tournament.prizes.length; index++) {
         totalPrize += tournament.prizes[index];
@@ -102,21 +104,22 @@ export const FFTournHostPreview = ({ tournament }) => {
                 </div>
                 <div className="h-[0.8px] bg-inactive bg-opacity-30 my-4"></div>
                 <div className="flex justify-between">
-                    <div>
-                        <label htmlFor="" className='text-[12px] text-dimText'>STARTING</label>
-                        <div className='font-semibold flex gap-2'><span>{formatDateTime(tournament.startTime).date} . {formatDateTime(tournament.startTime).time}</span> </div>
-                    </div>
+                    <button onClick={() => setShowUserviewModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>View as User</button>
+
                     {(tournament.status == "Open" || tournament.status == "Ongoing") ?
                         <button onClick={() => setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>Update</button>
                         :
-                        <button onClick={() => setShowModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>See Details</button>
-
+                        <button onClick={() => setShowModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-ongoingStatus border-opacity-45 text-ongoingStatus'>View as Admin</button>
                     }
+
                 </div>
 
             </div>
             <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
                 <UpdateFFTournHost tournament={tournament} onClose={() => setShowModal(false)} />
+            </Modal>
+            <Modal isVisible={showUserviewModal} onClose={() => setShowUserviewModal(false)}>
+                <FFTournModalComponent tournament={tournament} onClose={() => setShowUserviewModal(false)} />
             </Modal>
         </div>
     )

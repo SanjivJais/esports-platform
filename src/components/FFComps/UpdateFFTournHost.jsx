@@ -6,8 +6,11 @@ import { toast } from 'react-toastify';
 import { Query } from 'appwrite';
 import LoadingBar from 'react-top-loading-bar';
 import { Modal } from '../Modal'
+import { useNavigate } from 'react-router-dom'
+
 
 export const UpdateFFTournHost = ({ tournament, onClose }) => {
+    const navigate = useNavigate();
 
     // formatting datetime 
     const formatDateTime = (dateTimeString) => {
@@ -29,29 +32,6 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
 
 
     const [updatedTournament, setUpdatedTournament] = useState({
-        entryFee: tournament.entryFee,
-        gameMode: tournament.gameMode,
-        host: tournament.host,
-        imgURL: tournament.imgURL,
-        isFeatured: tournament.isFeatured,
-        map: tournament.map,
-        matches: tournament.matches,
-        max: tournament.max,
-        min: tournament.min,
-        participants: tournament.participants,
-        prizes: tournament.prizes,
-        rewardType: tournament.rewardType,
-        roomID: tournament.roomID,
-        roomPass: tournament.roomPass,
-        rulesDetails: tournament.rulesDetails,
-        startTime: tournament.startTime,
-        status: tournament.status,
-        teamType: tournament.teamType,
-        tournTitle: tournament.tournTitle,
-        winners: tournament.winners,
-        ytLiveURL: tournament.ytLiveURL,
-    })
-    const [tempTournament, setTempTournament] = useState({
         entryFee: tournament.entryFee,
         gameMode: tournament.gameMode,
         host: tournament.host,
@@ -238,6 +218,14 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
         setConfirmationModal(false)
         onClose();
         setProgress(100)
+        toast.info("Page will refresh shortly", {
+            autoClose: 2500,
+            hideProgressBar: false,
+        })
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 2500)
+
     }
 
     return (
@@ -314,7 +302,7 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
                                         value={prize}
                                         onChange={(e) => handlePrizeChange(index, e.target.value)}
                                         min={0}
-                                        disabled={tournament.status === "Finished"}
+                                        disabled={tournament.status === "Finished" || tournament.prizes[index] != null}
                                     />
                                     {index === prizesData.length - 1 && (
                                         <div onClick={addPrize} className='w-14 h-11 text-xl flex justify-center items-center bg-secondaryLight cursor-pointer rounded'>

@@ -462,7 +462,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                                 tournament.status === "Aborted" ?
                                     <>
                                         <div className='p-4 text-offBlue'>
-                                            <p>This tournament has been aborted. This could be due to several reasons such as insufficient joinings, technical issues, etc. </p>
+                                            <p>This tournament has been aborted. This could be due to several reasons such as insufficient participants, technical issues, etc. </p>
                                             <p className='mt-2'>Joining fees of participants have been <strong className='text-primary'>refunded</strong>. Apologies for the inconvenience caused.</p>
                                         </div>
                                     </>
