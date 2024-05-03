@@ -110,7 +110,9 @@ export const Profile = () => {
   }
 
   const handleUsernameEdit = async () => {
-    if (usernameChange != null && usernameChange != '') {
+
+    const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+    if (usernameRegex.test(usernameChange) && usernameChange.length >= 3 && usernameChange.length <= 20) {
       try {
         await database.updateDocument(db_id, 'user_details', user.$id, { 'username': usernameChange })
         setUserDetails((prevData) => ({
@@ -124,8 +126,11 @@ export const Profile = () => {
         else
           toast.error(error.message)
       }
+      setUsernameChangeEnable(false)
+    } else {
+      toast.error("Username must only contain alphabets, numbers, underscore, and hypen. It must be between 3 and 20 characters")
     }
-    setUsernameChangeEnable(false)
+
   }
 
   const [gameProfileModal, setGameProfileModal] = useState(false)

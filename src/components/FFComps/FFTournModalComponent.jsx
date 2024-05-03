@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { MdInfo } from "react-icons/md";
+import { MdInfo, MdTry } from "react-icons/md";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import ReactHtmlParser from 'react-html-parser';
 import { Modal } from '../Modal';
@@ -449,7 +449,10 @@ export const FFTournModalComponent = ({ tournament }) => {
                                     {tournament.winners && tournament.winners.map((winner, index) => (
                                         <div key={index}>
                                             <div className='py-4 px-4 flex justify-between'>
-                                                <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{winner}</span></h3>
+                                                <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />}
+                                                    <span>{winner}</span>
+                                                </h3>
+
                                                 <div className='flex gap-2 items-center'>{tournament.rewardType === "eg_coin" && <img className='' src="/icons/Coin.svg" alt="" />} {tournament.prizes[index]}</div>
                                             </div>
                                         </div>
@@ -458,7 +461,10 @@ export const FFTournModalComponent = ({ tournament }) => {
                                 :
                                 tournament.status === "Aborted" ?
                                     <>
-
+                                        <div className='p-4 text-offBlue'>
+                                            <p>This tournament has been aborted. This could be due to several reasons such as insufficient joinings, technical issues, etc. </p>
+                                            <p className='mt-2'>Joining fees of participants have been <strong className='text-primary'>refunded</strong>. Apologies for the inconvenience caused.</p>
+                                        </div>
                                     </>
                                     :
                                     <>
@@ -493,9 +499,9 @@ export const FFTournModalComponent = ({ tournament }) => {
                                     <div onClick={handleExitConfirmation} className='flex cursor-pointer hover:text-red-500 transition-colors duration-200 font-semibold my-2 justify-center items-center gap-1 text-sm text-offBlue'><span>Exit from this tournament</span><span><BiSolidExit /></span></div>
                                 </div>
                             }
-                            {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
-                            {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
-                            {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-35 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                            {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                            {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                            {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
 
                         </div>
 

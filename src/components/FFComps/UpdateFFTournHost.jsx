@@ -143,7 +143,7 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
     }
 
     // handle winners
-    const [winnerData, setWinnerData] = useState(tournament.winners);
+    const [winnerData, setWinnerData] = useState(tournament.winners);   // winnerData contains usernames of winners
     useEffect(() => {
         setUpdatedTournament((prevData) => ({
             ...prevData,
@@ -181,9 +181,19 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
     const handleUpdate = () => {
         if (updatedTournament.status == "Finished") {
             if (updatedTournament.winners.filter(item => item.trim() !== '').length == updatedTournament.prizes.length) {
-                setConfirmationModal(true)
+                let usernameArray = participantDetails.map(user => user.username)
+                let count = 0;
+                for (let i = 0; i < winnerData.length; i++) {
+                    if (usernameArray.includes(winnerData[i]))
+                        ++count;
+                }
+                if (count == winnerData.length) {
+                    setConfirmationModal(true)
+                } else {
+                    toast.error(`At least one user is not in participants list, recheck please!`)
+                }
             } else {
-                toast.info("Winners must be specified")
+                toast.info("All winners must be specified")
             }
         } else {
             setConfirmationModal(true)
@@ -206,15 +216,19 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
 
                         let updatedCoin = coin + prize;
                         await database.updateDocument(db_id, 'user_details', userData.documents[0].$id, { 'eg_coin': updatedCoin })
+                        toast.success(`${winnerUsername}: ${coin} + ${prize} (Prize#${index + 1}) = ${updatedCoin}`, {
+                            autoClose: false,
+                        })
                     } else {
-                        toast.error("Multiple users found with same EG username!")
+                        toast.error(`User '${winnerUsername}' not found!`, { autoClose: false, })
                     }
                 }
-                toast.success("Prize distributed successively!")
+
             } catch (error) {
                 toast.error(error.message)
             }
         }
+
         try {
             await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, updatedTournament)
             toast.success("Tournament updated")
