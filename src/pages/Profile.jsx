@@ -54,6 +54,7 @@ export const Profile = () => {
   const handleProfPicInput = async (event) => {
     const pic = event.target.files[0];
     try {
+      setProgress(40)
       const response = await storage.createFile(
         'profile_pics',
         ID.unique(),
@@ -69,12 +70,14 @@ export const Profile = () => {
       } catch (error) {
         toast.error(error.message);
       }
+      toast.success("Profile picture updated!")
     } catch (error) {
       if (error.message == "File size not allowed")
         toast.error("Image must be less than 2MB");
       else
         toast.error(error.message);
     }
+    setProgress(100)
   }
 
   const [nameChange, setNameChange] = useState(user.name);
@@ -220,52 +223,52 @@ export const Profile = () => {
   }
 
   // game profile deletion
-  const [deleteFFProfileModal, setDeleteFFProfileModal] = useState(false)
-  const handleFFProfileDeletion = async () => {
-    setProgress(40)
-    try {
-      await database.deleteDocument(db_id, 'ff_profiles', user.$id)
-      try {
-        await database.updateDocument(db_id, 'user_details', user.$id, { 'ff_profile': false })
-        setUserDetails((prevData) => ({
-          ...prevData,
-          ff_profile: false
-        }))
-        setProgress(70)
-        setFFProfile(null)
-        setDeleteFFProfileModal(false);
-      } catch (error) {
-        toast.error("An error occurred")
-      }
-    } catch (error) {
-      toast.error("An error occurred")
-    }
-    setProgress(100)
-  }
+  // const [deleteFFProfileModal, setDeleteFFProfileModal] = useState(false)
+  // const handleFFProfileDeletion = async () => {
+  //   setProgress(40)
+  //   try {
+  //     await database.deleteDocument(db_id, 'ff_profiles', user.$id)
+  //     try {
+  //       await database.updateDocument(db_id, 'user_details', user.$id, { 'ff_profile': false })
+  //       setUserDetails((prevData) => ({
+  //         ...prevData,
+  //         ff_profile: false
+  //       }))
+  //       setProgress(70)
+  //       setFFProfile(null)
+  //       setDeleteFFProfileModal(false);
+  //     } catch (error) {
+  //       toast.error("An error occurred")
+  //     }
+  //   } catch (error) {
+  //     toast.error("An error occurred")
+  //   }
+  //   setProgress(100)
+  // }
 
-  const [deletePubgProfileModal, setDeletePubgProfileModal] = useState(false)
-  const handlePubgProfileDeletion = async () => {
-    setProgress(40)
-    try {
-      await database.deleteDocument(db_id, 'pubg_profiles', user.$id)
-      try {
-        await database.updateDocument(db_id, 'user_details', user.$id, { 'pubg_profile': false })
-        setUserDetails((prevData) => ({
-          ...prevData,
-          pubg_profile: false
-        }))
-        setProgress(70)
-        setPUBGProfile(null)
-        setDeletePubgProfileModal(false);
-      } catch (error) {
-        toast.error("An error occurred")
-      }
-    } catch (error) {
-      toast.error("An error occurred")
-    }
-    setProgress(100)
+  // const [deletePubgProfileModal, setDeletePubgProfileModal] = useState(false)
+  // const handlePubgProfileDeletion = async () => {
+  //   setProgress(40)
+  //   try {
+  //     await database.deleteDocument(db_id, 'pubg_profiles', user.$id)
+  //     try {
+  //       await database.updateDocument(db_id, 'user_details', user.$id, { 'pubg_profile': false })
+  //       setUserDetails((prevData) => ({
+  //         ...prevData,
+  //         pubg_profile: false
+  //       }))
+  //       setProgress(70)
+  //       setPUBGProfile(null)
+  //       setDeletePubgProfileModal(false);
+  //     } catch (error) {
+  //       toast.error("An error occurred")
+  //     }
+  //   } catch (error) {
+  //     toast.error("An error occurred")
+  //   }
+  //   setProgress(100)
 
-  }
+  // }
 
   // game profile edits 
   const [ffProfileEditEnable, setFFProfileEditEnable] = useState(false)
@@ -471,7 +474,7 @@ export const Profile = () => {
                     </div>
                     <div className="md:hidden md:group-hover:flex flex gap-1 text-inactive">
                       <FaRegEdit onClick={() => setFFProfileEditEnable(true)} className='cursor-pointer' />
-                      <MdDelete onClick={() => setDeleteFFProfileModal(true)} className='cursor-pointer' />
+                      {/* <MdDelete onClick={() => setDeleteFFProfileModal(true)} className='cursor-pointer' /> */}
                     </div>
                   </div>)
                 }
@@ -499,7 +502,7 @@ export const Profile = () => {
                     </div>
                     <div className="md:group-hover:flex md:hidden flex gap-1 text-inactive">
                       <FaRegEdit onClick={() => setPubgProfileEditEnable(true)} className='cursor-pointer' />
-                      <MdDelete onClick={() => setDeletePubgProfileModal(true)} className='cursor-pointer' />
+                      {/* <MdDelete onClick={() => setDeletePubgProfileModal(true)} className='cursor-pointer' /> */}
                     </div>
                   </div>)
                 }
@@ -623,7 +626,7 @@ export const Profile = () => {
         </div>
       </Modal>
 
-      <Modal isVisible={deleteFFProfileModal} onClose={() => setDeleteFFProfileModal(false)}>
+      {/* <Modal isVisible={deleteFFProfileModal} onClose={() => setDeleteFFProfileModal(false)}>
         <div className='w-64 py-4 px-6 flex flex-col content-center'>
           <div className='my-8 flex flex-col gap-3'>
             <div className='text-center'>Are you sure you want to remove your Free Fire profile?</div>
@@ -645,7 +648,7 @@ export const Profile = () => {
             </div>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
 
 
       <Modal isVisible={chooseGameModal} onClose={() => setChooseGameModal(false)}>

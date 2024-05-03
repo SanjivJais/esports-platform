@@ -181,7 +181,6 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
     }
 
     const handleFinalUpdate = async () => {
-        // yet to implement prize distribution on finished status
         setProgress(40)
         if (updatedTournament.status === "Finished") {
             try {
@@ -209,6 +208,39 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
             }
         }
 
+        if (updatedTournament.status === "Aborted") {
+            if (tournament.entryFee > 0) {
+                try {
+                    const response = await database.getDocument(db_id, 'ff_tournaments', tournament.$id, [Query.select(['participants'])])
+                    if (response.participants.length > 0) {
+                        let count = 0;
+                        for (let i = 0; i < response.participants.length; i++) {
+                            const participantID = response.participants[i];
+                            try {
+                                const userRes = await database.getDocument(db_id, 'user_details', participantID, [Query.select(['eg_coin'])])
+                                let coin = userRes.eg_coin;
+                                let updatedCoin = coin + tournament.entryFee;
+                                try {
+                                    await database.updateDocument(db_id, 'user_details', participantID, { 'eg_coin': updatedCoin })
+                                    count++;
+                                } catch (error) {
+                                    toast.error("Error updating funds of participants!")
+                                }
+                            } catch (error) {
+                                toast.error(`Error fetching funds of participants!`)
+                            }
+                        }
+
+                        if (count == response.participants.length)
+                            toast.success(`Entry fees of ${count} participants refunded successfully!`)
+                    }
+                } catch (error) {
+
+                }
+
+            }
+        }
+
         try {
             await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, updatedTournament)
             toast.success("Tournament updated")
@@ -218,13 +250,17 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
         setConfirmationModal(false)
         onClose();
         setProgress(100)
+        let pauseTime = 2500
+        if (updatedTournament.status === "Finished") {
+            pauseTime = 5000
+        }
         toast.info("Page will refresh shortly", {
-            autoClose: 2500,
+            autoClose: pauseTime,
             hideProgressBar: false,
         })
         setTimeout(() => {
             window.location.reload(true);
-        }, 2500)
+        }, pauseTime)
 
     }
 
