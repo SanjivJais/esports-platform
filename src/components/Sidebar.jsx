@@ -27,8 +27,8 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       icon: <FaTrophy />,
       submenu: true,
       submenuItems: [
-        { title: 'PUBG Mobile', link: '/tournaments/pubg' },
         { title: 'Free Fire', link: '/tournaments/freefire' },
+        { title: 'PUBG Mobile', link: '/tournaments/pubg' },
       ]
     },
     {

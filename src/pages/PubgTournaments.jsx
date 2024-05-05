@@ -193,6 +193,12 @@ export const PubgTournaments = () => {
           </div>
           <div className="h-[0.8px] bg-inactive bg-opacity-20 my-10"></div>
 
+          <div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
+            <div className='flex flex-col gap-3 items-center text-xl font-bold '>
+              {/* <FaPeopleGroup className='text-4xl' /> */}
+              Coming Soon!
+            </div>
+          </div>
           <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-3 content-center">
             {/* {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
               <PubgSquareTournamentCard key={index}

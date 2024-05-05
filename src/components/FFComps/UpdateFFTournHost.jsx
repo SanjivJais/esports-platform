@@ -254,6 +254,7 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
         if (updatedTournament.status === "Finished") {
             pauseTime = 5000
         }
+
         toast.info("Page will refresh shortly", {
             autoClose: pauseTime,
             hideProgressBar: false,

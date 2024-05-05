@@ -117,12 +117,18 @@ export const Profile = () => {
     const usernameRegex = /^[a-zA-Z0-9_-]+$/;
     if (usernameRegex.test(usernameChange) && usernameChange.length >= 3 && usernameChange.length <= 20) {
       try {
-        await database.updateDocument(db_id, 'user_details', user.$id, { 'username': usernameChange })
-        setUserDetails((prevData) => ({
-          ...prevData,
-          username: usernameChange
-        }))
-        toast.success("Username claimed");
+        const fetchDetails = await database.getDocument(db_id, 'user_details', user.$id, [Query.select(['username'])])
+        if (!fetchDetails.username) {
+          await database.updateDocument(db_id, 'user_details', user.$id, { 'username': usernameChange })
+          setUserDetails((prevData) => ({
+            ...prevData,
+            username: usernameChange
+          }))
+          toast.success("Username claimed");
+        } else {
+          toast.error("You already have a username!")
+        }
+
       } catch (error) {
         if (error.code == '409')
           toast.error("Username already taken, choose another")
@@ -271,7 +277,7 @@ export const Profile = () => {
   // }
 
   // game profile edits 
-  
+
   const [ffProfileEditEnable, setFFProfileEditEnable] = useState(false)
   const ffProfileEdit = async () => {
     const ffProfileEditName = document.getElementById('ffProfileEditName').value
