@@ -67,8 +67,8 @@ export const FFTournHostPreview = ({ tournament }) => {
         <div className='w-full h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
             <div className={`flex flex-col justify-between rounded-br-none rounded-bl-none w-full h-52`} style={cardStyles}>
                 <div className="flex justify-between px-2 pt-2">
-                    <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-semibold flex items-center gap-1'><FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>
                     <div className='bg-secondary h-fit bg-opacity-90 relative text-[12px] px-3 py-[3px] rounded-xl'>Free Fire</div>
+                    {tournament.status === "Open" && <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-semibold flex items-center gap-1'><FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
                 </div>
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>
                     <div className="flex justify-between  text-[13px] mb-1">

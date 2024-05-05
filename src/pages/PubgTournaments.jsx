@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { PubgSquareTournamentCard } from '../components/PUBGComps/PubgSquareTournamentCard'
 import LoadingBar from 'react-top-loading-bar'
 
 export const PubgTournaments = () => {
@@ -195,11 +194,11 @@ export const PubgTournaments = () => {
           <div className="h-[0.8px] bg-inactive bg-opacity-20 my-10"></div>
 
           <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-3 content-center">
-            {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
+            {/* {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
               <PubgSquareTournamentCard key={index}
                 tournament={tournament}
               />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard'
-import { PubgSquareTournamentCard } from '../components/PUBGComps/PubgSquareTournamentCard'
 import { Slider } from '../components/Slider'
 import { FaTrophy } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -144,11 +143,11 @@ export const Home = () => {
 
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View All »</Link></div>
         <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
-          {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
+          {/* {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
             <PubgSquareTournamentCard key={index}
               tournament={tournament}
             />
-          ))}
+          ))} */}
         </div>
       </div>
     </>

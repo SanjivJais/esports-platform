@@ -271,6 +271,7 @@ export const Profile = () => {
   // }
 
   // game profile edits 
+  
   const [ffProfileEditEnable, setFFProfileEditEnable] = useState(false)
   const ffProfileEdit = async () => {
     const ffProfileEditName = document.getElementById('ffProfileEditName').value

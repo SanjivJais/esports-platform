@@ -100,8 +100,6 @@ export const FFTournModalComponent = ({ tournament }) => {
 
     const [joinConfirmationModal, setJoinConfirmationModal] = useState(null);
 
-
-
     const handleJoinConfirmation = () => {
         if (user) {
             if (userDetails && userDetails.username) {
@@ -169,9 +167,50 @@ export const FFTournModalComponent = ({ tournament }) => {
     }
 
     const [exitConfirmationModal, setExitConfirmationModal] = useState(false)
-    const handleExitConfirmation = () => {
-        //check if the exiting time is valid 
-        // console.log(tournament);
+    const handleExitConfirmation = async () => {
+        setProgress(40)
+        try {
+            const tournStatus = await database.getDocument(db_id, 'ff_tournaments', tournament.$id, [Query.select(['status'])])
+            if (tournStatus.status === "Open") {
+                setExitConfirmationModal(true)
+            } else {
+                toast.info("You can only exit from tournament until its status is Open!")
+            }
+            setProgress(80)
+        } catch (error) {
+            toast.error('Something went wrong')
+        }
+        setProgress(100)
+    }
+
+    const handleFinalExitConfirmation = async () => {
+        setProgress(40)
+        try {
+            const tournParticipants = await database.getDocument(db_id, 'ff_tournaments', tournament.$id, [Query.select(['participants', 'entryFee'])])
+            const userData = await database.getDocument(db_id, 'user_details', user.$id, [Query.select(['ffTournaments', 'eg_coin'])])
+
+            const updatedParticipants = tournParticipants.participants.filter((participant) => participant !== user.$id)
+            const updatedParticipatedTourns = userData.ffTournaments.filter((tourn) => tourn !== tournament.$id)
+
+            await database.updateDocument(db_id, 'ff_tournaments', tournament.$id, { 'participants': updatedParticipants })
+
+            let coin = userData.eg_coin;
+            let updatedCoin = coin + Math.floor(tournParticipants.entryFee * 0.90)
+            await database.updateDocument(db_id, 'user_details', user.$id, { 'ffTournaments': updatedParticipatedTourns, 'eg_coin': updatedCoin })
+            setUserDetails((prevData) => ({
+                ...prevData,
+                'eg_coin': updatedCoin
+            }))
+            setProgress(70)
+
+            toast.success("Exited successfully!")
+            setJoinStatus(false)
+            setExitConfirmationModal(false)
+        } catch (error) {
+            toast.error("Something went wrong!")
+        }
+        setProgress(100)
+
     }
 
 
@@ -222,7 +261,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                 }}>
                     <div className="flex gap-2 items-center pt-3 pl-3">
                         <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Free Fire</div>
-                        <div title='Time left to start' className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>
+                        {tournament.status === "Open" && <div title='Time left to start' className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
                     </div>
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">
@@ -463,7 +502,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                                     <>
                                         <div className='p-4 text-offBlue'>
                                             <p>This tournament has been aborted. This could be due to several reasons such as insufficient participants, technical issues, etc. </p>
-                                            <p className='mt-2'>Joining fees of participants have been <strong className='text-primary'>refunded</strong>. Apologies for the inconvenience caused.</p>
+                                            <p className='mt-2'>100% Joining fees of participants have been <strong className='text-primary'>refunded</strong>. Apologies for the inconvenience caused.</p>
                                         </div>
                                     </>
                                     :
@@ -515,6 +554,21 @@ export const FFTournModalComponent = ({ tournament }) => {
                                 </div>
                             </div>
 
+                        </Modal>
+
+
+                        {/* exit confirmation modal  */}
+                        <Modal isVisible={exitConfirmationModal} onClose={() => setExitConfirmationModal(false)}>
+                            <div className='p-6 md:w-96 w-72'>
+                                <p className='mt-4 flex flex-col gap-1 items-center'>
+                                    <span> Are you sure?</span>
+                                    {tournament.entryFee > 0 && <span className='mx-2 flex items-center gap-1'>You will get <img className='' src="/icons/Coin.svg" alt="" /> {Math.floor(tournament.entryFee * 0.90)} <span className='text-inactive'>(90% of entry fee)</span> as refund!</span>}
+                                </p>
+                                <div className="flex w-full justify-evenly mt-7">
+                                    <button onClick={() => setExitConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
+                                    <button onClick={handleFinalExitConfirmation} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Confirm</button>
+                                </div>
+                            </div>
                         </Modal>
                     </div>
                 </div>

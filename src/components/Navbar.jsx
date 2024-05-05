@@ -13,57 +13,57 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
   // tournament data for the search results | steps: first select the game then input tournament id for search
   // example of Free Fire search results
-  const FFtournaments = [
-    {
-      gameTitle: 'Free Fire',
-      imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
-      maxPlayers: 48,
-      minPlayers: 25,
-      joinedPlayers: 30,
-      entryFree: 10,
-      gameMode: 'Clash Squad',
-      gameType: 'Squad',
-      rewardType: 'coin',
-      firstPrize: 70,
-      secondPrize: 20,
-      thirdPrize: 10,
-      startDate: 'May 3, 2024',
-      startTime: '2:00 PM',
-      host: 'EsportsGravity',
-      status: 'Open',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      watchLiveURL2: '',
-      rulesDetails: '',
-    },
-    {
-      id: 'op23no90284#nod00',
-      gameTitle: 'Free Fire',
-      imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/9f72d23636bc8b9188a21fb62a0d3742.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      maxPlayers: 48,
-      minPlayers: 25,
-      joinedPlayers: 40,
-      entryFree: 10,
-      gameMode: 'Clash Squad',
-      gameType: 'Squad',
-      rewardType: 'coin',
-      firstPrize: 70,
-      secondPrize: 20,
-      thirdPrize: 10,
-      startDate: 'May 3, 2024',
-      startTime: '2:00 PM',
-      host: 'EsportsGravity',
-      status: 'Closed',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      watchLiveURL2: '',
-      rulesDetails: '',
-    },
+  // const FFtournaments = [
+  //   {
+  //     gameTitle: 'Free Fire',
+  //     imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
+  //     maxPlayers: 48,
+  //     minPlayers: 25,
+  //     joinedPlayers: 30,
+  //     entryFree: 10,
+  //     gameMode: 'Clash Squad',
+  //     gameType: 'Squad',
+  //     rewardType: 'coin',
+  //     firstPrize: 70,
+  //     secondPrize: 20,
+  //     thirdPrize: 10,
+  //     startDate: 'May 3, 2024',
+  //     startTime: '2:00 PM',
+  //     host: 'EsportsGravity',
+  //     status: 'Open',
+  //     roomID: '',
+  //     roomPass: '',
+  //     ytLiveURL: '',
+  //     watchLiveURL2: '',
+  //     rulesDetails: '',
+  //   },
+  //   {
+  //     id: 'op23no90284#nod00',
+  //     gameTitle: 'Free Fire',
+  //     imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/9f72d23636bc8b9188a21fb62a0d3742.jpg',
+  //     tournTitle: 'EG Summar Clash #1',
+  //     maxPlayers: 48,
+  //     minPlayers: 25,
+  //     joinedPlayers: 40,
+  //     entryFree: 10,
+  //     gameMode: 'Clash Squad',
+  //     gameType: 'Squad',
+  //     rewardType: 'coin',
+  //     firstPrize: 70,
+  //     secondPrize: 20,
+  //     thirdPrize: 10,
+  //     startDate: 'May 3, 2024',
+  //     startTime: '2:00 PM',
+  //     host: 'EsportsGravity',
+  //     status: 'Closed',
+  //     roomID: '',
+  //     roomPass: '',
+  //     ytLiveURL: '',
+  //     watchLiveURL2: '',
+  //     rulesDetails: '',
+  //   },
 
-  ]
+  // ]
 
   const { user, logoutUser, userDetails } = useAuth();
   const [searchEnable, setSearchEnable] = useState(null);
@@ -127,11 +127,11 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
           </div>
           <div className='overflow-auto mb-6 grid md:grid-cols-2 grid-cols-1 w-full gap-8 custom-scrollbar md:px-10 px-2'>
             {/* search results here  */}
-            {FFtournaments && FFtournaments.map((tournament, index) => (
+            {/* {FFtournaments && FFtournaments.map((tournament, index) => (
               <FFSquareTournamentCard key={index}
                 tournament={tournament}
               />
-            ))}
+            ))} */}
           </div>
         </div>
       </Modal>
