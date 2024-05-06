@@ -46,8 +46,8 @@ export const Footer = () => {
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>GAMES</h4>
           <ul className='my-2 text-offBlue text-sm'>
-            <li className='w-fit my-2'><Link to={'/tournaments/pubg'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
             <li className='w-fit my-2'><Link to={'/tournaments/freefire'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Garena Free Fire</span></Link></li>
+            <li className='w-fit my-2'><Link to={'/tournaments/pubg'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
             
           </ul>
         </div>

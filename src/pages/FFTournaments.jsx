@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 import { ID, database, db_id } from '../../config/Appwrite';
 import { toast } from 'react-toastify'
 import { Query } from 'appwrite'
+import Breadcrumbs from '../components/Breadcrumbs';
 
 
 export const FFTournaments = () => {
@@ -84,6 +85,7 @@ export const FFTournaments = () => {
       </Helmet>
 
       <div className='flex flex-col items-center'>
+        <Breadcrumbs />
         <div className='flex flex-col justify-end h-72 w-full bg-[url("/images/free-fire-criminal-bundle-bg.jpg")] bg-cover bg-top'>
           <div className='bg-gradient-to-t from-frameBG to-transparent bg-cover h-full px-6 w-full'></div>
         </div>

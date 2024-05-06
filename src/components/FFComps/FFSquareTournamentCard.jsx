@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Modal } from '../Modal';
 import { FFTournModalComponent } from './FFTournModalComponent';
 import { HiMiniTrophy } from 'react-icons/hi2';
+import { FaRegClock } from 'react-icons/fa6';
 
 
 export const FFSquareTournamentCard = ({ tournament }) => {
@@ -30,6 +31,28 @@ export const FFSquareTournamentCard = ({ tournament }) => {
         return { date: formattedDate, time: formattedTime };
     };
 
+    const calculateTimeLeft = (targetDateTime) => {
+        // Parse the target date and time
+        const [dateString, timeString] = targetDateTime.split('T');
+        const [year, month, day] = dateString.split('-').map(Number);
+        const [hour, minute] = timeString.split(':').map(Number);
+
+        // Create a new Date object using the extracted components
+        const targetDate = new Date(year, month - 1, day, hour, minute);
+
+        // Get the current date and time
+        const currentDate = new Date();
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = targetDate - currentDate;
+
+        // Calculate days and hours left
+        const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        return { daysLeft, hoursLeft };
+    };
+
 
 
     const cardStyles = {
@@ -41,7 +64,10 @@ export const FFSquareTournamentCard = ({ tournament }) => {
     return (
         <div className='w-full h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
             <div className={`flex flex-col justify-between rounded-br-none rounded-bl-none w-full h-52`} style={cardStyles}>
-                <div className='self-end bg-secondary h-fit bg-opacity-80 relative text-[12px] px-3 py-[3px] rounded-xl top-2 right-2'>Free Fire</div>
+                <div className="flex justify-between px-2 pt-2">
+                    <div className='bg-secondary h-fit bg-opacity-90 relative text-[12px] px-3 py-[3px] rounded-xl'>Free Fire</div>
+                    {tournament.status === "Open" && <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-semibold flex items-center gap-1'><FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
+                </div>
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>
                     <div className="flex justify-between  text-[13px] mb-1">
                         <label htmlFor="" >Participants Joined</label>

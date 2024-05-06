@@ -28,7 +28,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       submenu: true,
       submenuItems: [
         { title: 'Free Fire', link: '/tournaments/freefire' },
-        { title: 'PUBG Mobile', link: '/tournaments/pubg' },
+        { title: 'PUBG Mobile', link: '/tournaments/pubgmobile' },
       ]
     },
     {

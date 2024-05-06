@@ -45,6 +45,11 @@ export const Search = () => {
         setProgress(100)
     }
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter')
+            handleSearch()
+    }
+
     return (
         <>
             <LoadingBar
@@ -60,7 +65,14 @@ export const Search = () => {
                     </select>
                     <span className='h-full w-[0.8px] bg-inactive bg-opacity-30'></span>
                     <div className="flex gap-2 items-center md:px-6 px-2 py-2 h-full w-full">
-                        <input onChange={handleSearchData} name='searchQuery' type="text" className='bg-transparent text-offBlue focus:outline-none w-full placeholder:text-inactive' placeholder='Tournament ID or Title' />
+                        <input
+                            onChange={handleSearchData}
+                            name='searchQuery'
+                            type="text"
+                            className='bg-transparent text-offBlue focus:outline-none w-full placeholder:text-inactive'
+                            placeholder='Tournament ID or Title'
+                            onKeyDown={handleKeyPress} // Listen for Enter key press
+                        />
                     </div>
                     <span className='h-full w-[0.8px] bg-inactive bg-opacity-20'></span>
                     <div onClick={handleSearch} className='md:px-6 px-2 hover:bg-frameBG h-full flex items-center cursor-pointer rounded-tr-3xl rounded-br-3xl transition-colors duration-200'><GoSearch className='text-lg text-inactive' /></div>

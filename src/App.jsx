@@ -33,7 +33,7 @@ function App() {
             <Route path='/' element={<ParentPage Page={<Home />} />} />
             <Route path='/games' element={<ParentPage Page={<Games />} />} />
             <Route path='/tournaments' element={<ParentPage Page={<Tournaments />} />} />
-            <Route path='/tournaments/pubg' element={<ParentPage Page={<PubgTournaments />} />} />
+            <Route path='/tournaments/pubgmobile' element={<ParentPage Page={<PubgTournaments />} />} />
             <Route path='/tournaments/freefire' element={<ParentPage Page={<FFTournaments />} />} />
             <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
 

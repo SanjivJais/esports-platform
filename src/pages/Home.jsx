@@ -142,12 +142,10 @@ export const Home = () => {
         <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
 
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View All »</Link></div>
-        <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
-          {/* {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
-            <PubgSquareTournamentCard key={index}
-              tournament={tournament}
-            />
-          ))} */}
+        <div className='w-full h-64 mt-4 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
+          <div className='flex flex-col gap-3 items-center text-xl font-bold '>
+            PUBG Tournaments will be Available Soon, Stay Tuned!
+          </div>
         </div>
       </div>
     </>
