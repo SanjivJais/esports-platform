@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { RiHome2Line } from 'react-icons/ri';
+import { MdHome } from 'react-icons/md';
+import { FaAngleRight } from 'react-icons/fa6';
 
 const Breadcrumbs = () => {
     const location = useLocation();
@@ -10,7 +11,7 @@ const Breadcrumbs = () => {
         const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
         const isLast = index === pathnames.length - 1;
         return {
-            name: pathname,
+            name: `${pathname === 'tournaments' ? 'Tournaments' : pathname === 'freefire' ? 'Free Fire' : pathname === 'pubgmobile' ? 'PUBG Mobile' : pathname === 'announcement' ? 'Announcements' : pathname === 'games' ? 'Games' :pathname}`,
             url: routeTo,
             active: isLast,
         };
@@ -29,18 +30,20 @@ const Breadcrumbs = () => {
 
     return (
         <nav className="breadcrumbs" aria-label="Breadcrumb" role="navigation">
-            <ol>
-                <li>
+            <ol className='flex items-center gap-[2px]'>
+                <li className='text-inactive hover:text-primary transition-colors duration-200'>
                     <Link to="/">
-                        <RiHome2Line />
+                        <MdHome />
                     </Link>
                 </li>
                 {breadcrumbsList.map((breadcrumb, index) => (
-                    <li key={breadcrumb.url} className={breadcrumb.active ? 'text-primary' : 'text-gray'}>
+                    <li key={breadcrumb.url} className={`${breadcrumb.active ? 'text-offBlue' : 'text-inactive'} flex gap-[2px] items-center`}>
+                        <span className='text-inactive text-sm'><FaAngleRight className='text-[12px]' /></span>
+
                         {breadcrumb.active ? (
                             <span>{breadcrumb.name}</span>
                         ) : (
-                            <Link to={breadcrumb.url}>{breadcrumb.name}</Link>
+                            <Link to={breadcrumb.url} className='hover:text-primary transition-colors duration-200'>{breadcrumb.name}</Link>
                         )}
                     </li>
                 ))}

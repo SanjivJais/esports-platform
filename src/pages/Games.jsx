@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar'
 import Breadcrumbs from '../components/Breadcrumbs'
+import { IoGameController } from 'react-icons/io5'
 
 export const Games = () => {
 
@@ -26,9 +27,9 @@ export const Games = () => {
 
       </Helmet>
 
+      <div className="py-3 pl-4"><Breadcrumbs /></div>
       <div className='p-4'>
-        <Breadcrumbs />
-        <h2 className='font-bold text-2xl text-offBlue'>Games</h2>
+        <h2 className='font-bold text-2xl text-offBlue flex items-center gap-2'><IoGameController /><span>Games</span></h2>
         <div className="grid md:grid-cols-6 gap-3 grid-cols-2 gap-y-3 my-4">
           <Link to={'/tournaments/freefire'} className="md:col-span-1 col-span-1  bg-[url('/images/FF_Large_DP.jpg')] h-[260px] w-full bg-cover md:bg-center bg-top rounded-[5px] border-[1px] border-inactive hover:border-primary hover:border-2 transition-colors duration-200 cursor-pointer hover:shadow-card">
             <div className="tournModalComponent-custom-gradient flex flex-col-reverse rounded-[5px] ">

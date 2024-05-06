@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import LoadingBar from 'react-top-loading-bar'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 export const PubgTournaments = () => {
   const PUBGtournaments = [
@@ -153,7 +154,10 @@ export const PubgTournaments = () => {
           <div className="flex -mt-20 w-full">
             <div className='md:h-44 h-32 w-36 rounded-[5px] bg-[url("/images/PUBG_DP.jpg")] bg-cover bg-center'></div>
             <div className="flex flex-col ml-4 self-end w-full">
+              <div className="mb-[6px]"><Breadcrumbs /></div>
               <h3 className='font-bold md:text-4xl text-2xl text-offWhite'>PUBG Mobile</h3>
+
+
               <div className="grid md:grid-cols-5 grid-cols-2 md:gap-4 gap-2 mt-4">
                 <div className="flex flex-col col-span-1">
                   <label htmlFor="" className='text-inactive text-sm mb-2 font-semibold'>Entry Fee</label>

@@ -84,8 +84,8 @@ export const FFTournaments = () => {
         <meta name="description" content="Join Free Fire tournaments and matches and win deserving prizes." />
       </Helmet>
 
+
       <div className='flex flex-col items-center'>
-        <Breadcrumbs />
         <div className='flex flex-col justify-end h-72 w-full bg-[url("/images/free-fire-criminal-bundle-bg.jpg")] bg-cover bg-top'>
           <div className='bg-gradient-to-t from-frameBG to-transparent bg-cover h-full px-6 w-full'></div>
         </div>
@@ -93,6 +93,7 @@ export const FFTournaments = () => {
           <div className="flex -mt-20 w-full">
             <div className='md:h-44 h-32 w-36 rounded-[5px] bg-[url("/images/FF_DP.jpg")] bg-cover bg-center'></div>
             <div className="flex flex-col ml-4 self-end w-full">
+              <div className="mb-[6px]"><Breadcrumbs /></div>
               <h3 className='font-bold md:text-4xl text-2xl text-offWhite'>Garena Free Fire</h3>
 
               {/* filter variables start here */}
