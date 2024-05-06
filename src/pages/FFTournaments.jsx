@@ -3,7 +3,6 @@ import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournament
 import LoadingBar from 'react-top-loading-bar'
 import { Helmet } from 'react-helmet'
 import { ID, database, db_id } from '../../config/Appwrite';
-import { useAuth } from '../utils/AuthContext'
 import { toast } from 'react-toastify'
 import { Query } from 'appwrite'
 

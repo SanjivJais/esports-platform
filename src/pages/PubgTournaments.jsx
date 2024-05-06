@@ -132,10 +132,9 @@ export const PubgTournaments = () => {
 
   const [progress, setProgress] = useState(0)
   useEffect(() => {
-    setProgress(50)
     setTimeout(() => {
       setProgress(100)
-    }, 1000)
+    }, 500)
   }, [])
 
   return (
@@ -195,7 +194,6 @@ export const PubgTournaments = () => {
 
           <div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
             <div className='flex flex-col gap-3 items-center text-xl font-bold '>
-              {/* <FaPeopleGroup className='text-4xl' /> */}
               Coming Soon!
             </div>
           </div>

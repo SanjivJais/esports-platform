@@ -4,66 +4,13 @@ import { Link } from 'react-router-dom';
 import { GoSearch } from "react-icons/go";
 import { useAuth } from '../utils/AuthContext';
 import { Modal } from './Modal';
-import { FFSquareTournamentCard } from './FFComps/FFSquareTournamentCard';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { IoIosLogOut } from 'react-icons/io';
+import { Search } from './Search';
 
 
 export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
-  // tournament data for the search results | steps: first select the game then input tournament id for search
-  // example of Free Fire search results
-  // const FFtournaments = [
-  //   {
-  //     gameTitle: 'Free Fire',
-  //     imgURL: 'https://dl.dir.freefiremobile.com/common/web_event/official2.ff.garena.all/202210/0b8cb561ac88828c2d09bb7d86158255.jpg',
-  //     maxPlayers: 48,
-  //     minPlayers: 25,
-  //     joinedPlayers: 30,
-  //     entryFree: 10,
-  //     gameMode: 'Clash Squad',
-  //     gameType: 'Squad',
-  //     rewardType: 'coin',
-  //     firstPrize: 70,
-  //     secondPrize: 20,
-  //     thirdPrize: 10,
-  //     startDate: 'May 3, 2024',
-  //     startTime: '2:00 PM',
-  //     host: 'EsportsGravity',
-  //     status: 'Open',
-  //     roomID: '',
-  //     roomPass: '',
-  //     ytLiveURL: '',
-  //     watchLiveURL2: '',
-  //     rulesDetails: '',
-  //   },
-  //   {
-  //     id: 'op23no90284#nod00',
-  //     gameTitle: 'Free Fire',
-  //     imgURL: 'https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/9f72d23636bc8b9188a21fb62a0d3742.jpg',
-  //     tournTitle: 'EG Summar Clash #1',
-  //     maxPlayers: 48,
-  //     minPlayers: 25,
-  //     joinedPlayers: 40,
-  //     entryFree: 10,
-  //     gameMode: 'Clash Squad',
-  //     gameType: 'Squad',
-  //     rewardType: 'coin',
-  //     firstPrize: 70,
-  //     secondPrize: 20,
-  //     thirdPrize: 10,
-  //     startDate: 'May 3, 2024',
-  //     startTime: '2:00 PM',
-  //     host: 'EsportsGravity',
-  //     status: 'Closed',
-  //     roomID: '',
-  //     roomPass: '',
-  //     ytLiveURL: '',
-  //     watchLiveURL2: '',
-  //     rulesDetails: '',
-  //   },
-
-  // ]
 
   const { user, logoutUser, userDetails } = useAuth();
   const [searchEnable, setSearchEnable] = useState(null);
@@ -112,28 +59,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
       </nav>
       <Modal isVisible={searchEnable} onClose={() => setSearchEnable(false)}>
-        <div className='md:w-[75vw] w-[90vw] h-[95vh] flex flex-col items-center'>
-          <div className="flex items-center mt-16 mb-10 md:w-[70%] w-[90%] rounded-3xl bg-secondaryLight h-12">
-            <select name="" id="" className='bg-transparent focus:outline-none text-offBlue md:mx-6 mx-1'>
-              <option value="freefire" className='bg-secondaryLight'>Free Fire</option>
-              <option value="pubg" className='bg-secondaryLight'>PUBG Mobile</option>
-            </select>
-            <span className='h-full w-[0.8px] bg-inactive bg-opacity-30'></span>
-            <div className="flex gap-2 items-center md:px-6 px-2 py-2 h-full w-full">
-              <input type="text" className='bg-transparent text-offBlue focus:outline-none w-full placeholder:text-inactive' placeholder='Tournament ID or Title' />
-            </div>
-            <span className='h-full w-[0.8px] bg-inactive bg-opacity-20'></span>
-            <div className='md:px-6 px-2 hover:bg-frameBG h-full flex items-center cursor-pointer rounded-tr-3xl rounded-br-3xl transition-colors duration-200'><GoSearch className='text-lg text-inactive' /></div>
-          </div>
-          <div className='overflow-auto mb-6 grid md:grid-cols-2 grid-cols-1 w-full gap-8 custom-scrollbar md:px-10 px-2'>
-            {/* search results here  */}
-            {/* {FFtournaments && FFtournaments.map((tournament, index) => (
-              <FFSquareTournamentCard key={index}
-                tournament={tournament}
-              />
-            ))} */}
-          </div>
-        </div>
+        <Search />
       </Modal>
     </>
   )
