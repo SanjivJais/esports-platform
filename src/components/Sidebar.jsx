@@ -54,7 +54,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
     },
     {
       title: 'Feedback',
-      link: '/temp3/',
+      link: '/feedback',
       icon: <MdFeedback />
     },
 

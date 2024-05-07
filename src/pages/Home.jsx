@@ -12,83 +12,6 @@ import { Query } from 'appwrite'
 
 export const Home = () => {
 
-  const PUBGtournaments = [
-    {
-      id: 'biwoifh32##nco',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://i.pinimg.com/originals/95/da/12/95da1295673f2bd19a23f3b61ea240a9.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 90,
-      entryFee: 0,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 50,
-      secondPrize: 20,
-      thirdPrize: 0,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Open',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: 'https://www.youtube.com/watch?v=5x8vvKlwWsU&t=3s',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-    {
-      id: 'iwef67jbo#bui',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://w0.peakpx.com/wallpaper/189/508/HD-wallpaper-pubg-squad.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 90,
-      entryFee: 0,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 50,
-      secondPrize: 20,
-      thirdPrize: 10,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Closed',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-    {
-      id: 'iwef67jbo#bui',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://images.hdqwalls.com/wallpapers/pubg-2023-5k-65.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 75,
-      entryFee: 60,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 510,
-      secondPrize: 200,
-      thirdPrize: 100,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Closed',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-  ]
 
   // top loading progress bar
   const [progress, setProgress] = useState(0)
@@ -141,7 +64,7 @@ export const Home = () => {
         {/* promotional banner homepage  */}
         <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
 
-        <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubg'} className='text-primary text-sm'>View All »</Link></div>
+        <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubgmobile'} className='text-primary text-sm'>View All »</Link></div>
         <div className='w-full h-64 mt-4 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
           <div className='flex flex-col gap-3 items-center text-xl font-bold '>
             PUBG Tournaments will be Available Soon, Stay Tuned!

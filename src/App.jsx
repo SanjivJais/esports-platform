@@ -16,6 +16,7 @@ import { Announcements } from "./pages/Announcements"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GameProfileProvider } from "./utils/GameProfileContext"
+import { Feedback } from "./pages/Feedback"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -36,6 +37,7 @@ function App() {
             <Route path='/tournaments/pubgmobile' element={<ParentPage Page={<PubgTournaments />} />} />
             <Route path='/tournaments/freefire' element={<ParentPage Page={<FFTournaments />} />} />
             <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
+            <Route path='/feedback' element={<ParentPage Page={<Feedback />} />} />
 
             <Route element={<LoginStatusRouting />}>
               <Route path="/signup" element={<Signup />} />

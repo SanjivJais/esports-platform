@@ -29,7 +29,7 @@ export const Games = () => {
 
       <div className="py-3 pl-4"><Breadcrumbs /></div>
       <div className='p-4'>
-        <h2 className='font-bold text-2xl text-offBlue flex items-center gap-2'><IoGameController /><span>Games</span></h2>
+        <h1 className='font-bold text-2xl text-offWhite flex items-center gap-2'><IoGameController /><span>Games</span></h1>
         <div className="grid md:grid-cols-6 gap-3 grid-cols-2 gap-y-3 my-4">
           <Link to={'/tournaments/freefire'} className="md:col-span-1 col-span-1  bg-[url('/images/FF_Large_DP.jpg')] h-[260px] w-full bg-cover md:bg-center bg-top rounded-[5px] border-[1px] border-inactive hover:border-primary hover:border-2 transition-colors duration-200 cursor-pointer hover:shadow-card">
             <div className="tournModalComponent-custom-gradient flex flex-col-reverse rounded-[5px] ">

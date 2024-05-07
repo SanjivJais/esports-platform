@@ -94,7 +94,7 @@ export const FFTournaments = () => {
             <div className='md:h-44 h-32 w-36 rounded-[5px] bg-[url("/images/FF_DP.jpg")] bg-cover bg-center'></div>
             <div className="flex flex-col ml-4 self-end w-full">
               <div className="mb-[6px]"><Breadcrumbs /></div>
-              <h3 className='font-bold md:text-4xl text-2xl text-offWhite'>Garena Free Fire</h3>
+              <h2 className='font-bold md:text-4xl text-2xl text-offWhite'>Garena Free Fire</h2>
 
               {/* filter variables start here */}
               <div className="grid md:grid-cols-5 grid-cols-2 md:gap-4 gap-2 mt-4">
