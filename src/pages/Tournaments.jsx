@@ -44,9 +44,13 @@ export const Tournaments = () => {
         <meta name="description" content="Join tournaments matching your interest." />
       </Helmet>
 
-      <div className="py-3 pl-4"><Breadcrumbs /></div>
+
+      <div className='bg-gradient-to-r from-frameBG to-secondaryLight  w-full h-60 flex flex-col items-center justify-center gap-3'>
+        <Breadcrumbs />
+        <h1 className='text-3xl font-bold text-offWhite flex gap-2 items-center'><FaTrophy /><span>Tournaments</span></h1>
+      </div>
+
       <div className="px-4 py-2">
-        <h1 className='flex items-center gap-2 text-2xl text-offWhite font-bold'><FaTrophy /><span>Tournaments</span></h1>
 
         {FFtournaments && FFtournaments.filter((tourn) => tourn.isFeatured).length > 0 && <section className='mb-8'>
           <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-xl text-lg text-offBlue'><GiSilverBullet className='text-green-600' /><h2>Featured</h2></span></div>

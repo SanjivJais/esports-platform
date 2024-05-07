@@ -57,8 +57,10 @@ export const Search = () => {
                 progress={progress}
                 onLoaderFinished={() => setProgress(0)}
             />
-            <div className='md:w-[75vw] w-[90vw] h-[95vh] flex flex-col items-center md:px-6 p-3'>
-                <div className="flex items-center mt-16 mb-10 md:w-[70%] w-[90%] rounded-3xl bg-secondaryLight h-12">
+
+            <div className='h-screen w-screen flex flex-col items-center md:px-6 p-3'>
+                <h2 className='my-8 font-semibold text-xl text-offBlue'>Search Tournaments</h2>
+                <div className="flex items-center mb-10 md:w-[70%] w-[90%] rounded-3xl bg-secondaryLight h-12">
                     <select onChange={handleSearchData} name="gameSelection" id="" className='bg-transparent focus:outline-none text-offBlue md:mx-6 mx-1'>
                         <option value="ff_tournaments" className='bg-secondaryLight'>Free Fire</option>
                         {/* <option value="pubg_tournaments" className='bg-secondaryLight'>PUBG Mobile</option> */}
@@ -78,8 +80,10 @@ export const Search = () => {
                     <div onClick={handleSearch} className='md:px-6 px-2 hover:bg-frameBG h-full flex items-center cursor-pointer rounded-tr-3xl rounded-br-3xl transition-colors duration-200'><GoSearch className='text-lg text-inactive' /></div>
                 </div>
                 {/* search results here  */}
+
                 {tournaments.length > 0 ?
-                    <div className='overflow-auto mb-6 grid md:grid-cols-2 grid-cols-1 w-full gap-8 custom-scrollbar md:px-10 px-2'>
+                    <div className="w-full max-w-[1280px] grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 content-center pb-4">
+
                         {tournaments.map((tournament, index) => (
                             <FFSquareTournamentCard key={index}
                                 tournament={tournament}
