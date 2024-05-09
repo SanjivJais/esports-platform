@@ -15,6 +15,7 @@ import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournament
 import { CreateFFTourn } from '../components/FFComps/CreateFFTourn';
 import { FFTournHostPreview } from '../components/FFComps/FFTournHostPreview';
 import { Query } from 'appwrite';
+import { WalletMain } from '../components/Wallet/WalletMain';
 
 
 export const Profile = () => {
@@ -361,7 +362,7 @@ export const Profile = () => {
   // fetching tournaments for host
   const [ffTournamentsHost, setFFTournamentsHost] = useState([])
   useEffect(() => {
-    if (activeTab == 5) {
+    if (activeTab == 4) {
       setProgress(40)
       const fetchTournaments = async () => {
         try {
@@ -426,10 +427,9 @@ export const Profile = () => {
           <div className="flex max-md:justify-between md:gap-8 gap-4 custom-scrollbar whitespace-nowrap overflow-x-auto">
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Tournaments</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Game Profiles</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Add Funds</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Withdraw</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account Details</div>
-            {user && user.labels.includes("admin") && <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 5 ? 'md:border-b-2 md:border-ongoingStatus md:text-ongoingStatus' : ''} text-ongoingStatus pb-2 font-semibold cursor-pointer`}>My Tournaments</div>}
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Wallet</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account Details</div>
+            {user && user.labels.includes("admin") && <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-ongoingStatus md:text-ongoingStatus' : ''} text-ongoingStatus pb-2 font-semibold cursor-pointer`}>My Tournaments</div>}
           </div>
           <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
         </div>
@@ -524,15 +524,10 @@ export const Profile = () => {
           }
           {activeTab === 2 &&
             <>
-              Load balance
+              <WalletMain />
             </>
           }
           {activeTab === 3 &&
-            <>
-              Withdraw
-            </>
-          }
-          {activeTab === 4 &&
             <>
               <div className="flex w-full justify-between">
                 <div className="flex flex-col gap-6">
@@ -571,7 +566,7 @@ export const Profile = () => {
               </div>
             </>
           }
-          {activeTab === 5 &&
+          {activeTab === 4 &&
             <>
               <div className="flex flex-col">
                 <div className="flex justify-end"><button onClick={() => setChooseGameModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200 flex items-center gap-2'><span>Create Tournament</span><MdAddBox /> </button></div>
