@@ -569,7 +569,7 @@ export const Profile = () => {
           {activeTab === 4 &&
             <>
               <div className="flex flex-col">
-                <div className="flex justify-end"><button onClick={() => setChooseGameModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200 flex items-center gap-2'><span>Create Tournament</span><MdAddBox /> </button></div>
+                <div className="flex justify-end"><button onClick={() => setChooseGameModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200 flex items-center gap-2'><MdAddBox /><span>Create Tournament</span> </button></div>
                 <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
 
                   {ffTournamentsHost && ffTournamentsHost.map((tournament, index) => (

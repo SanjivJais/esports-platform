@@ -7,6 +7,7 @@ import { Modal } from './Modal';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { IoIosLogOut } from 'react-icons/io';
 import { Search } from './Search';
+import { IoNotificationsOutline } from 'react-icons/io5';
 
 
 export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
@@ -24,6 +25,11 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
           <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-3xl border-[1px] border-secondary md:px-6 px-4 py-2 md:w-72"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
         </div>
         <div className="flex gap-5 items-center">
+          {user &&
+            <>
+              <IoNotificationsOutline className='text-[24px] text-offBlue cursor-pointer hover:text-inactive transition-colors duration-150' />
+            </>
+          }
           {user &&
             <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
               <div className='flex items-center gap-2'>
