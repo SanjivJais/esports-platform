@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import { LoadWallet } from './LoadWallet';
+import { LoadReuqestModal } from './LoadRequestModal';
+import { MdAddBox, MdInfo } from 'react-icons/md';
+import { Modal } from '../Modal';
+
 
 export const WalletMain = () => {
+  const [loadRequestModal, setLoadRequestModal] = useState(false)
+
 
   const tabs = document.getElementsByClassName("walletTabs");
   let [activeTab, setActiveTab] = useState(0);
@@ -17,69 +22,27 @@ export const WalletMain = () => {
 
 
 
-
-  // sample data structure (JSON) for load balance 
-  // {
-  //   "id": "transaction_id",
-  //   "transaction_type": "load",
-  //   "user": {
-  //     "id": "dbuqfgp4628",
-  //     "username": "esportsgravity"
-  //   },
-  //   "transaction_details": {
-  //     "payment_method": "esewa_to_esewa",
-  //     "transaction_id": "biuef86jf",
-  //     "remarks": "EG Topup",
-  //     "sender_name": "Rajiv Jaiswal",
-  //     "esewa_id": "9862495033",
-  //     "transaction_amount": 50,
-  //     "transaction_date": "2024-05-09"
-  //   },
-  //   "coin": 50,
-  //   "status": "draft/pending/success/failed",
-  //   "note": "null OR Based on your transaction amount, you can claim 50 EG coins",
-  //   "claim_status": false
-  // }
-
-
-  // sample data structure (JSON) for withdrawal requests 
-  // {
-  //   "id": "transaction_id",
-  //   "transaction_type": "withdraw",
-  //   "user": {
-  //     "id": "dbuqfgp4628",
-  //     "username": "esportsgravity"
-  //   },
-
-  //   "transaction_details": {
-  //     "payment_method": "esewa_to_esewa",
-  //     "transaction_id": "biuef86jf",
-  //     "remarks": "EG Withdrawal",
-  //     "sender_name": "Sanjiv Jaiswal",
-  //     "esewa_id": "9862495033",
-  //     "transaction_amount": 50,
-  //     "transaction_date": "2024-06-3"
-  //   }, 
-
-  //   "coin": 50,
-  //   "status": "draft/pending/success/failed",
-  //   "note": "null OR Based on your transaction amount, you can claim 50 EG coins",
-  //   "claim_status": null
-  // }
-
-
   return (
     <>
       <div className=''>
-        <div className="flex max-md:justify-between gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
-          <label htmlFor="" onClick={(e) => handleTabs(e)} className={`walletTabs ${activeTab === 0 ? ' bg-secondaryLight md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue hover:bg-secondaryLight'} transition-colors duration-150  p-2 px-3 rounded-[5px] font-semibold cursor-pointer`}>Load Wallet</label>
-          <label htmlFor="" onClick={(e) => handleTabs(e)} className={`walletTabs ${activeTab === 1 ? ' bg-secondaryLight md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue hover:bg-secondaryLight'} transition-colors duration-150  p-2 px-3 rounded-[5px] font-semibold cursor-pointer`}>Withdraw</label>
-          <label htmlFor="" onClick={(e) => handleTabs(e)} className={`walletTabs ${activeTab === 2 ? ' bg-secondaryLight md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue hover:bg-secondaryLight'} transition-colors duration-150  p-2 px-3 rounded-[5px] font-semibold cursor-pointer`}>Transaction History</label>
+        <div className="flex gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
+          <label htmlFor="" onClick={(e) => handleTabs(e)} className={`walletTabs ${activeTab === 0 ? ' bg-secondaryLight md:text-offBlue' : 'text-inactive hover:text-offBlue hover:bg-secondaryLight'} transition-colors duration-150  p-2 px-3 rounded-[5px] font-semibold cursor-pointer`}>Load Wallet</label>
+          <label htmlFor="" onClick={(e) => handleTabs(e)} className={`walletTabs ${activeTab === 1 ? ' bg-secondaryLight md:text-offBlue' : 'text-inactive hover:text-offBlue hover:bg-secondaryLight'} transition-colors duration-150  p-2 px-3 rounded-[5px] font-semibold cursor-pointer`}>Withdraw</label>
+          <label htmlFor="" onClick={(e) => handleTabs(e)} className={`walletTabs ${activeTab === 2 ? ' bg-secondaryLight md:text-offBlue' : 'text-inactive hover:text-offBlue hover:bg-secondaryLight'} transition-colors duration-150  p-2 px-3 rounded-[5px] font-semibold cursor-pointer`}>Transaction History</label>
         </div>
 
         <div className="my-6">
           {activeTab === 0 &&
-            <LoadWallet/>
+            <div className='grid grid-cols-2'>
+              <div className="flex flex-col">
+                <div className="flex"><button onClick={() => setLoadRequestModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200 flex items-center gap-2'><MdAddBox /><span>Create Load Request</span> </button></div>
+                <div className="flex flex-col">
+                  {/* component for request preview */}
+
+
+                </div>
+              </div>
+            </div>
           }
           {activeTab === 1 &&
             <>
@@ -95,7 +58,10 @@ export const WalletMain = () => {
       </div>
 
 
-      
+      <Modal isVisible={loadRequestModal} onClose={() => setLoadRequestModal(false)} closeButtonActive={false} outsideClose={false}>
+        <LoadReuqestModal onClose={() => setLoadRequestModal(false)} />
+      </Modal>
+
 
     </>
   )
