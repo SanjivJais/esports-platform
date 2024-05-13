@@ -17,6 +17,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GameProfileProvider } from "./utils/GameProfileContext"
 import { Feedback } from "./pages/Feedback"
+import { Admin } from "./pages/Admin"
+import { AdminRoute } from "./utils/AdminRoute"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -48,6 +50,12 @@ function App() {
             <Route element={<PrivateRoutes />} >
               <Route path='/profile' element={<ParentPage Page={<Profile />} />} />
             </Route>
+
+            <Route element={<AdminRoute />}>
+              <Route path='/admin-egofficial' element={<Admin />} />
+            </Route>
+
+
           </Routes>
         </GameProfileProvider>
       </AuthProvider>

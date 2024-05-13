@@ -24,7 +24,6 @@ export const LoadReuqestModal = ({ onClose }) => {
         coin: 0,
         status: "pending",
         note: "",
-        claim_status: false
     })
 
 
@@ -105,21 +104,52 @@ export const LoadReuqestModal = ({ onClose }) => {
                                     {/* Input fields based on payment method */}
                                     <div className="flex flex-col gap-3">
 
-                                        {/* Particular to payment method -- start */}
-                                        <div className="relative">
-                                            <input onChange={handleTxnDetailsChange} type="text" id="payer_name" name='payer_name' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus  peer" placeholder=" " />
-                                            <label htmlFor="payer_name" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10 origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Name (as in Payment Method)</label>
-                                        </div>
-                                        <div className="relative">
-                                            <input onChange={handleTxnDetailsChange} type="text" id="payer_esewa_id" name='payer_esewa_id' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus peer" placeholder="" />
-                                            <label htmlFor="payer_esewa_id" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10  origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Esewa ID (number/email)</label>
-                                        </div>
-                                        <div className="relative">
-                                            <input onChange={handleTxnDetailsChange} type="text" id="esewa_transaction_id" name='esewa_transaction_id' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus peer" placeholder=" " />
-                                            <label htmlFor="esewa_transaction_id" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10  origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center gap-1"><span>Transaction ID</span><Tooltip children={<MdInfo />} content={"Enter Transaction ID obtained after payment confirmation."} /></label>
-                                        </div>
+                                        {transactionDetails.payer_payment_method === "esewa" &&
+                                            <>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="payer_name" name='payer_name' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus  peer" placeholder=" " />
+                                                    <label htmlFor="payer_name" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10 origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Name (as in Payment Method)</label>
+                                                </div>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="payer_esewa_id" name='payer_esewa_id' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus peer" placeholder="" />
+                                                    <label htmlFor="payer_esewa_id" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10  origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Esewa ID (number/email)</label>
+                                                </div>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="esewa_transaction_id" name='esewa_transaction_id' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus peer" placeholder=" " />
+                                                    <label htmlFor="esewa_transaction_id" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10  origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center gap-1"><span>Transaction ID</span><Tooltip children={<MdInfo />} content={"Enter Transaction ID obtained after payment confirmation."} /></label>
+                                                </div>
+                                            </>
+                                        }
+                                        {transactionDetails.payer_payment_method === "khalti" &&
+                                            <>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="payer_name" name='payer_name' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus  peer" placeholder=" " />
+                                                    <label htmlFor="payer_name" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10 origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Name (as in Payment Method)</label>
+                                                </div>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="payer_khalti_id" name='payer_khalti_id' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus peer" placeholder="" />
+                                                    <label htmlFor="payer_khalti_id" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10  origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Khalti Mobile Number</label>
+                                                </div>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="khalti_transaction_id" name='khalti_transaction_id' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus peer" placeholder=" " />
+                                                    <label htmlFor="khalti_transaction_id" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10  origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center gap-1"><span>Transaction ID</span><Tooltip children={<MdInfo />} content={"Enter Transaction ID obtained after payment confirmation."} /></label>
+                                                </div>
+                                            </>
+                                        }
+                                        {transactionDetails.payer_payment_method === "mobile_banking" &&
+                                            <>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="payer_name" name='payer_name' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus  peer" placeholder=" " />
+                                                    <label htmlFor="payer_name" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10 origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Name (as in Payment Method)</label>
+                                                </div>
+                                                <div className="relative">
+                                                    <input onChange={handleTxnDetailsChange} type="text" id="payer_account_no" name='payer_account_no' className="block px-2.5 py-4 w-full text-base  bg-transparent rounded-[5px] border-[0.8px] border-inactive border-opacity-30 appearance-none focus:outline-none focus:ring-0 focus:border-openStatus peer" placeholder="" />
+                                                    <label htmlFor="payer_account_no" className="absolute text-sm duration-150 transform -translate-y-3 scale-90 top-1 z-10  origin-[0] bg-secondary px-2 peer-focus:px-2 peer-focus:text-offBlue text-offBlue peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-[.80] peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Payer Account Number (last 3 digits)</label>
+                                                </div>
+                                            </>
+                                        }
 
-                                        {/* Particular to payment method -- end */}
+
 
 
                                         <div className="relative">
@@ -138,26 +168,37 @@ export const LoadReuqestModal = ({ onClose }) => {
 
 
                                 <fieldset className="col-span-1 flex flex-col gap-3 bg-secondary p-3 pt-2 rounded-[5px]">
-                                    <legend className='bg-primary text-secondary text-sm px-3 py-1 rounded-3xl font-semibold flex items-center gap-1'><span>To</span> <span>(Payee Details)</span><Tooltip children={<MdInfo />} content={"This is how we receive your payment."} /></legend>
+                                    <legend className='bg-primary text-secondary text-sm px-3 py-1 rounded-3xl font-semibold flex items-center gap-1'><span>To</span> <span>(Payee Details)</span><Tooltip children={<MdInfo />} content={"This is where we receive your payment."} /></legend>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="payee_payment_method" className='text-sm my-2 text-offBlue'>Pay To This Account </label>
                                         <select onChange={handleTxnDetailsChange} defaultValue={'esewa'} name="payee_payment_method" id="payee_payment_method" className='custom-dropdown border-[0.8px] border-inactive border-opacity-30 bg-frameBG text-offBlue h-full focus:outline-none'>
-                                            <option value="esewa">Esewa</option>
-                                            <option value="khalti">Khalti</option>
+                                            <option disabled={transactionDetails.payer_payment_method === "khalti"} value="esewa">Esewa</option>
+                                            <option disabled={transactionDetails.payer_payment_method === "esewa"} value="khalti">Khalti</option>
                                             <option value="bank_transfer">Bank Transfer</option>
                                         </select>
                                     </div>
 
-                                    <div className="flex flex-col gap-6 my-2">
+                                    {transactionDetails.payee_payment_method === "esewa" && <div className="flex flex-col gap-6 my-2">
                                         <div className='text-offBlue'><span className='text-inactive'>Esewa ID (email):</span> <strong className='bg-secondaryLight px-2 py-1 rounded-[5px]'>jsanjiv926@gmail.com</strong></div>
-                                        <div className='text-offBlue'><span className='text-inactive'>Payee Esewa Name:</span> <strong className='bg-secondaryLight px-2 py-1 rounded-[5px]'>Ra*** Jaiswal</strong></div>
-                                    </div>
+                                        <div className='text-offBlue'><span className='text-inactive'>Payee Name (in Esewa):</span> <strong className='bg-secondaryLight px-2 py-1 rounded-[5px]'>Ra*** Jaiswal</strong></div>
+                                    </div>}
+
+                                    {transactionDetails.payee_payment_method === "khalti" && <div className="flex flex-col gap-6 my-2">
+                                        <div className='text-offBlue'><span className='text-inactive'>Khalti Mobile Number:</span> <strong className='bg-secondaryLight px-2 py-1 rounded-[5px]'>sanjivjaiswal04@gmail.com</strong></div>
+                                        <div className='text-offBlue'><span className='text-inactive'>Payee Name (in Khalti):</span> <strong className='bg-secondaryLight px-2 py-1 rounded-[5px]'>Sanjiv Jaiswal</strong></div>
+                                    </div>}
+
+                                    {transactionDetails.payee_payment_method === "bank_transfer" && <div className="flex flex-col gap-6 my-2">
+                                        <div className='text-primary cursor-pointer self-center'>Click to see QR code</div>
+                                        <div className='text-offBlue self-center'><span className='text-inactive'>Payee Name:</span> <strong className='bg-secondaryLight px-2 py-1 rounded-[5px]'>Sanjiv Jaiswal</strong></div>
+
+                                    </div>}
 
                                 </fieldset>
 
                             </div>
-                            <p className='text-[15px] text-inactive my-2'><strong>Note:</strong> We recommend you to keep a screenshot of payment made to resolve any potential issues.</p>
+                            <p className='text-[15px] text-inactive my-2'><strong>Note:</strong> Please keep a screenshot of payment made to resolve any potential issues.</p>
                         </fieldset>
 
                     </div>
