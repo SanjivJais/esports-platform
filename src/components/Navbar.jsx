@@ -27,7 +27,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
         <div className="flex gap-5 items-center">
           {user &&
             <>
-              <IoNotificationsOutline className='text-[24px] text-offBlue cursor-pointer hover:text-inactive transition-colors duration-150' />
+              <Link to={'/notifications'}><IoNotificationsOutline className='text-[24px] text-offBlue cursor-pointer hover:text-inactive transition-colors duration-150' /></Link>
             </>
           }
           {user &&

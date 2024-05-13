@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from '../Modal';
 import { FFTournModalComponent } from './FFTournModalComponent';
 import { HiMiniTrophy } from 'react-icons/hi2';
-import { FaRegClock } from 'react-icons/fa6';
+import { FaCircleCheck, FaRegClock } from 'react-icons/fa6';
+import { useAuth } from '../../utils/AuthContext';
 
 
 export const FFSquareTournamentCard = ({ tournament }) => {
@@ -54,18 +55,34 @@ export const FFSquareTournamentCard = ({ tournament }) => {
     };
 
 
-
     const cardStyles = {
         backgroundImage: `url("${tournament.imgURL}")`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         borderRadius: '5px',
     };
+
+    const { user, userDetails } = useAuth();
+    const [joinStatus, setJoinStatus] = useState(false)
+    useEffect(() => {
+        if (user && userDetails) {
+            const status = userDetails.ffTournaments.includes(tournament.$id)
+            setJoinStatus(status)
+        }
+    }, [])
+
+
+
+
     return (
         <div className='w-full h-auto rounded-[5px] border-[0.8px] border-inactive border-opacity-40 hover:shadow-card'>
             <div className={`flex flex-col justify-between rounded-br-none rounded-bl-none w-full h-52`} style={cardStyles}>
                 <div className="flex justify-between px-2 pt-2">
-                    <div className='bg-secondary h-fit bg-opacity-90 relative text-[12px] px-3 py-[3px] rounded-xl'>Free Fire</div>
+                    <div className="flex flex-col gap-2">
+                        <div className='bg-secondary h-fit bg-opacity-90 relative text-[12px] px-3 py-[3px] rounded-xl'>Free Fire</div>
+                        {joinStatus && <div className='bg-secondary text-openStatus h-fit text-center flex items-center gap-1 bg-opacity-90 relative text-[12px] px-3 py-[3px] rounded-xl'><span>Joined</span><FaCircleCheck className='text-[11px]' /></div>}
+
+                    </div>
                     {tournament.status === "Open" && <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-semibold flex items-center gap-1'><FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
                 </div>
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { IoBulb, IoCaretDownOutline, IoClose, IoGameController, IoWallet } from "react-icons/io5";
+import { IoBulb, IoCaretDownOutline, IoClose, IoGameController, IoNotifications, IoWallet } from "react-icons/io5";
 import { FaTrophy } from "react-icons/fa";
 import { TiHome } from 'react-icons/ti';
 import { MdFeedback, MdOutlineHelp } from 'react-icons/md';
 import { GrAnnounce } from 'react-icons/gr';
 import { useAuth } from '../utils/AuthContext';
+import { IoIosNotifications } from 'react-icons/io';
 
 
 export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
@@ -36,11 +37,13 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       link: '/games',
       icon: <IoGameController />,
     },
+
     {
-      title: 'Guides',
-      link: '/temp1/',
-      icon: <IoBulb />
+      title: 'Notifications',
+      link: '/notifications',
+      icon: <IoNotifications />
     },
+
     {
       title: 'Announcements',
       link: '/announcement',
@@ -48,6 +51,11 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
     },
     {
       separator: true,
+      title: 'Guides',
+      link: '/temp1/',
+      icon: <IoBulb />
+    },
+    {
       title: 'Help Center',
       link: '/temp2/',
       icon: <MdOutlineHelp />

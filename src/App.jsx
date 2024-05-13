@@ -19,6 +19,7 @@ import { GameProfileProvider } from "./utils/GameProfileContext"
 import { Feedback } from "./pages/Feedback"
 import { Admin } from "./pages/Admin"
 import { AdminRoute } from "./utils/AdminRoute"
+import { Notifications } from "./pages/Notifications"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -49,6 +50,8 @@ function App() {
             {/* private routes  */}
             <Route element={<PrivateRoutes />} >
               <Route path='/profile' element={<ParentPage Page={<Profile />} />} />
+              <Route path='/notifications' element={<ParentPage Page={<Notifications />} />} />
+
             </Route>
 
             <Route element={<AdminRoute />}>

@@ -572,7 +572,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                         </Modal>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }
