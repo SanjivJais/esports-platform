@@ -8,6 +8,7 @@ import { RiArrowDropDownLine } from 'react-icons/ri';
 import { IoIosLogOut } from 'react-icons/io';
 import { Search } from './Search';
 import { IoNotificationsOutline } from 'react-icons/io5';
+import { NotificationTile } from './NotificationTile';
 
 
 export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
@@ -16,6 +17,9 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   const { user, logoutUser, userDetails } = useAuth();
   const [searchEnable, setSearchEnable] = useState(null);
   const handleSearchEnable = () => { setSearchEnable(!searchEnable); }
+
+  const [notificationPanel, setNotificationPanel] = useState(false)
+
   return (
     <>
       <nav className="sticky z-20 top-0 bg-secondary h-[72px] md:px-4 shadow-md flex items-center justify-between pr-4">
@@ -23,11 +27,36 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
           <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:block hidden' onClick={toggleSidebar} />
           <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:hidden' onClick={mobToggleSidebar} />
           <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-3xl border-[1px] border-secondary md:px-6 px-4 py-2 md:w-72"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
+
         </div>
         <div className="flex gap-5 items-center">
           {user &&
             <>
-              <Link to={'/notifications'}><IoNotificationsOutline className='text-[24px] text-offBlue cursor-pointer hover:text-inactive transition-colors duration-150' /></Link>
+              <div onClick={() => setNotificationPanel(!notificationPanel)} className='flex flex-col -mt-2 cursor-pointer'>
+                <div className="h-4 w-4 bg-primary text-secondary font-semibold relative self-end flex items-center justify-center text-[11px] rounded-xl top-2 left-1">4</div>
+                <IoNotificationsOutline className='text-[24px] text-offBlue transition-colors duration-150' />
+              </div>
+              <div className={`${notificationPanel ? '' : 'hidden'} text-sm absolute flex-col max-w-96 max-h-80 top-[66px] md:right-28 right-4 rounded-[5px] px-2 py-2 bg-secondary shadow-modal overflow-auto custom-scrollbar flex`}>
+                <div className="flex justify-end items-center px-4 py-1"><Link className='text-primary' to={'/notifications'}>Show All ›</Link></div>
+
+                <NotificationTile notification={{
+                  message: "<p>Use coupon code <span style='color: yellow;'>DASHAIN25</span>  to get 25 EG Coins for FREE!</p>",
+                  $createdAt: 'June 2, 2024'
+                }} />
+                <NotificationTile notification={{
+                  message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
+                  $createdAt: 'April 16, 2024'
+                }} />
+                <NotificationTile notification={{
+                  message: 'Nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
+                  $createdAt: 'February 4, 2024'
+                }} />
+                <NotificationTile notification={{
+                  message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
+                  $createdAt: 'January 30, 2024'
+                }} />
+
+              </div>
             </>
           }
           {user &&
