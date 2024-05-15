@@ -6,27 +6,34 @@ import { IoNotifications } from 'react-icons/io5'
 import { NotificationTile } from '../components/NotificationTile'
 import { database, db_id } from '../../config/Appwrite'
 import { Query } from 'appwrite'
+import { useAuth } from '../utils/AuthContext'
 
 export const Notifications = () => {
-
+    const { user } = useAuth()
     const [progress, setProgress] = useState(0)
 
     const [notifications, setNotifications] = useState(null)
+
 
     useEffect(() => {
         setProgress(50)
 
         const fetchNotifications = async () => {
-            // const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(40), Query.orderDesc('$createdAt')])
-            // setNotifications(nots.documents.filter((notification)=>(
-            //     notification.recipentType==="all" || (notification.recipents)
-            // )))
-            // console.log(JSON.parse(nots.documents[0].recipents[0]));
+            const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(40), Query.orderDesc('$createdAt')])
+            setNotifications(nots.documents.filter((notification) => {
+                if (notification.recipentType === "all") {
+                    return true;
+                } else if (notification.recipentType === "specific") {
+                    return notification.recipents.some((recipient) => JSON.parse(recipient).user === user.$id);
+                }
+                return false;
+            }))
         }
         fetchNotifications()
         setProgress(100)
 
     }, [])
+
 
 
     return (
@@ -45,22 +52,9 @@ export const Notifications = () => {
             <div className='flex flex-col px-4'>
 
                 <div className="min-h-[420px] w-full max-w-[700px] px-4 bg-secondary self-center mt-6 items-start rounded-[5px]">
-                    <NotificationTile notification={{
-                        message: "<p>Use coupon code <span style='color: yellow;'>DASHAIN25</span>  to get 25 EG Coins for FREE!</p>",
-                        $createdAt: 'June 2, 2024'
-                    }} />
-                    <NotificationTile notification={{
-                        message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
-                        $createdAt: 'April 16, 2024'
-                    }} />
-                    <NotificationTile notification={{
-                        message: 'Nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
-                        $createdAt: 'February 4, 2024'
-                    }} />
-                    <NotificationTile notification={{
-                        message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
-                        $createdAt: 'January 30, 2024'
-                    }} />
+                    {notifications && notifications.map((notification, index) => (
+                        <NotificationTile key={index} notification={notification} />
+                    ))}
 
                 </div>
             </div>

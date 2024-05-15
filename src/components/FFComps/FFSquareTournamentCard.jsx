@@ -69,9 +69,7 @@ export const FFSquareTournamentCard = ({ tournament }) => {
             const status = userDetails.ffTournaments.includes(tournament.$id)
             setJoinStatus(status)
         }
-    }, [])
-
-
+    }, [user])
 
 
     return (

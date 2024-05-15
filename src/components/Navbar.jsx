@@ -36,10 +36,10 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
                 <div className="h-4 w-4 bg-primary text-secondary font-semibold relative self-end flex items-center justify-center text-[11px] rounded-xl top-2 left-1">4</div>
                 <IoNotificationsOutline className='text-[24px] text-offBlue transition-colors duration-150' />
               </div>
-              <div className={`${notificationPanel ? '' : 'hidden'} text-sm absolute flex-col max-w-96 max-h-80 top-[66px] md:right-28 right-4 rounded-[5px] px-2 py-2 bg-secondary shadow-modal overflow-auto custom-scrollbar flex`}>
+              <div className={`${notificationPanel ? '' : 'hidden'} text-sm absolute flex-col max-w-96 max-h-80 top-[66px] md:right-28 right-4 rounded-[5px] px-2 pt-1 bg-secondary shadow-modal overflow-auto custom-scrollbar flex`}>
                 <div className="flex justify-end items-center px-4 py-1"><Link className='text-primary' to={'/notifications'}>Show All ›</Link></div>
 
-                <NotificationTile notification={{
+                {/* <NotificationTile notification={{
                   message: "<p>Use coupon code <span style='color: yellow;'>DASHAIN25</span>  to get 25 EG Coins for FREE!</p>",
                   $createdAt: 'June 2, 2024'
                 }} />
@@ -54,7 +54,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
                 <NotificationTile notification={{
                   message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
                   $createdAt: 'January 30, 2024'
-                }} />
+                }} /> */}
 
               </div>
             </>
