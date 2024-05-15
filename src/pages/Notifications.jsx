@@ -9,7 +9,7 @@ import { Query } from 'appwrite'
 import { useAuth } from '../utils/AuthContext'
 
 export const Notifications = () => {
-    const { user } = useAuth()
+    const { user, userDetails } = useAuth()
     const [progress, setProgress] = useState(0)
 
     const [notifications, setNotifications] = useState(null)
@@ -19,16 +19,24 @@ export const Notifications = () => {
         setProgress(50)
 
         const fetchNotifications = async () => {
-            const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(40), Query.orderDesc('$createdAt')])
-            setNotifications(nots.documents.filter((notification) => {
-                if (notification.recipentType === "all") {
-                    return true;
-                } else if (notification.recipentType === "specific") {
-                    return notification.recipents.some((recipient) => JSON.parse(recipient).user === user.$id);
-                }
-                return false;
-            }))
+            // if (userDetails) {
+            //     const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(25), Query.orderDesc('$createdAt'), Query.or([Query.equal('recipentType', 'all'), Query.contains('$id', userDetails.notifications)])])
+            //     setNotifications(nots.documents)
+            // }
+
+
+            
+            // setNotifications(nots.documents.filter((notification) => {
+            //     if (notification.recipentType === "all") {
+            //         return true;
+            //     } else if (notification.recipentType === "specific") {
+            //         return notification.recipents.some((recipient) => JSON.parse(recipient).user === user.$id);
+            //     }
+            //     return false;
+            // }))
+
         }
+
         fetchNotifications()
         setProgress(100)
 
