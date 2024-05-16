@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdOutlineMenu } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { GoSearch } from "react-icons/go";
@@ -9,6 +9,9 @@ import { IoIosLogOut } from 'react-icons/io';
 import { Search } from './Search';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { NotificationTile } from './NotificationTile';
+import { Query } from 'appwrite'
+import { database, db_id } from '../../config/Appwrite'
+
 
 
 export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
@@ -18,7 +21,45 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   const [searchEnable, setSearchEnable] = useState(null);
   const handleSearchEnable = () => { setSearchEnable(!searchEnable); }
 
+  const [notifications, setNotifications] = useState(null)
+  useEffect(() => {
+
+    const fetchNotifications = async () => {
+      const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(25), Query.orderDesc('$createdAt'), Query.equal('recipentType', 'all')])
+      setNotifications(nots.documents)
+
+      if (userDetails && userDetails.notifications.length > 0) {
+        const userNots = await database.listDocuments(db_id, 'notifications', [Query.contains('$id', userDetails.notifications), Query.limit(25)])
+        setNotifications((prevNots) => {
+
+          const existingIds = new Set(prevNots.map(not => not.$id));
+          const newNotifications = userNots.documents.filter(not => !existingIds.has(not.$id));
+          const allNotifications = [...prevNots, ...newNotifications]
+          allNotifications.sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
+          return allNotifications;
+        });
+      }
+
+    }
+
+    fetchNotifications()
+
+  }, [userDetails])
+
   const [notificationPanel, setNotificationPanel] = useState(false)
+
+  // count number of unread notifications
+  const [unreadCount, setUnreadCount] = useState(0)
+  useEffect(() => {
+    if (notifications) {
+      setUnreadCount(
+        notifications.filter((notification) =>
+          notification.recipents.some(recipent => ((JSON.parse(recipent).user === user.$id) && !(JSON.parse(recipent).read)) || JSON.parse(recipent).user !== user.$id)
+        ).length
+      )
+
+    }
+  }, [notifications])
 
   return (
     <>
@@ -32,29 +73,16 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
         <div className="flex gap-5 items-center">
           {user &&
             <>
-              <div onClick={() => setNotificationPanel(!notificationPanel)} className='flex flex-col -mt-2 cursor-pointer'>
-                <div className="h-4 w-4 bg-primary text-secondary font-semibold relative self-end flex items-center justify-center text-[11px] rounded-xl top-2 left-1">4</div>
+              <div onClick={() => setNotificationPanel(!notificationPanel)} className={`flex flex-col ${unreadCount > 0 ? '-mt-2' : ''}  cursor-pointer`}>
+                {unreadCount > 0 && <div className="h-4 w-4 bg-primary text-secondary font-semibold relative self-end flex items-center justify-center text-[11px] rounded-xl top-2 left-1">{unreadCount}</div>}
                 <IoNotificationsOutline className='text-[24px] text-offBlue transition-colors duration-150' />
               </div>
-              <div className={`${notificationPanel ? '' : 'hidden'} text-sm absolute flex-col max-w-96 max-h-80 top-[66px] md:right-28 right-4 rounded-[5px] px-2 pt-1 bg-secondary shadow-modal overflow-auto custom-scrollbar flex`}>
+              <div className={`${notificationPanel ? '' : 'hidden'} text-sm absolute flex-col max-w-96 min-w-80 min-h-60 max-h-80 top-[66px] md:right-28 right-4 rounded-[5px] px-2 pt-1 bg-secondary shadow-modal overflow-auto custom-scrollbar flex`}>
                 <div className="flex justify-end items-center px-4 py-1"><Link className='text-primary' to={'/notifications'}>Show All ›</Link></div>
 
-                {/* <NotificationTile notification={{
-                  message: "<p>Use coupon code <span style='color: yellow;'>DASHAIN25</span>  to get 25 EG Coins for FREE!</p>",
-                  $createdAt: 'June 2, 2024'
-                }} />
-                <NotificationTile notification={{
-                  message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
-                  $createdAt: 'April 16, 2024'
-                }} />
-                <NotificationTile notification={{
-                  message: 'Nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
-                  $createdAt: 'February 4, 2024'
-                }} />
-                <NotificationTile notification={{
-                  message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias dolores aut. Minima eaque architecto amet distinctio aut, nostrum enim! Quam accusantium nulla sit architecto, quod natus accusamus? Eos, sint.',
-                  $createdAt: 'January 30, 2024'
-                }} /> */}
+                {notifications && notifications.map((notification, index) => (
+                  <NotificationTile key={index} notification={notification} />
+                ))}
 
               </div>
             </>

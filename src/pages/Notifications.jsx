@@ -19,30 +19,31 @@ export const Notifications = () => {
         setProgress(50)
 
         const fetchNotifications = async () => {
-            // if (userDetails) {
-            //     const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(25), Query.orderDesc('$createdAt'), Query.or([Query.equal('recipentType', 'all'), Query.contains('$id', userDetails.notifications)])])
-            //     setNotifications(nots.documents)
-            // }
+            const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(25), Query.orderDesc('$createdAt'), Query.equal('recipentType', 'all')])
+            setNotifications(nots.documents)
 
+            if (userDetails && userDetails.notifications.length > 0) {
+                const userNots = await database.listDocuments(db_id, 'notifications', [Query.contains('$id', userDetails.notifications), Query.limit(25)])
+                setNotifications((prevNots) => {
 
-            
-            // setNotifications(nots.documents.filter((notification) => {
-            //     if (notification.recipentType === "all") {
-            //         return true;
-            //     } else if (notification.recipentType === "specific") {
-            //         return notification.recipents.some((recipient) => JSON.parse(recipient).user === user.$id);
-            //     }
-            //     return false;
-            // }))
+                    const existingIds = new Set(prevNots.map(not => not.$id));
+                    const newNotifications = userNots.documents.filter(not => !existingIds.has(not.$id));
+                    const allNotifications = [...prevNots, ...newNotifications]
+                    allNotifications.sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
+                    return allNotifications;
+                });
+            }
 
         }
 
         fetchNotifications()
         setProgress(100)
 
-    }, [])
+    }, [userDetails])
 
 
+
+    
 
     return (
         <>

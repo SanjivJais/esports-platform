@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoNotificationsCircle } from 'react-icons/io5'
 import ReactHtmlParser from 'react-html-parser'
+import { useAuth } from '../utils/AuthContext'
+
 
 
 
 export const NotificationTile = ({ notification }) => {
 
+    const {user} = useAuth()
 
     const formatDateTime = (dateTimeString) => {
         // Split the input string into date and time parts
@@ -68,13 +71,21 @@ export const NotificationTile = ({ notification }) => {
     }
 
 
+    const [readStatus, setReadStatus] = useState(false)
+    useEffect(()=>{
+        setReadStatus(
+            notification.recipents.some(recipent=>JSON.parse(recipent).user===user.$id && JSON.parse(recipent).read)
+        )
+    }, [])
+
+
 
     return (
         <>
             <div title='Click to Mark As Read' className="bg-secondary text-[17px] px-4 py-3 w-full border-b-[0.8px] border-inactive border-opacity-20 group cursor-pointer">
                 <div className='text-dimText text-sm my-2'>{timeAgo(convertISODateToLocal(notification.$createdAt))}</div>
                 <div className="flex gap-3 items-center ">
-                    <div className="flex flex-col self-start"><IoNotificationsCircle className='text-offBlue group-hover:text-openStatus text-3xl' /></div>
+                    <div className="flex flex-col self-start"><IoNotificationsCircle className={`${readStatus? 'text-openStatus':'text-offBlue group-hover:text-openStatus'}  text-3xl`} /></div>
                     <div className="flex flex-col">
                         {/* content  */}
                         {ReactHtmlParser(notification.message)}
