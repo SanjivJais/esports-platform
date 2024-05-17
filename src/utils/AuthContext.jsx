@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       )
       let accountDetails = await account.get();
       setUser(accountDetails);
-      navigate('/');
+      navigate('/profile');
       toast.success("Login successfull", { position: "top-center" });
     } catch (error) {
       if (error.code === 401)
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     try {
       account.createOAuth2Session(
         'google',
-        "http://localhost:5173/",
+        "http://localhost:5173/profile",
         "http://localhost:5173/login"
       );
     } catch (error) {
@@ -102,8 +102,30 @@ export const AuthProvider = ({ children }) => {
         try {
           let response = await database.createDocument(db_id, 'user_details', userID, { 'ff_profile': false });
           setUserDetails(response);
-        } catch (error) {
 
+          let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
+            {
+              recipentType: "specific",
+              message: `🎉 Welcome ${user.name}! Claim a username to get started on EsportsGravity.`,
+              recipents: [
+                JSON.stringify(
+                  {
+                    user: user.$id,
+                    read: false
+                  }
+                )
+              ]
+            }
+          )
+
+          await database.updateDocument(db_id, 'user_details', user.$id, {'notifications': [notif.$id]})
+          setUserDetails((prevData)=>({
+            ...prevData,
+            notifications: [notif.$id]
+          }))
+
+        } catch (error) {
+          console.log(error.message);
         }
 
       }

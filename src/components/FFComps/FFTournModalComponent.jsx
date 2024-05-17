@@ -267,7 +267,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <div className="flex gap-4 items-center mb-4">
                                 <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite'>{tournament.tournTitle}</h2>
-                                <div onClick={handleShareClick} className='bg-offBlue text-secondary flex items-center justify-center md:h-6 h-5 md:w-6 w-5  rounded cursor-pointer'><PiShareFatFill className='md:text-base text-sm' /></div>
+                                <div onClick={handleShareClick} title='Copy tournament ID' className='bg-offBlue text-secondary flex items-center justify-center md:h-6 h-5 md:w-6 w-5  rounded cursor-pointer'><PiShareFatFill className='md:text-base text-sm' /></div>
                             </div>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>

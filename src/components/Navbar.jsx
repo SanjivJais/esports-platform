@@ -48,18 +48,26 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
   const [notificationPanel, setNotificationPanel] = useState(false)
 
-  // count number of unread notifications
   const [unreadCount, setUnreadCount] = useState(0)
   useEffect(() => {
     if (notifications) {
       setUnreadCount(
         notifications.filter((notification) =>
-          notification.recipents.some(recipent => ((JSON.parse(recipent).user === user.$id) && !(JSON.parse(recipent).read)) || JSON.parse(recipent).user !== user.$id)
+          notification.recipents.some(recipent => ((JSON.parse(recipent).user === user.$id) && !(JSON.parse(recipent).read))) || !notification.recipents.some(recipent => ((JSON.parse(recipent).user === user.$id)))
         ).length
       )
 
     }
   }, [notifications])
+
+
+
+
+
+
+
+
+
 
   return (
     <>

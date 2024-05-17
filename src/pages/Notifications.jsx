@@ -15,8 +15,9 @@ export const Notifications = () => {
     const [notifications, setNotifications] = useState(null)
 
 
+
     useEffect(() => {
-        setProgress(50)
+        setProgress(60)
 
         const fetchNotifications = async () => {
             const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(25), Query.orderDesc('$createdAt'), Query.equal('recipentType', 'all')])
@@ -25,7 +26,6 @@ export const Notifications = () => {
             if (userDetails && userDetails.notifications.length > 0) {
                 const userNots = await database.listDocuments(db_id, 'notifications', [Query.contains('$id', userDetails.notifications), Query.limit(25)])
                 setNotifications((prevNots) => {
-
                     const existingIds = new Set(prevNots.map(not => not.$id));
                     const newNotifications = userNots.documents.filter(not => !existingIds.has(not.$id));
                     const allNotifications = [...prevNots, ...newNotifications]
@@ -35,7 +35,6 @@ export const Notifications = () => {
             }
 
         }
-
         fetchNotifications()
         setProgress(100)
 
@@ -43,7 +42,7 @@ export const Notifications = () => {
 
 
 
-    
+
 
     return (
         <>
