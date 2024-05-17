@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { IoNotificationsCircle } from 'react-icons/io5'
 import ReactHtmlParser from 'react-html-parser'
 import { useAuth } from '../utils/AuthContext'
+import { database, db_id } from '../../config/Appwrite'
+import { Query } from 'appwrite'
+import { toast } from 'react-toastify'
+import LoadingBar from 'react-top-loading-bar'
+
 
 
 
@@ -9,6 +14,8 @@ import { useAuth } from '../utils/AuthContext'
 export const NotificationTile = ({ notification }) => {
 
     const { user } = useAuth()
+
+    const [progress, setProgress] = useState(0)
 
     const formatDateTime = (dateTimeString) => {
         // Split the input string into date and time parts
@@ -79,10 +86,48 @@ export const NotificationTile = ({ notification }) => {
     }, [notification])
 
 
+    const handleMarkRead = async () => {
+        if (!readStatus) {
+            setProgress(70)
+            try {
+                const res = await database.getDocument(db_id, 'notifications', notification.$id, [Query.select('recipents')])
+                let receps = res.recipents
+                if (notification.recipentType === "all") {
+                    receps.push(JSON.stringify({
+                        user: user.$id,
+                        read: true
+                    }))
+                    await database.updateDocument(db_id, 'notifications', notification.$id, { 'recipents': receps })
+                    setReadStatus(true)
+                } else if (notification.recipentType === "specific") {
+                    const updatedRecipients = receps.map(recipient => {
+                        if (JSON.parse(recipient).user === user.$id) {
+                            return JSON.stringify({ ...JSON.parse(recipient), read: true }); // Update the read key to true or the desired value
+                        }
+                        return recipient;
+                    });
+
+                    await database.updateDocument(db_id, 'notifications', notification.$id, {'recipents': updatedRecipients})
+                    setReadStatus(true)
+                }
+            } catch (error) {
+                toast.error("Something went wrong!")
+            }
+            setProgress(100)
+        }
+
+    }
+
+
 
     return (
         <>
-            <div title='Click to Mark As Read' className="bg-secondary text-[17px] px-4 py-3 w-full border-b-[0.8px] border-inactive border-opacity-20 group cursor-pointer">
+            <LoadingBar
+                color='#F88B26'
+                progress={progress}
+                onLoaderFinished={() => setProgress(0)}
+            />
+            <div onClick={handleMarkRead} title='Click to Mark As Read' className="bg-secondary text-[17px] px-4 py-3 w-full border-b-[0.8px] border-inactive border-opacity-20 group cursor-pointer">
                 <div className='text-dimText text-sm my-2'>{timeAgo(convertISODateToLocal(notification.$createdAt))}</div>
                 <div className="flex gap-3 items-center ">
                     <div className="flex flex-col self-start"><IoNotificationsCircle className={`${readStatus ? 'text-openStatus' : 'text-offBlue group-hover:text-openStatus'}  text-3xl`} /></div>

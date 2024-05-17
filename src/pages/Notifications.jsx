@@ -15,32 +15,42 @@ export const Notifications = () => {
     const [notifications, setNotifications] = useState(null)
 
 
-
     useEffect(() => {
         setProgress(60)
-
         const fetchNotifications = async () => {
-            const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(25), Query.orderDesc('$createdAt'), Query.equal('recipentType', 'all')])
-            setNotifications(nots.documents)
+            try {
+                const allNotificationsResponse = await database.listDocuments(db_id, 'notifications', [
+                    Query.limit(25),
+                    Query.orderDesc('$createdAt'),
+                    Query.equal('recipentType', 'all')
+                ]);
 
-            if (userDetails && userDetails.notifications.length > 0) {
-                const userNots = await database.listDocuments(db_id, 'notifications', [Query.contains('$id', userDetails.notifications), Query.limit(25)])
-                setNotifications((prevNots) => {
-                    const existingIds = new Set(prevNots.map(not => not.$id));
-                    const newNotifications = userNots.documents.filter(not => !existingIds.has(not.$id));
-                    const allNotifications = [...prevNots, ...newNotifications]
+                let allNotifications = allNotificationsResponse.documents;
+
+                if (userDetails && userDetails.notifications.length > 0) {
+                    const userNotificationsResponse = await database.listDocuments(db_id, 'notifications', [
+                        Query.contains('$id', userDetails.notifications),
+                        Query.limit(25)
+                    ]);
+
+                    const userNotifications = userNotificationsResponse.documents;
+                    const existingIds = new Set(allNotifications.map(not => not.$id));
+
+                    const newNotifications = userNotifications.filter(not => !existingIds.has(not.$id));
+                    allNotifications = [...allNotifications, ...newNotifications];
                     allNotifications.sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
-                    return allNotifications;
-                });
+                }
+
+                setNotifications(allNotifications);
+            } catch (error) {
+                console.error("Error fetching notifications!");
             }
+        };
 
-        }
-        fetchNotifications()
-        setProgress(100)
+        fetchNotifications();
+        setProgress(100);
 
-    }, [userDetails])
-
-
+    }, [userDetails]);
 
 
 

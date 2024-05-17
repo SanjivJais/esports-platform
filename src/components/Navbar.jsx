@@ -22,29 +22,46 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   const handleSearchEnable = () => { setSearchEnable(!searchEnable); }
 
   const [notifications, setNotifications] = useState(null)
+
+
+
   useEffect(() => {
-
     const fetchNotifications = async () => {
-      const nots = await database.listDocuments(db_id, 'notifications', [Query.limit(25), Query.orderDesc('$createdAt'), Query.equal('recipentType', 'all')])
-      setNotifications(nots.documents)
+      try {
+        const allNotificationsResponse = await database.listDocuments(db_id, 'notifications', [
+          Query.limit(25),
+          Query.orderDesc('$createdAt'),
+          Query.equal('recipentType', 'all')
+        ]);
 
-      if (userDetails && userDetails.notifications.length > 0) {
-        const userNots = await database.listDocuments(db_id, 'notifications', [Query.contains('$id', userDetails.notifications), Query.limit(25)])
-        setNotifications((prevNots) => {
+        let allNotifications = allNotificationsResponse.documents;
 
-          const existingIds = new Set(prevNots.map(not => not.$id));
-          const newNotifications = userNots.documents.filter(not => !existingIds.has(not.$id));
-          const allNotifications = [...prevNots, ...newNotifications]
+        if (userDetails && userDetails.notifications.length > 0) {
+          const userNotificationsResponse = await database.listDocuments(db_id, 'notifications', [
+            Query.contains('$id', userDetails.notifications),
+            Query.limit(25)
+          ]);
+
+          const userNotifications = userNotificationsResponse.documents;
+          const existingIds = new Set(allNotifications.map(not => not.$id));
+
+          const newNotifications = userNotifications.filter(not => !existingIds.has(not.$id));
+          allNotifications = [...allNotifications, ...newNotifications];
           allNotifications.sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
-          return allNotifications;
-        });
+        }
+
+        setNotifications(allNotifications);
+      } catch (error) {
+        console.error("Error fetching notifications!");
       }
+    };
 
-    }
+    fetchNotifications();
 
-    fetchNotifications()
+  }, [userDetails]);
 
-  }, [userDetails])
+
+
 
   const [notificationPanel, setNotificationPanel] = useState(false)
 
