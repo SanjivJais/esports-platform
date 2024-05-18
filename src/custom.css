@@ -94,10 +94,24 @@ body::-webkit-scrollbar-thumb {
   outline: none;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator, input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Invert color to white */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  /* Invert color to white */
 }
 
-input:disabled, select:disabled, textarea:disabled{
+input:disabled,
+select:disabled,
+textarea:disabled {
   background-color: #0E1825;
+}
+
+
+.bg-highlighted-text {
+  background-color: #0E1825;
+  height: fit-content;
+  width: fit-content;
+  padding: 0.1rem 0.4rem;
+  border-radius: 5px;
+  font-size: 14px;
 }

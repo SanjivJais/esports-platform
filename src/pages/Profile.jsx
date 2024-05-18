@@ -332,7 +332,9 @@ export const Profile = () => {
             const tournDetail = await database.getDocument(db_id, 'ff_tournaments', tournID, []);
             return tournDetail;
           });
-          const tournamentsData = await Promise.all(tournamentPromises);
+          let tournamentsData = await Promise.all(tournamentPromises);
+          tournamentsData.sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
+
           setJoinedFFTournaments(tournamentsData);
         } catch (error) {
           toast.error("Error occurred loading joined tournaments")

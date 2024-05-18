@@ -102,7 +102,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
                 {unreadCount > 0 && <div className="h-4 w-4 bg-primary text-secondary font-semibold relative self-end flex items-center justify-center text-[11px] rounded-xl top-2 left-1">{unreadCount}</div>}
                 <IoNotificationsOutline className='text-[24px] text-offBlue transition-colors duration-150' />
               </div>
-              <div className={`${notificationPanel ? '' : 'hidden'} text-sm absolute flex-col max-w-96 min-w-80 min-h-60 max-h-80 top-[66px] md:right-28 right-4 rounded-[5px] px-2 pt-1 bg-secondary shadow-modal overflow-auto custom-scrollbar flex`}>
+              <div className={`${notificationPanel ? '' : 'hidden'} text-[15px] absolute flex-col md:w-[28rem] min-h-60 max-h-80 top-[66px] md:right-28 right-4 rounded-[5px] px-2 pt-1 bg-secondary shadow-modal overflow-auto custom-scrollbar flex`}>
                 <div className="flex justify-end items-center px-4 py-1"><Link className='text-primary' to={'/notifications'}>Show All ›</Link></div>
 
                 {notifications && notifications.map((notification, index) => (

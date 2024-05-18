@@ -106,7 +106,7 @@ export const AuthProvider = ({ children }) => {
           let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
             {
               recipentType: "specific",
-              message: `🎉 Welcome ${user.name}! Claim a username to get started on EsportsGravity.`,
+              message: `🎉 Welcome ${user.name}! Setup your profile to get started on EsportsGravity.`,
               recipents: [
                 JSON.stringify(
                   {
@@ -114,7 +114,8 @@ export const AuthProvider = ({ children }) => {
                     read: false
                   }
                 )
-              ]
+              ],
+              targetLink: null
             }
           )
 

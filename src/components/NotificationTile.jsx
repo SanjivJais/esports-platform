@@ -6,6 +6,8 @@ import { database, db_id } from '../../config/Appwrite'
 import { Query } from 'appwrite'
 import { toast } from 'react-toastify'
 import LoadingBar from 'react-top-loading-bar'
+import { MdOpenInNew } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 
 
 
@@ -107,7 +109,7 @@ export const NotificationTile = ({ notification }) => {
                         return recipient;
                     });
 
-                    await database.updateDocument(db_id, 'notifications', notification.$id, {'recipents': updatedRecipients})
+                    await database.updateDocument(db_id, 'notifications', notification.$id, { 'recipents': updatedRecipients })
                     setReadStatus(true)
                 }
             } catch (error) {
@@ -127,9 +129,12 @@ export const NotificationTile = ({ notification }) => {
                 progress={progress}
                 onLoaderFinished={() => setProgress(0)}
             />
-            <div onClick={handleMarkRead} title='Click to Mark As Read' className="bg-secondary text-[17px] px-4 py-3 w-full border-b-[0.8px] border-inactive border-opacity-20 group cursor-pointer">
-                <div className='text-dimText text-sm my-2'>{timeAgo(convertISODateToLocal(notification.$createdAt))}</div>
-                <div className="flex gap-3 items-center ">
+            <div className="bg-secondary px-4 py-3 w-full border-b-[0.8px] border-inactive border-opacity-20 ">
+                <div className="flex items-center justify-between my-2">
+                    <div className='text-dimText text-sm'>{timeAgo(convertISODateToLocal(notification.$createdAt))}</div>
+                    {notification.targetLink && <Link to={notification.targetLink}><MdOpenInNew className='text-[15px] text-inactive hover:text-primary' /></Link>}
+                </div>
+                <div onClick={handleMarkRead} title='Click to Mark As Read' className="flex gap-3 items-center group cursor-pointer">
                     <div className="flex flex-col self-start"><IoNotificationsCircle className={`${readStatus ? 'text-openStatus' : 'text-offBlue group-hover:text-openStatus'}  text-3xl`} /></div>
                     <div className="flex flex-col text-offWhite gap-1">
                         {/* content  */}

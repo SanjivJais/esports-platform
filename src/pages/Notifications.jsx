@@ -69,7 +69,7 @@ export const Notifications = () => {
 
             <div className='flex flex-col px-4'>
 
-                <div className="min-h-[420px] w-full max-w-[700px] px-4 bg-secondary self-center mt-6 items-start rounded-[5px]">
+                <div className="min-h-[420px] w-full max-w-[700px] px-4 text-base bg-secondary self-center mt-6 items-start rounded-[5px]">
                     {notifications && notifications.map((notification, index) => (
                         <NotificationTile key={index} notification={notification} />
                     ))}

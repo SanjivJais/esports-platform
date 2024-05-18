@@ -64,8 +64,17 @@ export const CreateFFTourn = ({ onClose }) => {
     // creating tournament 
     const createTournament = async () => {
         try {
-            await database.createDocument(db_id, 'ff_tournaments', ID.unique(), tournament)
+            const response = await database.createDocument(db_id, 'ff_tournaments', ID.unique(), tournament)
             toast.success("Tournament created")
+
+            await database.createDocument(db_id, 'notifications', ID.unique(),
+                {
+                    recipentType: "all",
+                    message: `<p>New Free Fire tournament is here! Check it out with ID &nbsp;<span class='bg-highlighted-text'>${response.$id}</span>.</p>`,
+                    recipents: [],
+                    targetLink: `${import.meta.env.VITE_ROOT_PATH}/tournaments/freefire`
+                }
+            )
             onClose()
         } catch (error) {
             toast.error(error.message)
@@ -80,6 +89,7 @@ export const CreateFFTourn = ({ onClose }) => {
         <div className='p-4 lg:w-[50vw] md:w-[60vw] w-[90vw] h-[90vh] overflow-x-hidden custom-scrollbar'>
             <div className="flex flex-col gap-4 mt-8 mx-4 pb-8">
                 <img src="/images/FF_Long_logo.png" alt="" className='w-36 h-auto self-center' />
+
 
 
                 <div className="flex flex-col gap-1">
