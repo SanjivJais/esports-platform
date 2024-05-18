@@ -70,7 +70,7 @@ export const CreateFFTourn = ({ onClose }) => {
             await database.createDocument(db_id, 'notifications', ID.unique(),
                 {
                     recipentType: "all",
-                    message: `<p>New Free Fire tournament is here! Check it out with ID &nbsp;<span class='bg-highlighted-text'>${response.$id}</span>.</p>`,
+                    message: `<p>New Free Fire tournament is here! Check it out with tournament ID &nbsp;<span class='bg-highlighted-text'>${response.$id}</span>.</p>`,
                     recipents: [],
                     targetLink: `${import.meta.env.VITE_ROOT_PATH}/tournaments/freefire`
                 }

@@ -3,14 +3,17 @@ import { FaPeopleGroup } from 'react-icons/fa6';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { database, db_id } from '../../../config/Appwrite';
 import { toast } from 'react-toastify';
-import { Query } from 'appwrite';
+import { ID, Query } from 'appwrite';
 import LoadingBar from 'react-top-loading-bar';
 import { Modal } from '../Modal'
 import { useNavigate } from 'react-router-dom'
 
 
+
 export const UpdateFFTournHost = ({ tournament, onClose }) => {
     const navigate = useNavigate();
+
+
 
     // formatting datetime 
     const formatDateTime = (dateTimeString) => {
@@ -198,6 +201,25 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
                         toast.success(`${winnerUsername}: ${coin} + ${prize} (Prize#${index + 1}) = ${updatedCoin}`, {
                             autoClose: false,
                         })
+
+                        let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
+                            {
+                                recipentType: "specific",
+                                message: `🎉 Congratulations! You got <span class="text-primary">rank ${index+1} </span>in tournament <span class="text-offBlue">${tournament.tournTitle} (ID: ${tournament.$id})</span>. <span class="text-primary">${prize} EG Coins</span> credited to your account.`,
+                                recipents: [
+                                    JSON.stringify(
+                                        {
+                                            user: userData.documents[0].$id,
+                                            read: false
+                                        }
+                                    )
+                                ],
+                                targetLink: null
+                            }
+                        )
+
+                        await database.updateDocument(db_id, 'user_details', userData.documents[0].$id, { 'notifications': [notif.$id] })
+
                     } else {
                         toast.error(`User '${winnerUsername}' not found!`, { autoClose: false, })
                     }
