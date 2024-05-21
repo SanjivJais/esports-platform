@@ -261,7 +261,7 @@ export const FFTournModalComponent = ({ tournament }) => {
                 }}>
                     <div className="flex gap-2 items-center pt-3 pl-3">
                         <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Free Fire</div>
-                        {tournament.status === "Open" && <div title='Time left to start' className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
+                        {tournament.status === "Open" && calculateTimeLeft(tournament.startTime).daysLeft >= 0 && calculateTimeLeft(tournament.startTime).hoursLeft >= 0 && <div title='Time left to start' className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
                     </div>
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="lg:w-[63%] md:w-[58%] w-full">

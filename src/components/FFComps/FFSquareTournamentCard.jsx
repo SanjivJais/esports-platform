@@ -81,7 +81,7 @@ export const FFSquareTournamentCard = ({ tournament }) => {
                         {joinStatus && <div className='bg-secondary text-openStatus h-fit text-center flex items-center gap-1 bg-opacity-90 relative text-[12px] px-3 py-[3px] rounded-xl'><span>Joined</span><FaCircleCheck className='text-[11px]' /></div>}
 
                     </div>
-                    {tournament.status === "Open" && <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-semibold flex items-center gap-1'><FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
+                    {tournament.status === "Open" && calculateTimeLeft(tournament.startTime).daysLeft >= 0 && calculateTimeLeft(tournament.startTime).hoursLeft >= 0 && <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-semibold flex items-center gap-1'><FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startTime).daysLeft}d, {calculateTimeLeft(tournament.startTime).hoursLeft}hrs </div>}
                 </div>
                 <div className='bg-secondary bg-opacity-80 px-3 py-3'>
                     <div className="flex justify-between  text-[13px] mb-1">

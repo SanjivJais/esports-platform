@@ -7,6 +7,7 @@ import { Alert } from '../components/Alert';
 
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { Helmet } from 'react-helmet';
 
 
 
@@ -110,6 +111,10 @@ export const Signup = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Signup- EsportsGravity</title>
+        <meta name="description" content="Create an account to get started on EsportsGravity." />
+      </Helmet>
       <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
         <div className="bg-[url('/images/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>
@@ -190,12 +195,12 @@ export const Signup = () => {
               <p className='ml-2 -mt-1'>I'm at least 16 years of age and confirm to the <a href='#' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='#' className='text-primary underline underline-offset-4'>Privacy Policy</a>.</p>
             </div>
             <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'><span>Sign Up</span>{loading && <ClipLoader size={22} color="#080F18" />}</button>
-            <label htmlFor="" className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></label>
+            <div className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></div>
             {/* Sign in with  */}
             <div className='flex flex-col items-center mt-12'>
               <div className="h-[1px] bg-inactive w-full"></div>
-              <label htmlFor="" className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</label>
-              <button onClick={(e) => googleAuth(e)} className='rounded-[100px] mt-6 flex justify-center items-center gap-3 border-[1px] border-inactive h-12 px-8'>
+              <div className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</div>
+              <button onClick={(e) => googleAuth(e)} className='rounded-[100px] mt-6 flex justify-center items-center gap-3 border-[1px] border-inactive hover:bg-secondaryLight transition-colors duration-150 h-12 px-8'>
                 <span>
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10.9999 4.58333C12.482 4.58333 13.8428 5.09073 14.9291 5.93456L18.2631 2.75375C16.3247 1.04496 13.7872 0 10.9999 0C6.77631 0 3.11356 2.38326 1.27026 5.8757L4.97766 8.80255C5.87575 6.34276 8.2293 4.58333 10.9999 4.58333Z" fill="#F44336" />
