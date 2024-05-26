@@ -15,7 +15,6 @@ import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournament
 import { CreateFFTourn } from '../components/FFComps/CreateFFTourn';
 import { FFTournHostPreview } from '../components/FFComps/FFTournHostPreview';
 import { Query } from 'appwrite';
-import { WalletMain } from '../components/Wallet/WalletMain';
 
 
 export const Profile = () => {
@@ -229,53 +228,7 @@ export const Profile = () => {
     setProgress(100)
   }
 
-  // game profile deletion
-  // const [deleteFFProfileModal, setDeleteFFProfileModal] = useState(false)
-  // const handleFFProfileDeletion = async () => {
-  //   setProgress(40)
-  //   try {
-  //     await database.deleteDocument(db_id, 'ff_profiles', user.$id)
-  //     try {
-  //       await database.updateDocument(db_id, 'user_details', user.$id, { 'ff_profile': false })
-  //       setUserDetails((prevData) => ({
-  //         ...prevData,
-  //         ff_profile: false
-  //       }))
-  //       setProgress(70)
-  //       setFFProfile(null)
-  //       setDeleteFFProfileModal(false);
-  //     } catch (error) {
-  //       toast.error("An error occurred")
-  //     }
-  //   } catch (error) {
-  //     toast.error("An error occurred")
-  //   }
-  //   setProgress(100)
-  // }
-
-  // const [deletePubgProfileModal, setDeletePubgProfileModal] = useState(false)
-  // const handlePubgProfileDeletion = async () => {
-  //   setProgress(40)
-  //   try {
-  //     await database.deleteDocument(db_id, 'pubg_profiles', user.$id)
-  //     try {
-  //       await database.updateDocument(db_id, 'user_details', user.$id, { 'pubg_profile': false })
-  //       setUserDetails((prevData) => ({
-  //         ...prevData,
-  //         pubg_profile: false
-  //       }))
-  //       setProgress(70)
-  //       setPUBGProfile(null)
-  //       setDeletePubgProfileModal(false);
-  //     } catch (error) {
-  //       toast.error("An error occurred")
-  //     }
-  //   } catch (error) {
-  //     toast.error("An error occurred")
-  //   }
-  //   setProgress(100)
-
-  // }
+  
 
   // game profile edits 
 
@@ -526,7 +479,7 @@ export const Profile = () => {
           }
           {activeTab === 2 &&
             <>
-              <WalletMain />
+              This is wallet section!
             </>
           }
           {activeTab === 3 &&
