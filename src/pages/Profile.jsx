@@ -7,7 +7,7 @@ import { storage, ID, database, db_id, account } from '../../config/Appwrite';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 import { Modal } from '../components/Modal';
-import { MdAddBox, MdDelete } from 'react-icons/md';
+import { MdAddBox } from 'react-icons/md';
 import LoadingBar from 'react-top-loading-bar';
 import GameProfileContext from '../utils/GameProfileContext';
 import { TbTournament } from 'react-icons/tb';
@@ -15,6 +15,7 @@ import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournament
 import { CreateFFTourn } from '../components/FFComps/CreateFFTourn';
 import { FFTournHostPreview } from '../components/FFComps/FFTournHostPreview';
 import { Query } from 'appwrite';
+import { data } from 'autoprefixer';
 
 
 export const Profile = () => {
@@ -165,28 +166,36 @@ export const Profile = () => {
   }
 
   // game profile creation 
+  const [tempFFprof, setTempFFprof] = useState(null)
   const handleFFProfileInput = (event) => {
-    setFFProfile((prevData) => ({
+    setTempFFprof((prevData) => ({
       ...prevData,
+      gameID: "freefire",
       [event.target.name]: event.target.value
     }))
   }
+
   const createFFProfile = async () => {
     setProgress(40)
-    if (userDetails && !userDetails.ff_profile) {
-      if (ffProfile && ffProfile.ff_name != '' && ffProfile.ff_uid != '') {
+    if (userDetails && !ffProfile) {
+      if (tempFFprof && tempFFprof.nickname != '' && tempFFprof.uid != '') {
         try {
-          await database.createDocument(db_id, 'ff_profiles', user.$id, ffProfile)
-          await database.updateDocument(db_id, 'user_details', user.$id, { 'ff_profile': true })
+
+          let updatedGameProfiles = [...userDetails.game_profiles]
+          updatedGameProfiles.push(JSON.stringify(tempFFprof))
+
+          await database.updateDocument(db_id, 'user_details', user.$id, { 'game_profiles': updatedGameProfiles })
+
           setUserDetails((prevData) => ({
             ...prevData,
-            ff_profile: true
+            game_profiles: updatedGameProfiles
           }))
+          setFFProfile(tempFFprof)
           setProgress(70)
           toast.success("Free Fire profile created")
           setGameProfileModal(false)
         } catch (error) {
-          toast.error("An error occurred")
+          toast.error("Something went wrong!")
         }
       } else {
         toast.info("Free Fire name or UID missing!")
@@ -196,30 +205,37 @@ export const Profile = () => {
 
   }
 
+  const [tempPUBGprof, setTempPUBGprof] = useState(null)
   const handlePubgProfileInput = (event) => {
-    setPUBGProfile((prevData) => ({
+    setTempPUBGprof((prevData) => ({
       ...prevData,
+      gameID: "pubgmobile",
       [event.target.name]: event.target.value
     }))
 
   }
   const createPubgProfile = async () => {
     setProgress(40)
-    if (userDetails && !userDetails.pubg_profile) {
-      if (pubgProfile && pubgProfile.pubg_name != '' && pubgProfile.pubg_uid != '') {
+    if (userDetails && !pubgProfile) {
+      if (tempPUBGprof && tempPUBGprof.nickname != '' && tempPUBGprof.uid != '') {
         try {
-          await database.createDocument(db_id, 'pubg_profiles', user.$id, pubgProfile)
-          await database.updateDocument(db_id, 'user_details', user.$id, { 'pubg_profile': true })
+
+          let updatedGameProfiles = [...userDetails.game_profiles]
+          updatedGameProfiles.push(JSON.stringify(tempPUBGprof))
+
+          await database.updateDocument(db_id, 'user_details', user.$id, { 'game_profiles': updatedGameProfiles })
+
           setUserDetails((prevData) => ({
             ...prevData,
-            pubg_profile: true
+            game_profiles: updatedGameProfiles
           }))
+          setPUBGProfile(tempPUBGprof)
           setProgress(70)
 
           setGameProfileModal(false)
           toast.success("PUBG Mobile profile created")
         } catch (error) {
-          toast.error("An error occurred")
+          toast.error("Something went wrong!")
         }
       } else {
         toast.info("PUBG Mobile name or UID missing!")
@@ -228,25 +244,64 @@ export const Profile = () => {
     setProgress(100)
   }
 
-  
+
 
   // game profile edits 
+  const [editedGameProfiles, setEditedGameProfiles] = useState([])
+  const [gameProfileEditTrigger, setGameProfileEditTrigger] = useState(false)
+  useEffect(() => {
+    if (userDetails) {
+      setEditedGameProfiles([...userDetails.game_profiles])
+    }
+  }, [userDetails])
+
+  useEffect(() => {
+    setEditedGameProfiles(editedGameProfiles)
+  }, [editedGameProfiles])
+
+  useEffect(() => {
+    if (gameProfileEditTrigger) {
+      const updateGameProfiles = async () => {
+        try {
+          await database.updateDocument(db_id, 'user_details', user.$id, { 'game_profiles': editedGameProfiles })
+          toast.success("Profile updated")
+        } catch (error) {
+          toast.error("Something went wrong!")
+        }
+      }
+
+      updateGameProfiles();
+      setGameProfileEditTrigger(false)
+    }
+  }, [gameProfileEditTrigger])
+
 
   const [ffProfileEditEnable, setFFProfileEditEnable] = useState(false)
   const ffProfileEdit = async () => {
     const ffProfileEditName = document.getElementById('ffProfileEditName').value
     const ffProfileEditUID = document.getElementById('ffProfileEditUID').value
-    if (ffProfileEditName != '' && ffProfileEditUID != '') {
+    if (userDetails && ffProfileEditName != '' && ffProfileEditUID != '') {
       try {
-        await database.updateDocument(db_id, 'ff_profiles', user.$id, { 'ff_name': ffProfileEditName, 'ff_uid': ffProfileEditUID })
-        setFFProfile({
-          'ff_name': ffProfileEditName,
-          'ff_uid': ffProfileEditUID
-        })
-        toast.success("Profile updated")
+        setEditedGameProfiles(prevProfiles =>
+          prevProfiles.map(profile => {
+            const parsedProfile = JSON.parse(profile);
+            if (parsedProfile.gameID === "freefire") {
+              return JSON.stringify({ ...parsedProfile, nickname: ffProfileEditName, uid: ffProfileEditUID });
+            }
+            return profile;
+          })
+        );
+
+        setGameProfileEditTrigger(true)
+
+        setFFProfile(prevData => ({
+          ...prevData,
+          nickname: ffProfileEditName,
+          uid: ffProfileEditUID
+        }))
         setFFProfileEditEnable(false)
       } catch (error) {
-        toast.error("An error occurred")
+        toast.error(error.message)
       }
     }
     else
@@ -257,17 +312,29 @@ export const Profile = () => {
   const pubgProfileEdit = async () => {
     const pubgProfileEditName = document.getElementById('pubgProfileEditName').value
     const pubgProfileEditUID = document.getElementById('pubgProfileEditUID').value
-    if (pubgProfileEditName != '' && pubgProfileEditUID != '') {
+    if (userDetails && pubgProfileEditName != '' && pubgProfileEditUID != '') {
       try {
-        await database.updateDocument(db_id, 'pubg_profiles', user.$id, { 'pubg_name': pubgProfileEditName, 'pubg_uid': pubgProfileEditUID })
-        setPUBGProfile({
-          'pubg_name': pubgProfileEditName,
-          'pubg_uid': pubgProfileEditUID
-        })
-        toast.success("Profile updated")
+
+        setEditedGameProfiles(prevProfiles =>
+          prevProfiles.map(profile => {
+            const parsedProfile = JSON.parse(profile);
+            if (parsedProfile.gameID === "pubgmobile") {
+              return JSON.stringify({ ...parsedProfile, nickname: pubgProfileEditName, uid: pubgProfileEditUID });
+            }
+            return profile;
+          })
+        );
+
+        setGameProfileEditTrigger(true)
+
+        setPUBGProfile(prevData => ({
+          ...prevData,
+          nickname: pubgProfileEditName,
+          uid: pubgProfileEditUID
+        }))
         setPubgProfileEditEnable(false)
       } catch (error) {
-        toast.error("An error occurred")
+        toast.error("Something went wrong!")
       }
     }
     else
@@ -413,18 +480,18 @@ export const Profile = () => {
           {activeTab === 1 &&
             <>
               <div className="grid md:grid-cols-2 grid-cols-1 gap-6 w-full">
-                {userDetails && userDetails.ff_profile && ffProfile &&
+                {userDetails && ffProfile &&
                   (<div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px] group">
                     <div className="flex items-center gap-2 ">
                       <div className='h-14 w-14 bg-[url("/images/FF_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
                       <div className={`flex flex-col ${ffProfileEditEnable ? 'gap-2' : ''}`}>
                         {ffProfileEditEnable ?
-                          (<input id='ffProfileEditName' type='text' placeholder={ffProfile.ff_name} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
-                          : <h4 className='font-bold text-offWhite md:text-xl'>{ffProfile.ff_name}</h4>
+                          (<input id='ffProfileEditName' type='text' placeholder={ffProfile.nickname} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          : <h4 className='font-bold text-offWhite md:text-xl'>{ffProfile.nickname}</h4>
                         }
                         {ffProfileEditEnable ?
-                          (<input id='ffProfileEditUID' type='text' placeholder={ffProfile.ff_uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
-                          : <h5 className='text-inactive font-medium'>FF UID: <span>{ffProfile.ff_uid}</span></h5>
+                          (<input id='ffProfileEditUID' type='text' placeholder={ffProfile.uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          : <h5 className='text-inactive font-medium'>FF UID: <span>{ffProfile.uid}</span></h5>
                         }
                         {ffProfileEditEnable && <>
                           <div className="flex gap-2 text-sm">
@@ -436,23 +503,22 @@ export const Profile = () => {
                     </div>
                     <div className="md:hidden md:group-hover:flex flex gap-1 text-inactive">
                       <FaRegEdit onClick={() => setFFProfileEditEnable(true)} className='cursor-pointer' />
-                      {/* <MdDelete onClick={() => setDeleteFFProfileModal(true)} className='cursor-pointer' /> */}
                     </div>
                   </div>)
                 }
-                {userDetails && userDetails.pubg_profile && pubgProfile &&
+                {userDetails && pubgProfile &&
                   (<div className="flex justify-between col-span-1 p-3 bg-secondary rounded-[5px] group">
                     <div className="flex items-center gap-2 ">
                       <div className='h-14 w-14 bg-[url("/images/Pubg_icon_game_profile.jpg")] bg-center bg-cover rounded-[5px]'></div>
 
                       <div className={`flex flex-col ${pubgProfileEditEnable ? 'gap-2' : ''}`}>
                         {pubgProfileEditEnable ?
-                          (<input id='pubgProfileEditName' type='text' placeholder={pubgProfile.pubg_name} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
-                          : <h4 className='font-bold text-offWhite md:text-xl'>{pubgProfile.pubg_name}</h4>
+                          (<input id='pubgProfileEditName' type='text' placeholder={pubgProfile.nickname} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          : <h4 className='font-bold text-offWhite md:text-xl'>{pubgProfile.nickname}</h4>
                         }
                         {pubgProfileEditEnable ?
-                          (<input id='pubgProfileEditUID' type='text' placeholder={pubgProfile.pubg_uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
-                          : <h5 className='text-inactive font-medium'>PUBG UID: <span>{pubgProfile.pubg_uid}</span></h5>
+                          (<input id='pubgProfileEditUID' type='text' placeholder={pubgProfile.uid} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />)
+                          : <h5 className='text-inactive font-medium'>PUBG UID: <span>{pubgProfile.uid}</span></h5>
                         }
                         {pubgProfileEditEnable && <>
                           <div className="flex gap-2 text-sm">
@@ -464,7 +530,6 @@ export const Profile = () => {
                     </div>
                     <div className="md:group-hover:flex md:hidden flex gap-1 text-inactive">
                       <FaRegEdit onClick={() => setPubgProfileEditEnable(true)} className='cursor-pointer' />
-                      {/* <MdDelete onClick={() => setDeletePubgProfileModal(true)} className='cursor-pointer' /> */}
                     </div>
                   </div>)
                 }
@@ -547,20 +612,20 @@ export const Profile = () => {
           <div className="flex flex-col my-12 mx-6 gap-3">
             <select onChange={handleGameSelection} name="" id="gameSelection" className='custom-dropdown bg-secondaryLight'>
               <option value="">Select game</option>
-              {userDetails && !userDetails.ff_profile && <option value="freefire">Free Fire</option>}
-              {userDetails && !userDetails.pubg_profile && <option value="pubgmobile">PUBG Mobile</option>}
+              {userDetails && !ffProfile && <option value="freefire">Free Fire</option>}
+              {userDetails && !pubgProfile && <option value="pubgmobile">PUBG Mobile</option>}
             </select>
 
             {/* free fire profile   */}
             <div id='ffProfileSetup' className="hidden flex-col gap-3">
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>In-game Name</div>
-                <input onChange={handleFFProfileInput} name='ff_name' type="text" placeholder='Your name in Free Fire' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+                <input onChange={handleFFProfileInput} name='nickname' type="text" placeholder='Your name in Free Fire' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
                 <span className='text-[12px] text-offBlue'>(<span className='text-primary'> Note: </span>This name should match the actual in-game name as far as possible, including styles. )</span>
               </div>
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>UID</div>
-                <input onChange={handleFFProfileInput} name='ff_uid' type="text" placeholder='Your Free Fire UID' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+                <input onChange={handleFFProfileInput} name='uid' type="text" placeholder='Your Free Fire UID' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
               </div>
               <button onClick={createFFProfile} className='bg-primary px-2 py-2 rounded-[5px] text-secondary text-sm font-bold'>Create Profile</button>
             </div>
@@ -569,11 +634,11 @@ export const Profile = () => {
             <div id='pubgProfileSetup' className="hidden flex-col gap-3">
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>In-game Name</div>
-                <input onChange={handlePubgProfileInput} name='pubg_name' type="text" placeholder='Your name in PUBG Mobile' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+                <input onChange={handlePubgProfileInput} name='nickname' type="text" placeholder='Your name in PUBG Mobile' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
               </div>
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>UID</div>
-                <input onChange={handlePubgProfileInput} name='pubg_uid' type="text" placeholder='Your PUBG Mobile UID' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+                <input onChange={handlePubgProfileInput} name='uid' type="text" placeholder='Your PUBG Mobile UID' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
               </div>
               <button onClick={createPubgProfile} className='bg-primary px-2 py-2 rounded-[5px] text-secondary text-sm font-bold'>Create Profile</button>
             </div>
@@ -583,29 +648,6 @@ export const Profile = () => {
         </div>
       </Modal>
 
-      {/* <Modal isVisible={deleteFFProfileModal} onClose={() => setDeleteFFProfileModal(false)}>
-        <div className='w-64 py-4 px-6 flex flex-col content-center'>
-          <div className='my-8 flex flex-col gap-3'>
-            <div className='text-center'>Are you sure you want to remove your Free Fire profile?</div>
-            <div className="flex gap-4 justify-center">
-              <button onClick={() => setDeleteFFProfileModal(false)} className='px-3 py-2 rounded-[5px] bg-secondaryLight'>No</button>
-              <button onClick={handleFFProfileDeletion} className='px-3 py-2 rounded-[5px] bg-primary text-secondary'>Yes</button>
-            </div>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal isVisible={deletePubgProfileModal} onClose={() => setDeletePubgProfileModal(false)}>
-        <div className='w-64 py-4 px-6 flex flex-col content-center'>
-          <div className='my-8 flex flex-col gap-3'>
-            <div className='text-center'>Are you sure you want to remove your PUBG Mobile profile?</div>
-            <div className="flex gap-4 justify-center">
-              <button onClick={() => setDeletePubgProfileModal(false)} className='px-3 py-2 rounded-[5px] bg-secondaryLight'>No</button>
-              <button onClick={handlePubgProfileDeletion} className='px-3 py-2 rounded-[5px] bg-primary text-secondary'>Yes</button>
-            </div>
-          </div>
-        </div>
-      </Modal> */}
 
 
       <Modal isVisible={chooseGameModal} onClose={() => setChooseGameModal(false)}>

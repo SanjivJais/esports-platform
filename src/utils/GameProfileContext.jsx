@@ -1,42 +1,32 @@
 import { createContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
-import { toast } from "react-toastify";
-import { database, db_id } from "../../config/Appwrite";
-
 
 const GameProfileContext = createContext();
 
 export const GameProfileProvider = ({ children }) => {
     const { user, userDetails } = useAuth();
 
-    // fetch game profiles if exist
+    // set game profiles if exist
     const [ffProfile, setFFProfile] = useState(null)
     const [pubgProfile, setPUBGProfile] = useState(null)
-    useEffect(() => {
-        if (userDetails && userDetails.ff_profile) {
-            const getFFProfile = async () => {
-                try {
-                    const ffprofile = await database.getDocument(db_id, 'ff_profiles', user.$id)
-                    setFFProfile(ffprofile);
-                } catch (error) {
-                    toast.error(error.message)
-                }
-            }
-            getFFProfile();
-        }
-        if (userDetails && userDetails.pubg_profile) {
-            const getPubgProfile = async () => {
-                try {
-                    const pubgprofile = await database.getDocument(db_id, 'pubg_profiles', user.$id)
-                    setPUBGProfile(pubgprofile);
-                } catch (error) {
-                    toast.error(error.message)
-                }
-            }
-            getPubgProfile();
-        }
 
+
+    useEffect(() => {
+        if (userDetails && userDetails.game_profiles.length > 0) {
+            const fprofile = userDetails.game_profiles.find(gprofile => JSON.parse(gprofile).gameID === "freefire")
+            if (fprofile) {
+                setFFProfile(JSON.parse(fprofile))
+            }
+            const pubgprofile = userDetails.game_profiles.find(gprofile => JSON.parse(gprofile).gameID === "pubgmobile")
+            if (pubgprofile) {
+                setPUBGProfile(JSON.parse(pubgprofile))
+            }
+        }
     }, [user, userDetails])
+
+
+
+
     return (
         <GameProfileContext.Provider value={{ ffProfile, setFFProfile, pubgProfile, setPUBGProfile }}>
             {children}

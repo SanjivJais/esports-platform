@@ -113,10 +113,18 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
             </>
           }
           {user &&
-            <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
-              <div className='flex items-center gap-2'>
-                <img src="/icons/Coin.svg" alt="" className='h-4 w-auto' />
-                <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_coin}</label>
+            <div className='flex items-center gap-2'>
+              <div className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
+                <div className='flex items-center gap-2'>
+                  <img src="/icons/eg_token.svg" alt="" className='h-4 w-auto' />
+                  <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_token}</label>
+                </div>
+              </div>
+              <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
+                <div className='flex items-center gap-2'>
+                  <img src="/icons/Coin.svg" alt="" className='h-4 w-auto' />
+                  <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_coin}</label>
+                </div>
               </div>
             </div>
           }
