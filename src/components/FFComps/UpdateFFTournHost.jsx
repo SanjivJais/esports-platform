@@ -205,7 +205,7 @@ export const UpdateFFTournHost = ({ tournament, onClose }) => {
                         let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
                             {
                                 recipentType: "specific",
-                                message: `🎉 Congratulations! You got <span class="text-primary">rank ${index+1} </span>in tournament <span class="text-offBlue">${tournament.tournTitle} (ID: ${tournament.$id})</span>. <span class="text-primary">${prize} EG Coins</span> credited to your account.`,
+                                message: `🎉 Congratulations! You got <span class="text-primary">rank ${index + 1} </span>in tournament <span class="text-offBlue">${tournament.tournTitle} (ID: ${tournament.$id})</span>. <span class="text-primary">${prize} EG Coins</span> credited to your account.`,
                                 recipents: [
                                     JSON.stringify(
                                         {

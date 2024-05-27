@@ -11,11 +11,10 @@ import { MdAddBox } from 'react-icons/md';
 import LoadingBar from 'react-top-loading-bar';
 import GameProfileContext from '../utils/GameProfileContext';
 import { TbTournament } from 'react-icons/tb';
-import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard';
 import { CreateFFTourn } from '../components/FFComps/CreateFFTourn';
 import { FFTournHostPreview } from '../components/FFComps/FFTournHostPreview';
 import { Query } from 'appwrite';
-import { data } from 'autoprefixer';
+import { TournCard } from '../components/Tournament/TournCard';
 
 
 export const Profile = () => {
@@ -343,24 +342,24 @@ export const Profile = () => {
 
 
   // fetching joined FF tournaments
-  const [joinedFFTournaments, setJoinedFFTournaments] = useState([])
+  const [joinedTournaments, setJoinedTournaments] = useState([])
   useEffect(() => {
     if (userDetails) {
-      const fetchJoinedFFTournaments = async () => {
+      const fetchJoinedTournaments = async () => {
         try {
-          const tournamentPromises = userDetails.ffTournaments.map(async tournID => {
-            const tournDetail = await database.getDocument(db_id, 'ff_tournaments', tournID, []);
+          const tournamentPromises = userDetails.tournaments.map(async tournID => {
+            const tournDetail = await database.getDocument(db_id, 'tournaments', tournID, []);
             return tournDetail;
           });
           let tournamentsData = await Promise.all(tournamentPromises);
           tournamentsData.sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
 
-          setJoinedFFTournaments(tournamentsData);
+          setJoinedTournaments(tournamentsData);
         } catch (error) {
           toast.error("Error occurred loading joined tournaments")
         }
       }
-      fetchJoinedFFTournaments()
+      fetchJoinedTournaments()
     }
   }, [userDetails])
 
@@ -460,9 +459,9 @@ export const Profile = () => {
 
           {activeTab === 0 &&
             <>
-              {joinedFFTournaments.length >= 1 ?
-                <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">{joinedFFTournaments.map((tournament, index) => (
-                  <FFSquareTournamentCard key={index}
+              {joinedTournaments.length >= 1 ?
+                <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">{joinedTournaments.map((tournament, index) => (
+                  <TournCard key={index}
                     tournament={tournament}
                   />
                 ))}</div>

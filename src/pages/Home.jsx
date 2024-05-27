@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard'
 import { Slider } from '../components/Slider'
 import { FaTrophy } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -8,6 +7,7 @@ import { Helmet } from 'react-helmet'
 import { ID, database, db_id } from '../../config/Appwrite';
 import { toast } from 'react-toastify'
 import { Query } from 'appwrite'
+import { TournCard } from '../components/Tournament/TournCard'
 
 
 export const Home = () => {
@@ -23,17 +23,18 @@ export const Home = () => {
     }, 800)
   }, [])
 
-  const [FFtournaments, setFFtournaments] = useState([])
+
+  const [tournaments, setTournaments] = useState([])
   useEffect(() => {
-    const fetchFFTournaments = async () => {
+    const fetchTournaments = async () => {
       try {
-        const response = await database.listDocuments(db_id, 'ff_tournaments', [Query.limit(3), Query.orderDesc('$createdAt')])
-        setFFtournaments(response.documents)
+        const response = await database.listDocuments(db_id, 'tournaments', [Query.limit(3), Query.orderDesc('$createdAt')])
+        setTournaments(response.documents)
       } catch (error) {
-        toast.error("An error occurred")
+        toast.error("Something went wrong!")
       }
     }
-    fetchFFTournaments()
+    fetchTournaments()
   }, [])
 
   return (
@@ -52,10 +53,10 @@ export const Home = () => {
       <div className='py-4 px-4 flex flex-col items-center self-center w-full max-w-[1440px]'>
         <div className='mb-2 w-full'><Slider /></div>
         <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full"></div>
-        <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>Free Fire Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
+        <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>All Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
         <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
-          {FFtournaments && FFtournaments.map((tournament, index) => (
-            <FFSquareTournamentCard key={index}
+          {tournaments && tournaments.map((tournament, index) => (
+            <TournCard key={index}
               tournament={tournament}
             />
           ))}
