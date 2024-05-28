@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }) => {
   const logoutUser = () => {
     account.deleteSession('current')
     setUser(null)
+    navigate('/login');
   }
   const registerUser = async (userInfo) => {
     try {

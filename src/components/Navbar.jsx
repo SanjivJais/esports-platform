@@ -56,7 +56,10 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
       }
     };
 
-    fetchNotifications();
+    if (user) {
+
+      fetchNotifications();
+    }
 
   }, [userDetails]);
 
@@ -67,7 +70,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
   const [unreadCount, setUnreadCount] = useState(0)
   useEffect(() => {
-    if (notifications) {
+    if (user && notifications) {
       setUnreadCount(
         notifications.filter((notification) =>
           notification.recipents.some(recipent => ((JSON.parse(recipent).user === user.$id) && !(JSON.parse(recipent).read))) || !notification.recipents.some(recipent => ((JSON.parse(recipent).user === user.$id)))
@@ -92,7 +95,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
         <div className="flex items-center gap-5">
           <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:block hidden' onClick={toggleSidebar} />
           <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:hidden' onClick={mobToggleSidebar} />
-          <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-3xl border-[1px] border-secondary md:px-6 px-4 py-2 md:w-72"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='Tournament ID or Title' /><GoSearch className='text-lg text-inactive' /></div>
+          <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-3xl border-[1px] border-secondary md:px-6 px-4 py-2 md:w-72"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='T-Code or Title' /><GoSearch className='text-lg text-inactive' /></div>
 
         </div>
         <div className="flex gap-5 items-center">

@@ -15,6 +15,9 @@ import { BiSolidExit } from 'react-icons/bi';
 import { FaCircleCheck, FaPeopleGroup, FaRegClock } from 'react-icons/fa6';
 import LoadingBar from 'react-top-loading-bar';
 import { PiShareFatFill } from 'react-icons/pi';
+import { IoCopyOutline } from 'react-icons/io5';
+import { TbTournament } from 'react-icons/tb';
+import { MatchTile } from './MatchTile';
 
 
 export const TournModal = ({ tournament }) => {
@@ -276,12 +279,29 @@ export const TournModal = ({ tournament }) => {
     const handleShareClick = () => {
         navigator.clipboard.writeText(tournament.$id)
             .then(() => {
-                toast.success("Tournament ID copied. Please use it for searching this tournament.")
+                toast.success("Tournament Code copied!")
             })
             .catch((error) => toast.error('Error copying tournament ID:', error));
     }
 
 
+    // fetching matches
+    const [matches, setMatches] = useState([])
+    useEffect(() => {
+        if (activeTab === 2) {
+            setProgress(70)
+            const fetchMatches = async () => {
+                const response = await database.listDocuments(db_id, 'matches', [Query.equal('tournamentID', tournament.$id)])
+                if (response) {
+                    setMatches(response.documents)
+                }
+            }
+
+            fetchMatches();
+            setProgress(100)
+
+        }
+    }, [activeTab])
 
     return (
         <>
@@ -291,7 +311,7 @@ export const TournModal = ({ tournament }) => {
                 onLoaderFinished={() => setProgress(0)}
             />
 
-            <div className='h-[92vh] md:w-[72vw] w-[90vw] overflow-x-hidden custom-scrollbar'>
+            <div className='h-[92vh] lg:w-[74vw] md:w-[82vw] w-[94vw] overflow-x-hidden custom-scrollbar'>
                 <div className='lg:h-[45%] md:h-[40%] h-[35%] flex flex-col justify-between' style={{
                     backgroundImage: `url("${tournament.imgURL}")`,
                     backgroundSize: 'cover',
@@ -305,15 +325,17 @@ export const TournModal = ({ tournament }) => {
                         <div className="lg:w-[63%] md:w-[58%] w-full">
                             <div className="flex gap-4 items-center mb-4">
                                 <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite'>{tournament.tournTitle}</h2>
-                                <div onClick={handleShareClick} title='Copy tournament ID' className='bg-offBlue text-secondary flex items-center justify-center md:h-6 h-5 md:w-6 w-5  rounded cursor-pointer'><PiShareFatFill className='md:text-base text-sm' /></div>
+                                <div onClick={handleShareClick} title='Copy sharable Tournament Code' className='bg-offBlue text-secondary font-medium bg-opacity-80 flex items-center justify-center text-sm py-1 px-3 rounded cursor-pointer gap-2'><span>T-Code</span> <IoCopyOutline /></div>
                             </div>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Bracket</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Matches</label>
 
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Participants</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</label>
+                                {/* <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label> */}
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Participants</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</label>
+                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 5 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</label>
                             </div>
                             <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
                         </div>
@@ -344,8 +366,8 @@ export const TournModal = ({ tournament }) => {
                                         </div></>
                                     }
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MIN / MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></label>
-                                        <div className='font-medium'>{tournament.min} / {tournament.max}</div>
+                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>{tournament.min ? 'MIN / ' : ''} MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></label>
+                                        <div className='font-medium'>{tournament.min ? `${tournament.min} / ` : ''} {tournament.max}</div>
                                     </div>
                                     <div>
                                         <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><Tooltip content={"Total prize to be distributed among top performers."} children={<MdInfo />} /></label>
@@ -369,7 +391,35 @@ export const TournModal = ({ tournament }) => {
 
                             </>
                         }
+
                         {activeTab === 1 &&
+                            <>
+                                {JSON.parse(tournament.bracket).bracketType === "single_match" &&
+                                    <>
+                                        <h5 className='flex gap-2 items-center'><TbTournament className='text-primary' /> Single Match</h5>
+                                        <p className='text-offBlue my-2'><span className='text-ongoingStatus font-bold'>Top {tournament.prizePool.length} </span>participants based on a single match competition will share the Prize Pool as specified! </p>
+                                    </>
+                                }
+
+                            </>
+                        }
+                        {activeTab === 2 &&
+                            <>
+                                {JSON.parse(tournament.bracket).bracketType === "single_match" &&
+                                    <div className='flex flex-col gap-3'>
+                                        <h5 className='text-lg font-bold text-offBlue'>{matches.length >= 1 && `Total ${matches.length} Matches`}</h5>
+                                        <div className="h-[0.8px] bg-inactive w-full bg-opacity-25"></div>
+                                        <div className="flex flex-col gap-3">
+                                            {matches.map((match, index) => (
+                                                <MatchTile key={index} match={match} tournament={tournament}/>
+                                            ))}
+                                        </div>
+                                    </div>
+                                }
+                            </>
+                        }
+
+                        {/* {activeTab === 3 &&
                             <>
 
                                 {joinStatus ? <>
@@ -409,8 +459,8 @@ export const TournModal = ({ tournament }) => {
                                     </>
                                 }
                             </>
-                        }
-                        {activeTab === 2 &&
+                        } */}
+                        {activeTab === 3 &&
                             <div className='flex flex-col gap-4'>
 
                                 {participantDetails.length >= 1 ?
@@ -447,7 +497,7 @@ export const TournModal = ({ tournament }) => {
                                 }
                             </div>
                         }
-                        {activeTab === 3 &&
+                        {activeTab === 4 &&
                             <div className='flex flex-col items-center gap-4'>
                                 {tournament.ytStreamURL.length > 0 ?
                                     <iframe className='rounded-[10px] md:h-[310px] max-w-[580px] w-full h-auto'
@@ -463,7 +513,7 @@ export const TournModal = ({ tournament }) => {
                                 }
                             </div>
                         }
-                        {activeTab === 4 &&
+                        {activeTab === 5 &&
                             <div className='content-area'>
                                 {ReactHtmlParser(tournament.rules)}
                             </div>

@@ -126,7 +126,7 @@ export const TournCard = ({ tournament }) => {
                 </div>
 
             </div>
-            <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+            <Modal outsideClose={false} isVisible={showModal} onClose={() => setShowModal(false)}>
                 <TournModal tournament={tournament} />
             </Modal>
         </div>
