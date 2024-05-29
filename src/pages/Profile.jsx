@@ -447,7 +447,7 @@ export const Profile = () => {
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Game Profiles</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Wallet</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account Details</div>
-            {user && user.labels.includes("admin") && <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-ongoingStatus md:text-ongoingStatus' : ''} text-ongoingStatus pb-2 font-semibold cursor-pointer`}>Host Panel</div>}
+            {user && user.labels.includes("host") && <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-ongoingStatus md:text-ongoingStatus' : ''} text-ongoingStatus pb-2 font-semibold cursor-pointer`}>Host Panel</div>}
           </div>
           <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
         </div>
@@ -653,6 +653,7 @@ export const Profile = () => {
           <div className='mt-8 mx-2 flex flex-col gap-3 items-center'>
             <h5 className='font-bold text-xl text-offBlue my-2'>Choose game</h5>
             <div className="flex gap-8">
+              {/* pass gameID in handleCreateTournGameSelection */}
               <div onClick={() => handleCreateTournGameSelection('freefire')} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
                 <img src="/images/FF_DP.jpg" alt="" className='h-28 w-24 rounded-lg border-2 border-inactive border-opacity-40 group-hover:border-primary object-cover' />
                 <div className='text-offBlue'>Free Fire</div>
@@ -667,7 +668,7 @@ export const Profile = () => {
       </Modal>
 
       {/* modal for FF tournament creation */}
-      <Modal isVisible={createTournModal} onClose={() => setCreateTournModal(false)}>
+      <Modal closeButtonActive={false} isVisible={createTournModal} onClose={() => setCreateTournModal(false)}>
         <CreateTournament gameID={selectedGame} onClose={() => setCreateTournModal(false)} />
       </Modal>
 
