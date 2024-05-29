@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { MdInfo, MdTry } from "react-icons/md";
-import { AiFillEyeInvisible } from "react-icons/ai";
+import { MdInfo } from "react-icons/md";
 import ReactHtmlParser from 'react-html-parser';
 import { Modal } from '../Modal';
 import { toast } from 'react-toastify';
@@ -14,7 +13,6 @@ import { Query } from 'appwrite';
 import { BiSolidExit } from 'react-icons/bi';
 import { FaCircleCheck, FaPeopleGroup, FaRegClock } from 'react-icons/fa6';
 import LoadingBar from 'react-top-loading-bar';
-import { PiShareFatFill } from 'react-icons/pi';
 import { IoCopyOutline } from 'react-icons/io5';
 import { TbTournament } from 'react-icons/tb';
 import { MatchTile } from './MatchTile';
@@ -328,14 +326,12 @@ export const TournModal = ({ tournament }) => {
                                 <div onClick={handleShareClick} title='Copy sharable Tournament Code' className='bg-offBlue text-secondary font-medium bg-opacity-80 flex items-center justify-center text-sm py-1 px-3 rounded cursor-pointer gap-2'><span>T-Code</span> <IoCopyOutline /></div>
                             </div>
                             <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Bracket</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Matches</label>
-
-                                {/* <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Entry Info</label> */}
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Participants</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</label>
-                                <label htmlFor="" onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 5 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</label>
+                                <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</div>
+                                <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Bracket</div>
+                                <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Matches</div>
+                                <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Participants</div>
+                                <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 4 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Watch</div>
+                                <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 5 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Rules & Details</div>
                             </div>
                             <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
                         </div>
@@ -348,42 +344,42 @@ export const TournModal = ({ tournament }) => {
                             <>
                                 <div className="grid lg:grid-cols-4 grid-cols-3 gap-x-4 gap-y-8">
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENTRY FEE </span></label>
+                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENTRY FEE </span></div>
                                         <div className='font-medium flex items-center gap-1'>{JSON.parse(tournament.entryFee).fee !== 0 ? JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" /> : ''}{JSON.parse(tournament.entryFee).fee == 0 ? 'Free' : JSON.parse(tournament.entryFee).fee}</div>
                                     </div>
                                     {tournament.gameID === "freefire" && <>
                                         <div>
-                                            <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MODE </span><Tooltip content={"Mode of the game the tournament will be played in."} children={<MdInfo />} /></label>
+                                            <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MODE </span><Tooltip content={"Mode of the game the tournament will be played in."} children={<MdInfo />} /></div>
                                             <div className='font-medium'>{gameDetails.gameMode} - {gameDetails.teamSize}</div>
                                         </div>
                                         <div>
-                                            <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MAP </span></label>
+                                            <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MAP </span></div>
                                             <div className='font-medium'>{gameDetails.map}</div>
                                         </div>
                                         <div>
-                                            <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>TEAM SIZE </span><Tooltip content={"Number of players in a team. This can be solo (1 player), duo (2 players), squad (4 players)."} children={<MdInfo />} /></label>
+                                            <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>TEAM SIZE </span><Tooltip content={"Number of players in a team. This can be solo (1 player), duo (2 players), squad (4 players)."} children={<MdInfo />} /></div>
                                             <div className='font-medium'>{gameDetails.teamSize}</div>
                                         </div></>
                                     }
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>{tournament.min ? 'MIN / ' : ''} MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></label>
+                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>{tournament.min ? 'MIN / ' : ''} MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></div>
                                         <div className='font-medium'>{tournament.min ? `${tournament.min} / ` : ''} {tournament.max}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><Tooltip content={"Total prize to be distributed among top performers."} children={<MdInfo />} /></label>
+                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><Tooltip content={"Total prize to be distributed among top performers."} children={<MdInfo />} /></div>
                                         <div className='font-medium flex items-center gap-1'>{tournament.prizeType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {totalPrize}</div>
                                     </div>
 
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTS AT</span></label>
+                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTS AT</span></div>
                                         <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.startDate).date} . {formatDateTime(tournament.startDate).time}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENDS ON </span></label>
+                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENDS ON </span></div>
                                         <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.endDate).date}</div>
                                     </div>
                                     <div>
-                                        <label htmlFor="" className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></label>
+                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></div>
                                         <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                                     </div>
                                 </div>
@@ -419,47 +415,6 @@ export const TournModal = ({ tournament }) => {
                             </>
                         }
 
-                        {/* {activeTab === 3 &&
-                            <>
-
-                                {joinStatus ? <>
-                                    {tournament.gameID === "freefire" && <>
-                                        {gameDetails.roomID ?
-                                            <div className="grid grid-cols-2 gap-x-4 gap-y-8">
-                                                <div>
-                                                    <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM ID </span></label>
-                                                    <div className='font-medium'>{gameDetails.roomID}</div>
-                                                </div>
-                                                <div>
-                                                    <label htmlFor="" className='text-[13px] text-inactive font-semibold'><span>ROOM PASS </span></label>
-                                                    <div className='font-medium'>{gameDetails.roomPass}</div>
-                                                </div>
-
-                                            </div>
-                                            :
-                                            <div className='flex flex-col gap-6'>
-                                                <AiFillEyeInvisible className='text-inactive text-opacity-35 text-[4rem] self-center' />
-                                                <p className='text-offBlue text-[0.9rem]'>
-                                                    <span className='text-primary'>NOTE: </span>
-                                                    Room ID and Room Password will be visible here around
-                                                    <span className='text-offWhite'> 10 minutes </span>
-                                                    before starting time of match. Please check back in time!
-                                                </p>
-                                            </div>
-                                        }
-                                    </>}</>
-                                    :
-                                    <>
-                                        <div className='w-full h-64 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
-                                            <div className='flex flex-col gap-3 items-center'>
-                                                <AiFillEyeInvisible className='text-4xl' />
-                                                You haven't joined this tournament!
-                                            </div>
-                                        </div>
-                                    </>
-                                }
-                            </>
-                        } */}
                         {activeTab === 3 &&
                             <div className='flex flex-col gap-4'>
 

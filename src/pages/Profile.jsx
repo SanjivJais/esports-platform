@@ -11,10 +11,10 @@ import { MdAddBox } from 'react-icons/md';
 import LoadingBar from 'react-top-loading-bar';
 import GameProfileContext from '../utils/GameProfileContext';
 import { TbTournament } from 'react-icons/tb';
-import { CreateFFTourn } from '../components/FFComps/CreateFFTourn';
-import { FFTournHostPreview } from '../components/FFComps/FFTournHostPreview';
 import { Query } from 'appwrite';
 import { TournCard } from '../components/Tournament/TournCard';
+import { HostTournCard } from '../components/Tournament/HostTournCard';
+import { CreateTournament } from '../components/Tournament/CreateTournament';
 
 
 export const Profile = () => {
@@ -365,32 +365,29 @@ export const Profile = () => {
 
 
   // handle create tournament 
-
   const [chooseGameModal, setChooseGameModal] = useState(false)
-  const [createFFTournModal, setCreateFFTournModal] = useState(false)
-  const [createPUBGTournModal, setCreatePUBGTournModal] = useState(false)
+  const [createTournModal, setCreateTournModal] = useState(false)
+  const [selectedGame, setSelectedGame] = useState(null)
 
-  const handleFFCreateTournGameSelection = () => {
-    setCreateFFTournModal(true)
+  const handleCreateTournGameSelection = (gameID) => {
+    setCreateTournModal(true)
     setChooseGameModal(false)
-  }
-  const handlePUBGCreateTournGameSelection = () => {
-    setCreatePUBGTournModal(true)
-    setChooseGameModal(false)
+    setSelectedGame(gameID)
   }
 
 
   // fetching tournaments for host
-  const [ffTournamentsHost, setFFTournamentsHost] = useState([])
+  const [tournamentsHost, setTournamentsHost] = useState([])
+  const hostDetails = `{"hostID": "${user.$id}"`
   useEffect(() => {
     if (activeTab == 4) {
       setProgress(40)
       const fetchTournaments = async () => {
         try {
-          const tourns = await database.listDocuments(db_id, 'ff_tournaments', [Query.orderDesc('$createdAt')])
-          setFFTournamentsHost(tourns.documents)
+          const tourns = await database.listDocuments(db_id, 'tournaments', [Query.startsWith('host', hostDetails), Query.orderDesc('$createdAt')])
+          setTournamentsHost(tourns.documents)
         } catch (error) {
-          toast.error(error.message)
+          toast.error("Something went wrong!")
         }
       }
       fetchTournaments();
@@ -450,7 +447,7 @@ export const Profile = () => {
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Game Profiles</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Wallet</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account Details</div>
-            {user && user.labels.includes("admin") && <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-ongoingStatus md:text-ongoingStatus' : ''} text-ongoingStatus pb-2 font-semibold cursor-pointer`}>My Tournaments</div>}
+            {user && user.labels.includes("admin") && <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-ongoingStatus md:text-ongoingStatus' : ''} text-ongoingStatus pb-2 font-semibold cursor-pointer`}>Host Panel</div>}
           </div>
           <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
         </div>
@@ -591,9 +588,9 @@ export const Profile = () => {
                 <div className="flex justify-end"><button onClick={() => setChooseGameModal(true)} className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200 flex items-center gap-2'><MdAddBox /><span>Create Tournament</span> </button></div>
                 <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
 
-                  {ffTournamentsHost && ffTournamentsHost.map((tournament, index) => (
+                  {tournamentsHost && tournamentsHost.map((tournament, index) => (
 
-                    <FFTournHostPreview key={index} tournament={tournament} />
+                    <HostTournCard key={index} tournament={tournament} />
                   ))}
                 </div>
 
@@ -620,7 +617,7 @@ export const Profile = () => {
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>In-game Name</div>
                 <input onChange={handleFFProfileInput} name='nickname' type="text" placeholder='Your name in Free Fire' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
-                <span className='text-[12px] text-offBlue'>(<span className='text-primary'> Note: </span>This name should match the actual in-game name as far as possible, including styles. )</span>
+                <span className='text-[12px] text-offBlue'>(<span className='text-primary'> Note: </span>In-game name should match exactly as far as possible, including styles and special symbols. )</span>
               </div>
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>UID</div>
@@ -634,6 +631,8 @@ export const Profile = () => {
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>In-game Name</div>
                 <input onChange={handlePubgProfileInput} name='nickname' type="text" placeholder='Your name in PUBG Mobile' className='bg-transparent px-2 py-1 text-offBlue focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' />
+                <span className='text-[12px] text-offBlue'>(<span className='text-primary'> Note: </span>In-game name should match exactly as far as possible, including styles and special symbols. )</span>
+
               </div>
               <div className='flex flex-col gap-1'>
                 <div className='text-sm text-inactive'>UID</div>
@@ -654,13 +653,13 @@ export const Profile = () => {
           <div className='mt-8 mx-2 flex flex-col gap-3 items-center'>
             <h5 className='font-bold text-xl text-offBlue my-2'>Choose game</h5>
             <div className="flex gap-8">
-              <div onClick={handleFFCreateTournGameSelection} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
+              <div onClick={() => handleCreateTournGameSelection('freefire')} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
                 <img src="/images/FF_DP.jpg" alt="" className='h-28 w-24 rounded-lg border-2 border-inactive border-opacity-40 group-hover:border-primary object-cover' />
                 <div className='text-offBlue'>Free Fire</div>
               </div>
-              <div onClick={handlePUBGCreateTournGameSelection} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
+              <div className="flex flex-col gap-2 items-center group hover:cursor-pointer">
                 <img src="/images/PUBG_DP.jpg" alt="" className='h-28 w-24 rounded-lg border-2 border-inactive border-opacity-40 group-hover:border-primary object-cover' />
-                <div className='text-offBlue'>PUBG Mobile</div>
+                <div className='text-offBlue flex flex-col items-center'><span>PUBG Mobile </span><span className='text-sm'>(Coming Soon!)</span></div>
               </div>
             </div>
           </div>
@@ -668,12 +667,8 @@ export const Profile = () => {
       </Modal>
 
       {/* modal for FF tournament creation */}
-      <Modal isVisible={createFFTournModal} onClose={() => setCreateFFTournModal(false)}>
-        <CreateFFTourn onClose={() => setCreateFFTournModal(false)} />
-      </Modal>
-
-      <Modal isVisible={createPUBGTournModal} onClose={() => setCreatePUBGTournModal(false)}>
-
+      <Modal isVisible={createTournModal} onClose={() => setCreateTournModal(false)}>
+        <CreateTournament gameID={selectedGame} onClose={() => setCreateTournModal(false)} />
       </Modal>
 
 

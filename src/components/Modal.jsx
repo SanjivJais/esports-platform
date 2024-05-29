@@ -1,7 +1,7 @@
 import React from 'react'
 import { IoClose } from 'react-icons/io5'
 
-export const Modal = ({ isVisible, onClose, children, closeButtonActive=true, outsideClose = true }) => {
+export const Modal = ({ isVisible, onClose, children, closeButtonActive=true, outsideClose = false }) => {
     if (!isVisible) return null;
     const handleClose = (e) => {
         if (e.target.id === "modalWrapper" && outsideClose) { onClose() };

@@ -54,15 +54,14 @@ export const MatchDetailsModal = ({ match, tournament }) => {
             <div className='lg:w-[50vw] md:w-[70vw] w-[90vw] min-h-[10rem] max-h-[40rem] '>
                 <div className="m-6 flex flex-col">
                     <div className="flex flex-col gap-3">
-                        <div className="flex gap-3 items-center">
+                        <div className="md:flex grid grid-cols-1 gap-3 items-center">
                             <div className="bg-secondaryLight px-3 py-1 rounded-[5px] w-fit text-sm">{tournament.tournTitle}</div>
-                            <div>/</div>
                             <h2 className='text-lg font-semibold'>{match.matchName} Details</h2>
                             <div className={`${match.matchStatus === "Scheduled" ? 'bg-openStatus text-secondary' : match.matchStatus === "Ongoing" ? 'bg-ongoingStatus' : match.matchStatus === "Finished" ? 'bg-finishedStatus text-offWhite' : ''} px-3 py-1 rounded-[5px] w-fit text-sm font-semibold`}>{match.matchStatus}</div>
                         </div>
                         <div className='flex items-center gap-1 text-offBlue'><GiSandsOfTime className='' /><span className='text-finishedStatus font-bold'>Starts At:</span> {formatDateTime(match.scheduledTime).time} / {formatDateTime(match.scheduledTime).date}</div>
 
-                        <div className="flex gap-2 items-center">
+                        <div className="flex max-sm:flex-col max-sm:items-start gap-2 items-center">
                             <div className='text-finishedStatus font-bold'>Match Join Details: </div>
                             {matchJoinStatus ?
                                 <>
@@ -84,10 +83,9 @@ export const MatchDetailsModal = ({ match, tournament }) => {
                                 : <p className='text-inactive'>You are not a participant of this match! </p>
                             }
 
-
                         </div>
                         <div className='my-4'>
-                            <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
+                            <div className="flex md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`matchDetailsTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Match Participants</label>
                                 <label htmlFor="" onClick={(e) => handleTabs(e)} className={`matchDetailsTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Match Results</label>
 
