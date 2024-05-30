@@ -362,8 +362,8 @@ export const TournModal = ({ tournament }) => {
                                         </div></>
                                     }
                                     <div>
-                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>{tournament.min ? 'MIN / ' : ''} MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></div>
-                                        <div className='font-medium'>{tournament.min ? `${tournament.min} / ` : ''} {tournament.max}</div>
+                                        <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>{tournament.min > 1 ? 'MIN / ' : ''} MAX </span><Tooltip content={"Minimum players refer to minimum players needed to start tournament. "} children={<MdInfo />} /></div>
+                                        <div className='font-medium'>{tournament.min > 1 ? `${tournament.min} / ` : ''} {tournament.max}</div>
                                     </div>
                                     <div>
                                         <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>PRIZE POOL </span><Tooltip content={"Total prize to be distributed among top performers."} children={<MdInfo />} /></div>
@@ -407,7 +407,7 @@ export const TournModal = ({ tournament }) => {
                                         <div className="h-[0.8px] bg-inactive w-full bg-opacity-25"></div>
                                         <div className="flex flex-col gap-3">
                                             {matches.map((match, index) => (
-                                                <MatchTile key={index} match={match} tournament={tournament}/>
+                                                <MatchTile key={index} match={match} tournament={tournament} />
                                             ))}
                                         </div>
                                     </div>
@@ -476,7 +476,7 @@ export const TournModal = ({ tournament }) => {
 
 
                         <div className="h-[1px] bg-inactive bg-opacity-25 w-full mt-6 mb-3"></div>
-                        {activeTab === 0 &&
+                        {activeTab === 0 && tournament.description &&
                             <div className="bg-secondaryLight p-4 rounded-[5px] mt-3 mb-4">
                                 <h5 className='font-semibold text-base text-offBlue mb-3'>Description</h5>
                                 <div className='content-area'>

@@ -28,7 +28,7 @@ export const Home = () => {
   useEffect(() => {
     const fetchTournaments = async () => {
       try {
-        const response = await database.listDocuments(db_id, 'tournaments', [Query.limit(3), Query.orderDesc('$createdAt')])
+        const response = await database.listDocuments(db_id, 'tournaments', [Query.limit(3), Query.orderDesc('$createdAt'), Query.notEqual('status', 'Draft')])
         setTournaments(response.documents)
       } catch (error) {
         toast.error("Something went wrong!")
