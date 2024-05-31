@@ -7,7 +7,7 @@ import { database, ID, db_id } from '../../../config/Appwrite';
 import LoadingBar from 'react-top-loading-bar';
 
 
-export const CreateTournament = ({ onClose, gameID }) => {
+export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
     const { user } = useAuth()
 
     const [entryFeeObj, setEntryFeeObj] = useState({
@@ -75,7 +75,7 @@ export const CreateTournament = ({ onClose, gameID }) => {
         const { name, value, type } = e.target;
         setTournament((prevData) => ({
             ...prevData,
-            [name]: type === 'number' ? parseInt(value, 10) : value
+            [name]: type === 'number' ? parseInt(value, 10) : (name === 'isFeatured' ? value === 'true' : value)
         }))
     }
 
@@ -194,6 +194,17 @@ export const CreateTournament = ({ onClose, gameID }) => {
 
 
     const [newlyCreatedTournament, setNewlyCreatedTournament] = useState(null)
+
+
+    useState(() => {
+        if (tournamentDraft) {
+            setNewlyCreatedTournament(tournamentDraft)
+            setActiveTab(1)
+        }
+    }, [])
+
+
+
     const createTournament = async () => {
         if (validateFields()) {
 
@@ -260,6 +271,14 @@ export const CreateTournament = ({ onClose, gameID }) => {
     }
 
     const [scheduledMatch, setScheduledMatch] = useState(null)
+    useState(() => {
+        if (tournamentDraft) {
+
+            if (JSON.parse(tournamentDraft.bracket).matchID) {
+                setScheduledMatch(true)
+            }
+        }
+    }, [])
     const scheduleMatch = async () => {
         if (matchDetails.matchName.length >= 3) {
             if (matchDetails.scheduledTime) {
@@ -291,7 +310,7 @@ export const CreateTournament = ({ onClose, gameID }) => {
                 toast.success("Tournament is now open to join!")
                 onClose()
             } catch (error) {
-                toast.error("Something went wrong!")
+                toast.error(error.message)
             }
             setProgress(100)
 
@@ -489,7 +508,7 @@ export const CreateTournament = ({ onClose, gameID }) => {
                         }
                         {activeTab === 2 &&
                             <>
-                                <div className="flex flex-col">
+                                {!scheduledMatch && <div className="flex flex-col">
                                     <div className="grid md:grid-cols-2 grid-cols-1 mb-3 gap-4">
                                         <div className="flex flex-col gap-1">
                                             <div>Match1 name <span className='text-red-500 font-semibold text-lg'>*</span></div>
@@ -505,7 +524,7 @@ export const CreateTournament = ({ onClose, gameID }) => {
                                     {/* {JSON.parse(newlyCreatedTournament.bracket).bracketType !== "single_match" && <div className="flex justify-end"><button className='bg-secondaryLight px-3 py-2 rounded hover:bg-slate-800 transition-colors duration-200 flex items-center gap-2'><MdAddBox /><span>Create Match</span> </button></div>} */}
 
 
-                                </div>
+                                </div>}
                             </>
                         }
 
@@ -516,7 +535,7 @@ export const CreateTournament = ({ onClose, gameID }) => {
                     <div className="flex justify-between w-full gap-4 items-center mt-4">
                         <button onClick={onClose} className='bg-slate-800 rounded-[5px] px-3 py-1'>{newlyCreatedTournament ? 'Close' : 'Cancel'}</button>
                         <div className="flex gap-4 items-center">
-                            {activeTab > 0 && <button onClick={() => setActiveTab(activeTab - 1)} disabled={!newlyCreatedTournament} className={`${newlyCreatedTournament ? 'bg-slate-800 text-offBlue block' : 'hidden text-secondary'}  font-semibold rounded-[5px] px-3 py-1`}>‹ Back</button>}
+                            {activeTab > 0 && activeTab !== 1 && !tournamentDraft && <button onClick={() => setActiveTab(activeTab - 1)} disabled={!newlyCreatedTournament} className={`${newlyCreatedTournament ? 'bg-slate-800 text-offBlue block' : 'hidden text-secondary'}  font-semibold rounded-[5px] px-3 py-1`}>‹ Back</button>}
                             {activeTab === 0 && !newlyCreatedTournament && <button onClick={createTournament} disabled={newlyCreatedTournament} className={`${newlyCreatedTournament ? 'bg-inactive' : ' bg-primary'} text-secondary font-semibold rounded-[5px] px-3 py-1`}>Create Tournament</button>}
                             {activeTab === 2 && newlyCreatedTournament && <button onClick={publishTournament} disabled={!scheduledMatch} className={`${scheduledMatch ? 'bg-openStatus' : 'bg-slate-800'}  text-secondary font-semibold rounded-[5px] px-3 py-1`}>Publish Tournament</button>}
                             {activeTab < 2 && <button onClick={() => setActiveTab(activeTab + 1)} disabled={!newlyCreatedTournament} className={`${newlyCreatedTournament ? 'bg-openStatus' : 'bg-inactive'}  text-secondary font-semibold rounded-[5px] px-3 py-1`}>Step {activeTab + 2} ›</button>}

@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { Modal } from '../Modal';
 import { FaRegClock } from 'react-icons/fa6';
 import { HiMiniTrophy } from 'react-icons/hi2';
-// import { UpdateFFTournHost } from './UpdateFFTournHost';
 import { TournModal } from './TournModal'
+import { CreateTournament } from './CreateTournament';
 
 
 export const HostTournCard = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
+    const [createTournModal, setCreateTournModal] = useState(false)
     const [showUserviewModal, setShowUserviewModal] = useState(false);
     let totalPrize = 0;
     for (let index = 0; index < tournament.prizePool.length; index++) {
@@ -107,6 +108,7 @@ export const HostTournCard = ({ tournament }) => {
                 <div className="h-[0.8px] bg-inactive bg-opacity-30 my-4"></div>
                 <div className="flex justify-between">
                     <button onClick={() => setShowUserviewModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>View as User</button>
+                    {tournament.status === "Draft" && <button onClick={() => setCreateTournModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>Edit Draft</button>}
 
                     {(tournament.status == "Open" || tournament.status == "Ongoing") ?
                         <button onClick={() => setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>Update</button>
@@ -123,6 +125,12 @@ export const HostTournCard = ({ tournament }) => {
             <Modal isVisible={showUserviewModal} onClose={() => setShowUserviewModal(false)}>
                 <TournModal tournament={tournament} onClose={() => setShowUserviewModal(false)} />
             </Modal>
+
+            <Modal closeButtonActive={false} isVisible={createTournModal} onClose={() => setCreateTournModal(false)}>
+                <CreateTournament gameID={tournament.gameID} onClose={() => setCreateTournModal(false)} tournamentDraft={tournament} />
+            </Modal>
+
+
         </div>
     )
 }
