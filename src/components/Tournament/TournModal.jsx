@@ -455,15 +455,17 @@ export const TournModal = ({ tournament }) => {
                         }
                         {activeTab === 4 &&
                             <div className='flex flex-col items-center gap-4'>
-                                {tournament.ytStreamURL.length > 0 ?
-                                    <iframe className='rounded-[10px] md:h-[310px] max-w-[580px] w-full h-auto'
-                                        src={`https://www.youtube.com/embed/${ytVidExtracter(tournament.ytStreamURL[0])}`}
+                                {tournament.ytStreamURL.length > 0 ? tournament.ytStreamURL.map((ytStream, index) => (
+                                    <iframe key={index} className='rounded-[10px] md:h-[310px] max-w-[580px] w-full h-auto'
+                                        src={`https://www.youtube.com/embed/${ytVidExtracter(ytStream)}`}
                                         title="YouTube video player"
                                         frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         referrerPolicy="strict-origin-when-cross-origin"
                                         allowFullScreen>
                                     </iframe>
+                                ))
+
                                     :
                                     <div className='text-inactive my-10'>No videos available right now!</div>
                                 }
@@ -601,6 +603,7 @@ export const TournModal = ({ tournament }) => {
                         <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
                             <div className='p-6 md:w-96 w-72'>
                                 <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'>{JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {JSON.parse(tournament.entryFee).fee}</span></p>
+                                <p className='text-sm text-offBlue my-4'>(<span className='text-primary'>IMPORTANT:</span> For tournaments other than <span className='underline font-bold'>Solo</span> (team size), make sure your other teammates do not enroll for this tournament. You are the leader on their behalf.)</p>
                                 <div className="flex w-full justify-evenly mt-7">
                                     <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
                                     <button onClick={handleFinalJoin} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>

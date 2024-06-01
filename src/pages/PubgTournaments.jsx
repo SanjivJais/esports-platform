@@ -3,133 +3,7 @@ import LoadingBar from 'react-top-loading-bar'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 export const PubgTournaments = () => {
-  const PUBGtournaments = [
-    {
-      id: 'biwoifh32##nco',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://i.pinimg.com/originals/95/da/12/95da1295673f2bd19a23f3b61ea240a9.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 90,
-      entryFee: 0,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 50,
-      secondPrize: 20,
-      thirdPrize: 0,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Open',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: 'https://www.youtube.com/watch?v=5x8vvKlwWsU&t=3s',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-    {
-      id: 'iwef67jbo#bui',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://w0.peakpx.com/wallpaper/189/508/HD-wallpaper-pubg-squad.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 90,
-      entryFee: 0,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 50,
-      secondPrize: 20,
-      thirdPrize: 10,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Closed',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-    {
-      id: 'iwef67jbo#bui',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://images.hdqwalls.com/wallpapers/pubg-2023-5k-65.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 75,
-      entryFee: 60,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 510,
-      secondPrize: 200,
-      thirdPrize: 100,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Closed',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-    {
-      id: 'iwef67jbo#bui',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://e1.pxfuel.com/desktop-wallpaper/889/543/desktop-wallpaper-gaming-for-pc-pubg-pubg-laptop.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 75,
-      entryFee: 60,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 510,
-      secondPrize: 200,
-      thirdPrize: 100,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Closed',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-    {
-      id: 'iwef67jbo#bui',
-      gameTitle: 'PUBG Mobile',
-      imgURL: 'https://w0.peakpx.com/wallpaper/453/216/HD-wallpaper-pubg-lite-pc.jpg',
-      tournTitle: 'EG Summar Clash #1',
-      max: 100,
-      min: 80,
-      joined: 75,
-      entryFee: 60,
-      gameMode: 'BR',
-      teamType: 'Squad',
-      rewardType: 'eg_coin',
-      firstPrize: 510,
-      secondPrize: 200,
-      thirdPrize: 100,
-      startDate: 'May 4, 2024',
-      startTime: '3:30 PM',
-      host: 'EsportsGravity',
-      status: 'Closed',
-      roomID: '',
-      roomPass: '',
-      ytLiveURL: '',
-      // watchLiveURL2: '',
-      rulesDetails: '',
-    },
-  ]
+  
 
   const [progress, setProgress] = useState(0)
   useEffect(() => {
@@ -201,13 +75,7 @@ export const PubgTournaments = () => {
               Coming Soon!
             </div>
           </div>
-          <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-3 content-center">
-            {/* {PUBGtournaments && PUBGtournaments.map((tournament, index) => (
-              <PubgSquareTournamentCard key={index}
-                tournament={tournament}
-              />
-            ))} */}
-          </div>
+          
         </div>
       </div>
     </>

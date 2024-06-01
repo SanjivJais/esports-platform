@@ -4,6 +4,7 @@ import { FaRegClock } from 'react-icons/fa6';
 import { HiMiniTrophy } from 'react-icons/hi2';
 import { TournModal } from './TournModal'
 import { CreateTournament } from './CreateTournament';
+import { UpdateTournModal } from './UpdateTournModal';
 
 
 export const HostTournCard = ({ tournament }) => {
@@ -119,9 +120,9 @@ export const HostTournCard = ({ tournament }) => {
                 </div>
 
             </div>
-            {/* <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-                <UpdateFFTournHost tournament={tournament} onClose={() => setShowModal(false)} />
-            </Modal> */}
+            <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+                <UpdateTournModal tournament={tournament} onClose={() => setShowModal(false)} />
+            </Modal>
             <Modal isVisible={showUserviewModal} onClose={() => setShowUserviewModal(false)}>
                 <TournModal tournament={tournament} onClose={() => setShowUserviewModal(false)} />
             </Modal>
