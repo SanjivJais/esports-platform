@@ -57,7 +57,7 @@ export const MatchDetailsModal = ({ match, tournament }) => {
                         <div className="md:flex grid grid-cols-1 gap-3 items-center">
                             <div className="bg-secondaryLight px-3 py-1 rounded-[5px] w-fit text-sm">{tournament.tournTitle}</div>
                             <h2 className='text-lg font-semibold'>{match.matchName} Details</h2>
-                            <div className={`${match.matchStatus === "Scheduled" ? 'bg-openStatus text-secondary' : match.matchStatus === "Ongoing" ? 'bg-ongoingStatus' : match.matchStatus === "Finished" ? 'bg-finishedStatus text-offWhite' : ''} px-3 py-1 rounded-[5px] w-fit text-sm font-semibold`}>{match.matchStatus}</div>
+                            <div className={`${match.matchStatus === "Scheduled" ? 'bg-openStatus text-secondary' : match.matchStatus === "Ongoing" ? 'bg-ongoingStatus text-secondary' : match.matchStatus === "Finished" ? 'bg-finishedStatus text-offWhite' : ''} px-3 py-1 rounded-[5px] w-fit text-sm font-semibold`}>{match.matchStatus}</div>
                         </div>
                         <div className='flex items-center gap-1 text-offBlue'><GiSandsOfTime className='' /><span className='text-finishedStatus font-bold'>Starts At:</span> {formatDateTime(match.scheduledTime).time} / {formatDateTime(match.scheduledTime).date}</div>
 
@@ -76,7 +76,14 @@ export const MatchDetailsModal = ({ match, tournament }) => {
                                         </>
                                         :
                                         <>
-                                            <p className='text-inactive'>Entry details are revealed around <strong className='text-offBlue'>10 minutes</strong> before starting time of match!</p>
+                                            {match.matchStatus === "Scheduled" ?
+                                                <p className='text-inactive'>Entry details are revealed around <strong className='text-offBlue'>10 minutes</strong> before starting time of match!</p>
+                                                :
+                                                match.matchStatus === "Finished" ?
+                                                    <p className='text-inactive'>Match is already finished.</p>
+                                                    :
+                                                    ''
+                                            }
                                         </>
                                     }
                                 </>

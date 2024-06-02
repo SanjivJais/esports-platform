@@ -107,7 +107,7 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
     useEffect(() => {
         setTournament((prevData) => ({
             ...prevData,
-            prizePool: prizesData
+            prizePool: prizesData.filter(prize => prize > 0)
         }))
     }, [prizesData])
 
@@ -238,7 +238,10 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
         matchName: 'Match 1',
         scheduledTime: null,
         matchResults: [],
-        entryDetails: null,
+        entryDetails: gameID === "freefire" ? JSON.stringify({
+            roomID: null,
+            roomPass: null
+        }) : null,
         matchStatus: 'Scheduled'
     })
 

@@ -7,6 +7,7 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 import { FaPeopleGroup } from 'react-icons/fa6';
 import { Query } from 'appwrite';
 import { Modal } from '../Modal';
+import { MatchUpdate } from './MatchUpdate';
 
 
 export const UpdateTournModal = ({ tournament, onClose }) => {
@@ -272,7 +273,6 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
     const [confirmationModal, setConfirmationModal] = useState(false)
     const handleUpdate = () => {
         if (validateFields()) {
-            console.log(updatedTournament);
             if (updatedTournament.status === "Finished") {
                 if (updatedTournament.winners.filter(item => item.trim() !== '').length == updatedTournament.prizePool.length) {
                     let usernameArray = participantDetails.map(user => user.username)
@@ -453,6 +453,25 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
             window.location.reload(true);
         }, pauseTime)
     }
+
+
+
+    //match update functionality
+    const [matches, setMatches] = useState([])
+    useEffect(() => {
+        if (activeTab === 1) {
+            setProgress(60)
+            const fetchMatches = async () => {
+                const response = await database.listDocuments(db_id, 'matches', [Query.equal('tournamentID', tournament.$id)])
+                if (response) {
+                    setMatches(response.documents)
+                }
+            }
+            fetchMatches();
+            setProgress(100)
+
+        }
+    }, [activeTab])
 
 
     return (
@@ -775,7 +794,15 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
 
                         {activeTab === 1 &&
                             <>
-                                Match updates
+                                <h3 className='text-xl text-offBlue font-semibold mb-3'>Update Match Details</h3>
+
+                                <div className="flex flex-col gap-6 w-full">
+                                    {matches.length > 0 && <>
+                                        {matches.map((match, index) => (
+                                            <MatchUpdate key={index} match={match} participants={participantDetails} gameID={tournament.gameID} />
+                                        ))}
+                                    </>}
+                                </div>
                             </>
                         }
 
