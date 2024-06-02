@@ -123,17 +123,16 @@ export const TournModal = ({ tournament }) => {
         if (user) {
             setProgress(30)
             try {
-                const tourn = await database.getDocument(db_id, 'tournaments', tournament.$id, [Query.select(['max', 'participants', 'entryFee'])])
-                const user_details = await database.getDocument(db_id, 'user_details', user.$id, [Query.select(['eg_coin', 'eg_token', 'tournaments'])])
+                const tourn = await database.getDocument(db_id, 'tournaments', tournament.$id, [])
+                const user_details = await database.getDocument(db_id, 'user_details', user.$id, [])
                 if (tourn && user_details) {
                     setProgress(50)
-                    // console.log(user_details.eg_coin, user_details.eg_token);
                     if (tourn.participants.length < tourn.max) {
                         if (JSON.parse(tourn.entryFee).currencyType === "eg_coin" && user_details.eg_coin >= JSON.parse(tourn.entryFee).fee) {
                             try {
                                 tourn.participants.push(user.$id);
+                                user_details.tournaments.push(tournament.$id);
                                 let updatedEGCoin = user_details.eg_coin - JSON.parse(tournament.entryFee).fee;
-                                user_details.tournaments.push(tournament.$id)
 
                                 await database.updateDocument(db_id, 'tournaments', tournament.$id, { 'participants': tourn.participants })
 

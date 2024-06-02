@@ -323,23 +323,30 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
                             autoClose: false,
                         })
 
-                        // let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
-                        //     {
-                        //         recipentType: "specific",
-                        //         message: `🎉 Congratulations! You got <span class="text-primary">rank ${index + 1} </span>in tournament <span class="text-offBlue">${updatedTournament.tournTitle} (T-Code: ${tournament.$id})</span>. <span class="text-primary">${prize} ${tournament.prizeType === 'eg_coin' ? 'EG Coins' : 'EG Tokens'}</span> credited to your account.`,
-                        //         recipents: [
-                        //             JSON.stringify(
-                        //                 {
-                        //                     user: userData.documents[0].$id,
-                        //                     read: false
-                        //                 }
-                        //             )
-                        //         ],
-                        //         targetLink: null
-                        //     }
-                        // )
-                        // let updatedNotifications = userData.documents[0].notifications.push(notif.$id)
-                        // await database.updateDocument(db_id, 'user_details', userData.documents[0].$id, { 'notifications': [updatedNotifications] })
+
+                        try {
+                            let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
+                                {
+                                    recipentType: "specific",
+                                    message: `<p>🎉 Congratulations! You got <span class="text-primary">rank ${index + 1} </span>in tournament <span class="text-offBlue">${updatedTournament.tournTitle} (T-Code: ${tournament.$id})</span>. <span class="text-primary">${prize} ${tournament.prizeType === 'eg_coin' ? 'EG Coins' : 'EG Tokens'}</span> credited to your account.</p>`,
+                                    recipents: [
+                                        JSON.stringify(
+                                            {
+                                                user: userData.documents[0].$id,
+                                                read: false
+                                            }
+                                        )
+                                    ],
+                                    targetLink: null
+                                }
+                            )
+                            userData.documents[0].notifications.push(notif.$id)
+                            await database.updateDocument(db_id, 'user_details', userData.documents[0].$id, { 'notifications': userData.documents[0].notifications })
+                        } catch (error) {
+                            toast.error(error.message)
+                        }
+
+
 
                     } else {
                         toast.error(`User '${winnerUsername}' not found!`, { autoClose: false, })
@@ -349,6 +356,8 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
             } catch (error) {
                 toast.error(error.message)
             }
+            setProgress(60)
+
         }
 
         if (updatedTournament.status === "Aborted") {
@@ -360,7 +369,7 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
                         for (let i = 0; i < response.participants.length; i++) {
                             const participantID = response.participants[i];
                             try {
-                                const userRes = await database.getDocument(db_id, 'user_details', participantID, [Query.select(['eg_coin', 'eg_token', 'username', 'notifications'])])
+                                const userRes = await database.getDocument(db_id, 'user_details', participantID, [])
 
                                 let coin = userRes.eg_coin;
                                 let token = userRes.eg_token;
@@ -378,25 +387,25 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
 
 
 
-                                    // let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
-                                    //     {
-                                    //         recipentType: "specific",
-                                    //         message: `You got a refund of ${JSON.parse(tournament.entryFee).fee} ${JSON.parse(tournament.entryFee).currencyType === 'eg_coin' ? 'EG Coins' : 'EG Tokens'} as tournament <span class="text-offBlue">${updatedTournament.tournTitle} (T-Code: ${tournament.$id})</span> has been aborted! `,
-                                    //         recipents: [
-                                    //             JSON.stringify(
-                                    //                 {
-                                    //                     user: participantID,
-                                    //                     read: false
-                                    //                 }
-                                    //             )
-                                    //         ],
-                                    //         targetLink: null
-                                    //     }
-                                    // )
+                                    let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
+                                        {
+                                            recipentType: "specific",
+                                            message: `<p>You got a refund of ${JSON.parse(tournament.entryFee).fee} ${JSON.parse(tournament.entryFee).currencyType === 'eg_coin' ? 'EG Coins' : 'EG Tokens'} as tournament <span class="text-offBlue">${updatedTournament.tournTitle} (T-Code: ${tournament.$id})</span> has been aborted!</p> `,
+                                            recipents: [
+                                                JSON.stringify(
+                                                    {
+                                                        user: participantID,
+                                                        read: false
+                                                    }
+                                                )
+                                            ],
+                                            targetLink: null
+                                        }
+                                    )
 
 
-                                    // let updatedNotifications = userRes.notifications.push(notif.$id)
-                                    // await database.updateDocument(db_id, 'user_details', participantID, { 'notifications': [updatedNotifications] })
+                                    userRes.notifications.push(notif.$id)
+                                    await database.updateDocument(db_id, 'user_details', participantID, { 'notifications': userRes.notifications })
 
 
 
@@ -419,6 +428,8 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
                 }
 
             }
+            setProgress(60)
+
         }
         try {
             await database.updateDocument(db_id, 'tournaments', tournament.$id, updatedTournament)
@@ -431,7 +442,7 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
         setProgress(100)
         let pauseTime = 2500
         if (updatedTournament.status === "Finished" || updatedTournament.status === "Aborted") {
-            pauseTime = 40000
+            pauseTime = 10000
         }
 
         toast.info("Page will refresh shortly", {
