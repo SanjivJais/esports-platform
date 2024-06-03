@@ -663,7 +663,7 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
                                                 {participantDetails && participantDetails.length >= 1 ?
                                                     <>
                                                         <div className="overflow-auto max-h-[80vh] custom-scrollbar bg-secondary rounded-[5px]">
-                                                            <table className="table-auto min-w-96 overflow-x-auto">
+                                                            <table className="table-auto w-full min-w-96 overflow-x-auto">
                                                                 <thead className='bg-secondaryLight text-offBlue text-left'>
                                                                     <tr className="">
                                                                         <th className="px-4 py-3">#</th>

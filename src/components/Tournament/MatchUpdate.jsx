@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { FaCaretDown } from 'react-icons/fa6';
+import { Modal } from '../Modal';
+import { database, db_id } from '../../../config/Appwrite';
+import LoadingBar from 'react-top-loading-bar';
+import { toast } from 'react-toastify';
 
 export const MatchUpdate = ({ match, participants, gameID }) => {
+
+    const [progress, setProgress] = useState(0)
 
     // formatting datetime 
     const formatDateTime = (dateTimeString) => {
@@ -66,10 +72,29 @@ export const MatchUpdate = ({ match, participants, gameID }) => {
     }, [updatedMatch.matchStatus])
 
 
+    const [confirmationModal, setConfirmationModal] = useState(false)
+    const handleMatchUpdate = async () => {
+        setProgress(60)
+        try {
+            await database.updateDocument(db_id, 'matches', match.$id, updatedMatch)
+            toast.success("Match updated!");
+            setConfirmationModal(false)
+            setEditBoxOpen(false)
+        } catch (error) {
+            toast.error("Something went wrong!")
+        }
+        setProgress(100)
+    }
 
 
     return (
         <>
+
+            <LoadingBar
+                color='#F88B26'
+                progress={progress}
+                onLoaderFinished={() => setProgress(0)}
+            />
             <div className="flex flex-col ">
 
                 <div className={`flex items-center justify-between gap-4 bg-secondaryLight p-3 ${editBoxOpen ? 'rounded-tl-[5px] rounded-tr-[5px] border-b-[0.8px] border-inactive border-opacity-20' : 'rounded-[5px]'}`}>
@@ -125,14 +150,27 @@ export const MatchUpdate = ({ match, participants, gameID }) => {
                     {/* No winner specification for single-match tournament */}
 
 
+                    {match.matchStatus !== "Finished" && <div className="flex col-span-2 justify-end">
+                        <button onClick={() => setConfirmationModal(true)} className='bg-primary text-secondary font-semibold rounded-[5px] px-4 py-2 text-sm self-end'>Update Match</button>
+                    </div>}
+
 
 
 
                 </div>
-                <div className="flex w-full">
-                    <button className='bg-primary text-secondary font-semibold rounded-[5px] px-4 py-2 text-sm self-end'>Update Match</button>
-                </div>
+
             </div>
+
+            <Modal isVisible={confirmationModal} onClose={() => setConfirmationModal(false)}>
+                <div className='p-6 md:w-96 w-72'>
+                    <p className='mt-4 flex justify-center'>Are you sure? </p>
+                    <div className="flex w-full justify-evenly mt-7">
+                        <button onClick={() => setConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>No</button>
+                        <button onClick={handleMatchUpdate} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Yes</button>
+                    </div>
+                </div>
+
+            </Modal>
 
         </>
     )
