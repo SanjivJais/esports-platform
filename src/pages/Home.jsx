@@ -70,7 +70,7 @@ export const Home = () => {
 
       <div className='py-4 px-4 flex flex-col items-center self-center w-full max-w-[1440px]'>
         <div className='mb-2 w-full'>
-          <Slider slides={slides} interval={7000} />
+          <Slider slides={slides} interval={5000} />
         </div>
         <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full mt-2"></div>
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>All Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
