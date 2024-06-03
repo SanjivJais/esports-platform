@@ -92,13 +92,13 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
   return (
     <>
       <nav className="sticky z-20 top-0 bg-secondary h-[72px] md:px-4 shadow-md flex items-center justify-between pr-4">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center md:gap-5 gap-3">
           <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:block hidden' onClick={toggleSidebar} />
           <MdOutlineMenu className='text-2xl hover:cursor-pointer md:ml-0 ml-4 lg:hidden' onClick={mobToggleSidebar} />
           <div onClick={handleSearchEnable} className="flex bg-secondaryLight items-center rounded-3xl border-[1px] border-secondary md:px-6 px-4 py-2 md:w-72"><input type="text" className='bg-transparent focus:outline-none w-full md:block hidden placeholder:text-inactive' placeholder='T-Code or Title' /><GoSearch className='text-lg text-inactive' /></div>
 
         </div>
-        <div className="flex gap-5 items-center">
+        <div className="flex md:gap-5 gap-3 items-center">
           {user &&
             <>
               <div onClick={() => setNotificationPanel(!notificationPanel)} className={`flex flex-col ${unreadCount > 0 ? '-mt-2' : ''}  cursor-pointer`}>
@@ -116,14 +116,14 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
             </>
           }
           {user &&
-            <div className='flex items-center gap-2'>
-              <div className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
+            <div className='flex items-center md:gap-2 gap-1'>
+              <div className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG md:px-4 px-2 max-sm:text-sm md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
                 <div className='flex items-center gap-2'>
                   <img src="/icons/eg_token.svg" alt="" className='h-4 w-auto' />
                   <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_token}</label>
                 </div>
               </div>
-              <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG px-4 md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
+              <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG md:px-4 px-2 max-sm:text-sm md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
                 <div className='flex items-center gap-2'>
                   <img src="/icons/Coin.svg" alt="" className='h-4 w-auto' />
                   <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_coin}</label>

@@ -37,6 +37,24 @@ export const Home = () => {
     fetchTournaments()
   }, [])
 
+
+  // load only active slides
+  const slides = [
+    {
+      imgUrl: '/images/DummySliderBanner.jpg',
+      targetLink: '/slide1',
+    },
+    {
+      imgUrl: '/images/pubg-tournament-page-bg.jpg',
+      targetLink: '/slide2',
+
+    },
+    {
+      imgUrl: '/images/promotionalBanner1.png',
+      targetLink: '/slide3',
+    },
+  ]
+
   return (
     <>
       <LoadingBar
@@ -51,8 +69,10 @@ export const Home = () => {
       </Helmet>
 
       <div className='py-4 px-4 flex flex-col items-center self-center w-full max-w-[1440px]'>
-        <div className='mb-2 w-full'><Slider /></div>
-        <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full"></div>
+        <div className='mb-2 w-full'>
+          <Slider slides={slides} interval={7000} />
+        </div>
+        <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full mt-2"></div>
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>All Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
         <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
           {tournaments && tournaments.map((tournament, index) => (
@@ -67,7 +87,7 @@ export const Home = () => {
 
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubgmobile'} className='text-primary text-sm'>View All »</Link></div>
         <div className='w-full h-64 mt-4 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
-          <div className='flex flex-col gap-3 items-center text-xl font-bold '>
+          <div className='flex flex-col gap-3 items-center md:text-xl max-sm:text-center font-bold '>
             PUBG Tournaments will be Available Soon, Stay Tuned!
           </div>
         </div>
