@@ -39,21 +39,21 @@ export const Home = () => {
 
 
   // load only active slides
-  const slides = [
-    {
-      imgUrl: '/images/DummySliderBanner.jpg',
-      targetLink: '/slide1',
-    },
-    {
-      imgUrl: '/images/pubg-tournament-page-bg.jpg',
-      targetLink: '/slide2',
+  const [slides, setSlides] = useState([])
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const res = await database.getDocument(db_id, 'native_promotions', 'homeslider', [])
+        setSlides(JSON.parse(res.content).filter(slide => slide.isActive));
+      } catch (error) {
 
-    },
-    {
-      imgUrl: '/images/promotionalBanner1.png',
-      targetLink: '/slide3',
-    },
-  ]
+      }
+
+    }
+    fetchSlides()
+  }, [])
+
+
 
   return (
     <>
