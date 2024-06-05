@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { FFSquareTournamentCard } from '../components/FFComps/FFSquareTournamentCard'
 import LoadingBar from 'react-top-loading-bar'
 import { Helmet } from 'react-helmet'
 import { ID, database, db_id } from '../../config/Appwrite';
