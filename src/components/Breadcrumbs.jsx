@@ -11,7 +11,7 @@ const Breadcrumbs = () => {
         const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
         const isLast = index === pathnames.length - 1;
         return {
-            name: `${pathname === 'tournaments' ? 'Tournaments' : pathname === 'freefire' ? 'Free Fire' : pathname === 'pubgmobile' ? 'PUBG Mobile' : pathname === 'announcement' ? 'Announcements' : pathname === 'games' ? 'Games' :pathname === 'feedback' ? 'Feedback' :pathname === 'notifications' ? 'Notifications' :pathname}`,
+            name: `${pathname === 'tournaments' ? 'Tournaments' : pathname === 'freefire' ? 'Free Fire' : pathname === 'pubgmobile' ? 'PUBG Mobile' : pathname === 'announcement' ? 'Announcements' : pathname === 'games' ? 'Games' : pathname === 'feedback' ? 'Feedback' : pathname === 'notifications' ? 'Notifications' : pathname === 'privacy-policy' ? "Privacy Policy" : pathname}`,
             url: routeTo,
             active: isLast,
         };

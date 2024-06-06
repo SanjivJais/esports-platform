@@ -20,6 +20,7 @@ import { Feedback } from "./pages/Feedback"
 import { Admin } from "./pages/Admin"
 import { AdminRoute } from "./utils/AdminRoute"
 import { Notifications } from "./pages/Notifications"
+import { PrivacyPolicy } from "./pages/EssentialPages/PrivacyPolicy"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -41,6 +42,7 @@ function App() {
             <Route path='/tournaments/freefire' element={<ParentPage Page={<FFTournaments />} />} />
             <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
             <Route path='/feedback' element={<ParentPage Page={<Feedback />} />} />
+            <Route path='/privacy-policy' element={<ParentPage Page={<PrivacyPolicy />} />} />
 
             <Route element={<LoginStatusRouting />}>
               <Route path="/signup" element={<Signup />} />

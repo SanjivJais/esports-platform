@@ -13,8 +13,8 @@ export const Footer = () => {
               EsportsGravity
             </div>
           </Link>
-          <p className='text-sm my-2 text-offBlue'><strong>EsportsGravity</strong> is the ultimate platform to shine in the esports realm.</p>
-          <i className='text-sm text-primary'>#GetIntoBattle</i>
+          <p className='text-[15px] my-2 text-offBlue'><strong>EsportsGravity</strong> is your gateway to competitive gaming! Poudly developed in Nepal, and empowering esports across the country.</p>
+          <i className='text-[15px] text-primary'>#GetIntoBattle</i>
           <div className='mt-3 text-offWhite'>
             <label htmlFor="" className="text-[14px]">FOLLOW US</label>
             <div className="flex gap-2 justify-start mt-2">
@@ -45,39 +45,35 @@ export const Footer = () => {
         </div>
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>GAMES</h4>
-          <ul className='my-2 text-offBlue text-sm'>
+          <ul className='my-2 text-offBlue text-[15px]'>
             <li className='w-fit my-2'><Link to={'/tournaments/freefire'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Garena Free Fire</span></Link></li>
             <li className='w-fit my-2'><Link to={'/tournaments/pubgmobile'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
-            
           </ul>
         </div>
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>USEFUL LINKS</h4>
-          <ul className='my-2 text-offBlue text-sm'>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>About Us</span></Link></li>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>FAQs</span></Link></li>
+          <ul className='my-2 text-offBlue text-[15px]'>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Contact Us</span></Link></li>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Feedback</span></Link></li>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Disclaimer</span></Link></li>
+            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Terms & Conditions</span></Link></li>
+            <li className='w-fit my-2'><Link to={'/privacy-policy'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Privacy Policy</span></Link></li>
           </ul>
         </div>
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>SUPPORT</h4>
-          <ul className='my-2 text-offBlue text-sm'>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Collaborate With Us</span></Link></li>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Business Inquiries</span></Link></li>
+          <ul className='my-2 text-offBlue text-[15px]'>
+            <li className='w-fit my-2'><Link to={'/feedback'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Feedback</span></Link></li>
+            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Help Center</span></Link></li>
             <li className='w-fit my-2'><span to={'#'} className='flex items-center gap-1'><FaCaretRight /><span>info@esportsgravity.com</span></span></li>
             <li className='w-fit my-2'><span to={'#'} className='flex items-center gap-1'><FaCaretRight /><span>+977 9862495033</span></span></li>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Help Center</span></Link></li>
           </ul>
         </div>
       </div>
-      <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 text-sm'>
-        <div className="grid grid-cols-12 text-offBlue gap-y-2">
-          <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='text-primary transition-colors duration-300'> EsportsGravity.com</Link><span><label htmlFor="version indication" className='text-dimText font-medium'> (v1.0.0)</label></span></div>
-          <div className="md:col-span-6 col-span-full"><span className='flex gap-2 md:justify-end justify-center'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Terms & Conditions</Link>|<Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Privacy Policy</Link></span></div>
+      <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 text-[15px]'>
+        <div className="flex justify-between items-center">
+          <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='text-primary transition-colors duration-300'> EsportsGravity.com</Link></div>
+          <div className='text-dimText font-medium'>(Version 1.0.0) - Beta</div>
         </div>
-
       </div>
     </div>
   )
