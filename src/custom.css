@@ -73,6 +73,12 @@ body::-webkit-scrollbar-thumb {
   margin-bottom: 10px;
 }
 
+.content-area ol {
+  list-style-type: decimal;
+  margin-left: 2rem;
+  margin-bottom: 10px;
+}
+
 .content-area li {
   margin-bottom: 5px;
 }

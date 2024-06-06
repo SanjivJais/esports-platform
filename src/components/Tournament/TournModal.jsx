@@ -301,6 +301,23 @@ export const TournModal = ({ tournament }) => {
         }
     }, [activeTab])
 
+
+    // promo banners
+    const [promoBanners, setPromoBanners] = useState([])
+
+    useEffect(() => {
+        const fetchPromoBanners = async () => {
+            try {
+                const res = await database.getDocument(db_id, 'native_promotions', 'tourn_modal_banners', [])
+                const banners = JSON.parse(res.content).filter(banner => banner.isActive)
+                setPromoBanners(banners);
+            } catch (error) {
+            }
+
+        }
+        fetchPromoBanners()
+    }, [])
+
     return (
         <>
             <LoadingBar
@@ -528,103 +545,108 @@ export const TournModal = ({ tournament }) => {
                         </div>
 
                     </div>
-                    <div className='h-fit lg:w-[36%] md:w-[42%] bg-frameBG rounded-[5px] flex flex-col md:-mt-12'>
+                    <div className='h-fit lg:w-[36%] md:w-[42%] rounded-[5px] flex flex-col md:-mt-12'>
+                        <div className='bg-frameBG '>
+                            <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
+                                <h3 className='font-bold text-lg text-offBlue'>{tournament.status === "Finished" ? 'Results' : tournament.status === "Aborted" ? 'Aborted' : 'Prize Pool'}</h3>
+                                {(tournament.status === "Open" || tournament.status === "Ongoing") && <div> {formatDateTime(tournament.startDate).time} / {formatDateTime(tournament.startDate).date} </div>}
+                                {tournament.status === "Finished" && <div className='font-bold text-lg text-offBlue'>Prizes</div>}
+                            </div>
 
-                        <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
-                            <h3 className='font-bold text-lg text-offBlue'>{tournament.status === "Finished" ? 'Results' : tournament.status === "Aborted" ? 'Aborted' : 'Prize Pool'}</h3>
-                            {(tournament.status === "Open" || tournament.status === "Ongoing") && <div> {formatDateTime(tournament.startDate).time} / {formatDateTime(tournament.startDate).date} </div>}
-                            {tournament.status === "Finished" && <div className='font-bold text-lg text-offBlue'>Prizes</div>}
-                        </div>
-
-                        {
-                            tournament.status === "Finished" ?
-                                <>
-                                    {tournament.winners && tournament.winners.map((winner, index) => (
-                                        <div key={index}>
-                                            <div className='py-4 px-4 flex justify-between'>
-                                                <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />}
-                                                    <span>{winner}</span>
-                                                </h3>
-
-                                                <div className='flex gap-2 items-center'>{tournament.prizeType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />}  {tournament.prizePool[index]}</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </>
-                                :
-                                tournament.status === "Aborted" ?
+                            {
+                                tournament.status === "Finished" ?
                                     <>
-                                        <div className='p-4 text-offBlue'>
-                                            <p>This tournament has been aborted. This could be due to several reasons such as insufficient participants, technical issues, etc. </p>
-                                            <p className='mt-2'>100% Joining fees of participants have been <strong className='text-primary'>refunded</strong>. Apologies for the inconvenience caused.</p>
-                                        </div>
-                                    </>
-                                    :
-                                    <>
-                                        {tournament.prizePool && tournament.prizePool.map((prize, index) => (
+                                        {tournament.winners && tournament.winners.map((winner, index) => (
                                             <div key={index}>
-                                                {prize != 0 && <div className='py-4 px-4 flex justify-between'>
-                                                    <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{index + 1}<sup> {index == 0 && <>st</>}{index == 1 && <>nd</>}{index == 2 && <>rd</>}{index > 2 && <>th</>}</sup> Place</span></h3>
-                                                    <div className='flex gap-2 items-center'>{tournament.prizeType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {prize}</div>
-                                                </div>}
+                                                <div className='py-4 px-4 flex justify-between'>
+                                                    <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />}
+                                                        <span>{winner}</span>
+                                                    </h3>
+
+                                                    <div className='flex gap-2 items-center'>{tournament.prizeType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />}  {tournament.prizePool[index]}</div>
+                                                </div>
                                             </div>
                                         ))}
                                     </>
-                        }
-
-
-
-                        <div className="h-[1px] bg-black bg-opacity-25"></div>
-                        {tournament.status == 'Open' && <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
-                            <div className="flex justify-between text-[14px] mb-1">
-                                <label htmlFor="" >Participants Joined</label>
-                                <label htmlFor=""><span>{tournament.participants.length}</span> / <span className='text-primary'>{tournament.max}</span></label>
-                            </div>
-                            <div className='bg-gray w-full h-2 rounded-lg'>
-                                <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>
-                            </div>
-                        </div>}
-                        <div className='p-2 flex flex-col justify-between'>
-                            {tournament.status == 'Open' && !joinStatus && <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>}
-                            {tournament.status == 'Open' && joinStatus &&
-                                <div className=''>
-                                    <div className='bg-openStatus text-secondary font-bold p-2 rounded-[5px] flex items-center justify-center gap-2'><span>Joined</span><FaCircleCheck /></div>
-                                    <div onClick={handleExitConfirmation} className='flex cursor-pointer hover:text-red-500 transition-colors duration-200 font-semibold my-2 justify-center items-center gap-1 text-sm text-offBlue'><span>Exit from this tournament</span><span><BiSolidExit /></span></div>
-                                </div>
+                                    :
+                                    tournament.status === "Aborted" ?
+                                        <>
+                                            <div className='p-4 text-offBlue'>
+                                                <p>This tournament has been aborted. This could be due to several reasons such as insufficient participants, technical issues, etc. </p>
+                                                <p className='mt-2'>100% Joining fees of participants have been <strong className='text-primary'>refunded</strong>. Apologies for the inconvenience caused.</p>
+                                            </div>
+                                        </>
+                                        :
+                                        <>
+                                            {tournament.prizePool && tournament.prizePool.map((prize, index) => (
+                                                <div key={index}>
+                                                    {prize != 0 && <div className='py-4 px-4 flex justify-between'>
+                                                        <h3 className='font-semibold text-md text-offBlue flex gap-2 items-center'>{index == 0 && <img src="/icons/firstTrophy.svg" alt="" />}{index == 1 && <img src="/icons/secondTrophy.svg" alt="" />}{index == 2 && <img src="/icons/thirdTrophy.svg" alt="" />} <span>{index + 1}<sup> {index == 0 && <>st</>}{index == 1 && <>nd</>}{index == 2 && <>rd</>}{index > 2 && <>th</>}</sup> Place</span></h3>
+                                                        <div className='flex gap-2 items-center'>{tournament.prizeType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {prize}</div>
+                                                    </div>}
+                                                </div>
+                                            ))}
+                                        </>
                             }
-                            {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
-                            {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
-                            {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+
+
+
+                            <div className="h-[1px] bg-black bg-opacity-25"></div>
+                            {tournament.status == 'Open' && <div className='py-4 px-4 flex flex-col justify-between rounded-br-[5px] rounded-bl-[5px]'>
+                                <div className="flex justify-between text-[14px] mb-1">
+                                    <label htmlFor="" >Participants Joined</label>
+                                    <label htmlFor=""><span>{tournament.participants.length}</span> / <span className='text-primary'>{tournament.max}</span></label>
+                                </div>
+                                <div className='bg-gray w-full h-2 rounded-lg'>
+                                    <div className={`bg-primary h-2 rounded-lg`} style={{ width: joinPercent + '%' }}></div>
+                                </div>
+                            </div>}
+                            <div className='p-2 flex flex-col justify-between'>
+                                {tournament.status == 'Open' && !joinStatus && <button onClick={handleJoinConfirmation} className='bg-primary text-secondary font-bold p-2 rounded-[5px]'>Join Now</button>}
+                                {tournament.status == 'Open' && joinStatus &&
+                                    <div className=''>
+                                        <div className='bg-openStatus text-secondary font-bold p-2 rounded-[5px] flex items-center justify-center gap-2'><span>Joined</span><FaCircleCheck /></div>
+                                        <div onClick={handleExitConfirmation} className='flex cursor-pointer hover:text-red-500 transition-colors duration-200 font-semibold my-2 justify-center items-center gap-1 text-sm text-offBlue'><span>Exit from this tournament</span><span><BiSolidExit /></span></div>
+                                    </div>
+                                }
+                                {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                                {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                                {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+
+                            </div>
+
+                            {/* confirmation modal  */}
+                            <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
+                                <div className='p-6 md:w-96 w-72'>
+                                    <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'>{JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {JSON.parse(tournament.entryFee).fee}</span></p>
+                                    <p className='text-sm text-offBlue my-4'>(<span className='text-primary'>IMPORTANT:</span> For tournaments other than <span className='underline font-bold'>Solo</span> (team size), make sure your other teammates do not enroll for this tournament. You are the leader on their behalf.)</p>
+                                    <div className="flex w-full justify-evenly mt-7">
+                                        <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
+                                        <button onClick={handleFinalJoin} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
+                                    </div>
+                                </div>
+
+                            </Modal>
+
+
+                            {/* exit confirmation modal  */}
+                            <Modal isVisible={exitConfirmationModal} onClose={() => setExitConfirmationModal(false)}>
+                                <div className='p-6 md:w-96 w-72'>
+                                    <p className='mt-4 flex flex-col gap-1 items-center'>
+                                        <span> Are you sure?</span>
+                                        {JSON.parse(tournament.entryFee).fee > 0 && <span className='mx-2 flex items-center gap-1'>You will get {JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />}  {Math.floor(JSON.parse(tournament.entryFee).fee * 0.90)} <span className='text-inactive'>(90% of entry fee)</span> as refund!</span>}
+                                    </p>
+                                    <div className="flex w-full justify-evenly mt-7">
+                                        <button onClick={() => setExitConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
+                                        <button onClick={handleFinalExitConfirmation} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Confirm</button>
+                                    </div>
+                                </div>
+                            </Modal>
 
                         </div>
-
-                        {/* confirmation modal  */}
-                        <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
-                            <div className='p-6 md:w-96 w-72'>
-                                <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'>{JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {JSON.parse(tournament.entryFee).fee}</span></p>
-                                <p className='text-sm text-offBlue my-4'>(<span className='text-primary'>IMPORTANT:</span> For tournaments other than <span className='underline font-bold'>Solo</span> (team size), make sure your other teammates do not enroll for this tournament. You are the leader on their behalf.)</p>
-                                <div className="flex w-full justify-evenly mt-7">
-                                    <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
-                                    <button onClick={handleFinalJoin} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
-                                </div>
-                            </div>
-
-                        </Modal>
-
-
-                        {/* exit confirmation modal  */}
-                        <Modal isVisible={exitConfirmationModal} onClose={() => setExitConfirmationModal(false)}>
-                            <div className='p-6 md:w-96 w-72'>
-                                <p className='mt-4 flex flex-col gap-1 items-center'>
-                                    <span> Are you sure?</span>
-                                    {JSON.parse(tournament.entryFee).fee > 0 && <span className='mx-2 flex items-center gap-1'>You will get {JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />}  {Math.floor(JSON.parse(tournament.entryFee).fee * 0.90)} <span className='text-inactive'>(90% of entry fee)</span> as refund!</span>}
-                                </p>
-                                <div className="flex w-full justify-evenly mt-7">
-                                    <button onClick={() => setExitConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
-                                    <button onClick={handleFinalExitConfirmation} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Confirm</button>
-                                </div>
-                            </div>
-                        </Modal>
+                        <>
+                            {promoBanners.length > 0 && <a href={promoBanners[0].targetLink} target='_blank' className='h-28 w-auto my-4'><img className='object-cover w-full h-full rounded-[5px] object-left' src={promoBanners[0].imgUrl} alt="EG Promo" /></a>}
+                        </>
                     </div>
                 </div>
             </div>

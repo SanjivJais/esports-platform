@@ -15,6 +15,7 @@ import { Query } from 'appwrite';
 import { TournCard } from '../components/Tournament/TournCard';
 import { HostTournCard } from '../components/Tournament/HostTournCard';
 import { CreateTournament } from '../components/Tournament/CreateTournament';
+import { Tooltip } from '../components/Tooltip';
 
 
 export const Profile = () => {
@@ -194,7 +195,7 @@ export const Profile = () => {
           toast.success("Free Fire profile created")
           setGameProfileModal(false)
         } catch (error) {
-          toast.error("Something went wrong!")
+          toast.error(error.message)
         }
       } else {
         toast.info("Free Fire name or UID missing!")
@@ -234,7 +235,7 @@ export const Profile = () => {
           setGameProfileModal(false)
           toast.success("PUBG Mobile profile created")
         } catch (error) {
-          toast.error("Something went wrong!")
+          toast.error(error.message)
         }
       } else {
         toast.info("PUBG Mobile name or UID missing!")
@@ -540,7 +541,46 @@ export const Profile = () => {
           }
           {activeTab === 2 &&
             <>
-              This is wallet section!
+              <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                <div className="bg-secondary flex flex-col px-6 py-4 rounded-[5px] ">
+                  <div className="flex justify-between items-center border-b-[0.8px] border-inactive border-opacity-20 py-4">
+                    <img src="/icons/eg_token.svg" alt="EG Token" className='h-8 w-8' />
+                    {userDetails && <h4 className='text-2xl font-semibold'>{userDetails.eg_token}</h4>}
+                  </div>
+                  <div className='content-area mt-4'>
+                    <h3>EG Tokens</h3>
+                    <ol>
+                      <li>Non-premium currency (Secondary currency of EG ). </li>
+                      <li>Can be earned by playing in tournaments and doing simple tasks. </li>
+                      <li>Collect EG Tokens to rank higher into leaderboard and win grand prizes.</li>
+                    </ol>
+                    <div className="bg-frameBG py-3 px-4">
+                      <span className='font-bold text-ongoingStatus'>*Note: </span>For early users, they may be able to convert these tokens into <span className='font-semibold text-ongoingStatus'>premium currency</span> (EG Coin) at a certain exchange rate very soon.
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-secondary flex flex-col px-6 py-4 rounded-[5px] ">
+                  <div className="flex justify-between items-center border-b-[0.8px] border-inactive border-opacity-20 py-4">
+                    <img src="/icons/Coin.svg" alt="EG Coin" className='h-8 w-8' />
+                    {userDetails && <h4 className='text-2xl font-semibold'>{userDetails.eg_coin}</h4>}
+                  </div>
+                  <div className='content-area mt-4'>
+                    <div className="flex gap-2 items-start">
+                      <h3>EG Coins</h3>
+                      <div className='bg-secondaryLight px-2 rounded-[5px]'>Coming Soon</div>
+                    </div>
+                    <ol>
+                      <li>Premium currency. </li>
+                      <li>Earn by performing good in tournaments. </li>
+                      <li>Withdraw EG Coins as real money.</li>
+                      <li>Top-up EG Coins with real money. </li>
+                    </ol>
+                    <div className="bg-frameBG py-3 px-4">
+                      <span className='font-bold text-primary'>*Note: </span>EG Coins is the primary way for esports athletes to  <span className='font-semibold text-primary'>earn real money</span>  with their gaming skills.
+                    </div>
+                  </div>
+                </div>
+              </div>
             </>
           }
           {activeTab === 3 &&

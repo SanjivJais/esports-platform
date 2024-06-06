@@ -47,7 +47,7 @@ export const Footer = () => {
           <h4 className='text-offWhite'>GAMES</h4>
           <ul className='my-2 text-offBlue text-sm'>
             <li className='w-fit my-2'><Link to={'/tournaments/freefire'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Garena Free Fire</span></Link></li>
-            <li className='w-fit my-2'><Link to={'/tournaments/pubg'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
+            <li className='w-fit my-2'><Link to={'/tournaments/pubgmobile'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
             
           </ul>
         </div>
@@ -75,7 +75,6 @@ export const Footer = () => {
       <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 text-sm'>
         <div className="grid grid-cols-12 text-offBlue gap-y-2">
           <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='text-primary transition-colors duration-300'> EsportsGravity.com</Link><span><label htmlFor="version indication" className='text-dimText font-medium'> (v1.0.0)</label></span></div>
-          {/* <p className='md:col-span-4 col-span-full text-center'>Designed by <a href="https://rajivjaiswal.com.np/" target='_blank' className='text-primary'>Rajiv Jaiswal</a></p> */}
           <div className="md:col-span-6 col-span-full"><span className='flex gap-2 md:justify-end justify-center'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Terms & Conditions</Link>|<Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'>Privacy Policy</Link></span></div>
         </div>
 

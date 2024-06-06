@@ -53,6 +53,22 @@ export const Home = () => {
     fetchSlides()
   }, [])
 
+  const [homeBanners, setHomeBanners] = useState([])
+  useEffect(() => {
+    const fetchHomeBanners = async () => {
+      try {
+        const res = await database.getDocument(db_id, 'native_promotions', 'home_banners', [])
+        const banners = JSON.parse(res.content).filter(banner => banner.isActive)
+        setHomeBanners(banners);
+      } catch (error) {
+      }
+
+    }
+    fetchHomeBanners()
+  }, [])
+
+
+
 
 
   return (
@@ -83,7 +99,7 @@ export const Home = () => {
         </div>
 
         {/* promotional banner homepage  */}
-        <div className='h-[120px] w-full mt-4 bg-[url("/images/promotionalBanner1.png")] bg-cover bg-left rounded-[5px]'></div>
+        {homeBanners.length>0 && <a className='h-[120px] w-full mt-4 ' href={homeBanners[0].targetLink} target='_blank'><img className='h-full w-full object-center object-cover rounded-[5px]' src={homeBanners[0].imgUrl} alt='EG Promo banner' /></a>}
 
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubgmobile'} className='text-primary text-sm'>View All »</Link></div>
         <div className='w-full h-64 mt-4 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
