@@ -49,13 +49,14 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       link: '/announcement',
       icon: <GrAnnounce />
     },
+    // {
+    //   separator: true,
+    //   title: 'Guides',
+    //   link: '/temp1/',
+    //   icon: <IoBulb />
+    // },
     {
       separator: true,
-      title: 'Guides',
-      link: '/temp1/',
-      icon: <IoBulb />
-    },
-    {
       title: 'Help Center',
       link: '/temp2/',
       icon: <MdOutlineHelp />
@@ -74,7 +75,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
       <div className={`w-64 lg:w-72 top-0 z-30 bg-secondary transition-all duration-300 h-screen md:text-[16px] text-[14px] ${sideOpen ? 'lg:sticky lg:left-0' : 'lg:fixed lg:-left-72'} fixed ${mobSideOpen ? 'left-0' : '-left-64'}`}>
         <div className="flex w-full absolute items-center justify-end top-4 right-3 lg:hidden"><IoClose className={`text-lg cursor-pointer ${mobSideOpen ? '' : 'rotate-180 duration-100'}`} onClick={mobToggleSidebar} /></div>
         <Link to={'/'} className='h-[72px] flex px-4 items-center justify-center text-lg font-bold'>
-          EsportsGravity <sup className='text-xs text-primary ml-2 font-normal'>Beta</sup>
+          <img className='w-[170px] h-auto' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
         </Link>
 
         <div className="flex flex-col h-[90%] px-4 py-3 overflow-y-auto sidebar-scrollbar text-inactive font-semibold">

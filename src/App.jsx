@@ -21,6 +21,7 @@ import { Admin } from "./pages/Admin"
 import { AdminRoute } from "./utils/AdminRoute"
 import { Notifications } from "./pages/Notifications"
 import { PrivacyPolicy } from "./pages/EssentialPages/PrivacyPolicy"
+import { TermsConditions } from "./pages/EssentialPages/TermsConditions"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -43,6 +44,7 @@ function App() {
             <Route path='/announcement' element={<ParentPage Page={<Announcements />} />} />
             <Route path='/feedback' element={<ParentPage Page={<Feedback />} />} />
             <Route path='/privacy-policy' element={<ParentPage Page={<PrivacyPolicy />} />} />
+            <Route path='/terms-conditions' element={<ParentPage Page={<TermsConditions />} />} />
 
             <Route element={<LoginStatusRouting />}>
               <Route path="/signup" element={<Signup />} />

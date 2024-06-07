@@ -9,9 +9,7 @@ export const Footer = () => {
         <div className='flex flex-col xl:col-span-4 col-span-5 items-start'>
           {/* logo  */}
           <Link to={'/'}>
-            <div className="flex text-2xl items-center justify-center font-bold">
-              EsportsGravity
-            </div>
+            <img className='w-44 h-auto mb-3' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
           </Link>
           <p className='text-[15px] my-2 text-offBlue'><strong>EsportsGravity</strong> is your gateway to competitive gaming! Poudly developed in Nepal, and empowering esports across the country.</p>
           <i className='text-[15px] text-primary'>#GetIntoBattle</i>
@@ -55,7 +53,7 @@ export const Footer = () => {
           <ul className='my-2 text-offBlue text-[15px]'>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Contact Us</span></Link></li>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Disclaimer</span></Link></li>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Terms & Conditions</span></Link></li>
+            <li className='w-fit my-2'><Link to={'/terms-conditions'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Terms & Conditions</span></Link></li>
             <li className='w-fit my-2'><Link to={'/privacy-policy'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Privacy Policy</span></Link></li>
           </ul>
         </div>
@@ -64,8 +62,7 @@ export const Footer = () => {
           <ul className='my-2 text-offBlue text-[15px]'>
             <li className='w-fit my-2'><Link to={'/feedback'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Feedback</span></Link></li>
             <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Help Center</span></Link></li>
-            <li className='w-fit my-2'><span to={'#'} className='flex items-center gap-1'><FaCaretRight /><span>info@esportsgravity.com</span></span></li>
-            <li className='w-fit my-2'><span to={'#'} className='flex items-center gap-1'><FaCaretRight /><span>+977 9862495033</span></span></li>
+            <li className='w-fit my-2'><span to={'#'} className='flex items-center gap-1'><FaCaretRight /><span>contact@esportsgravity.com</span></span></li>
           </ul>
         </div>
       </div>

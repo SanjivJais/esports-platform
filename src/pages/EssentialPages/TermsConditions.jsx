@@ -7,7 +7,7 @@ import ReactHtmlParser from 'react-html-parser'
 import { database, db_id } from '../../../config/Appwrite'
 
 
-export const PrivacyPolicy = () => {
+export const TermsConditions = () => {
 
     const formatDateTime = (dateTimeString) => {
         // Split the input string into date and time parts
@@ -32,7 +32,7 @@ export const PrivacyPolicy = () => {
     useEffect(() => {
         setProgress(80)
         const fetchPage = async () => {
-            const res = await database.getDocument(db_id, 'essential_pages', 'privacy_policy');
+            const res = await database.getDocument(db_id, 'essential_pages', 'terms_conditions');
             setPage(res)
         }
         fetchPage()
@@ -43,12 +43,12 @@ export const PrivacyPolicy = () => {
         <>
             <LoadingBar color='#F88B26' progress={progress} onLoaderFinished={() => setProgress(0)} />
             <Helmet>
-                <title>Privacy Policy - EsportsGravity</title>
+                <title>Terms and Conditions - EsportsGravity</title>
             </Helmet>
 
             <div className='bg-gradient-to-r from-frameBG to-secondaryLight w-full h-52 flex flex-col items-center justify-center gap-3'>
                 <div className=""><Breadcrumbs /></div>
-                <h1 className='text-3xl font-bold text-offWhite flex gap-2 items-center'><span>Privacy Policy</span></h1>
+                <h1 className='text-3xl font-bold text-offWhite flex gap-2 items-center'><span>Terms and Conditions</span></h1>
             </div>
 
 
