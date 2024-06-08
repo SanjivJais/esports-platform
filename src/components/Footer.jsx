@@ -51,8 +51,8 @@ export const Footer = () => {
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>USEFUL LINKS</h4>
           <ul className='my-2 text-offBlue text-[15px]'>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Contact Us</span></Link></li>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Disclaimer</span></Link></li>
+            <li className='w-fit my-2'><Link to={'/contact'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Contact Us</span></Link></li>
+            <li className='w-fit my-2'><Link to={'/disclaimer'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Disclaimer</span></Link></li>
             <li className='w-fit my-2'><Link to={'/terms-conditions'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Terms & Conditions</span></Link></li>
             <li className='w-fit my-2'><Link to={'/privacy-policy'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Privacy Policy</span></Link></li>
           </ul>
