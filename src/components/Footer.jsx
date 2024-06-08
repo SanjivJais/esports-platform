@@ -61,8 +61,7 @@ export const Footer = () => {
           <h4 className='text-offWhite'>SUPPORT</h4>
           <ul className='my-2 text-offBlue text-[15px]'>
             <li className='w-fit my-2'><Link to={'/feedback'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Feedback</span></Link></li>
-            <li className='w-fit my-2'><Link to={'#'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Help Center</span></Link></li>
-            <li className='w-fit my-2'><span to={'#'} className='flex items-center gap-1'><FaCaretRight /><span>contact@esportsgravity.com</span></span></li>
+            <li className='w-fit my-2'><Link to={'/help-center'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Help Center</span></Link></li>
           </ul>
         </div>
       </div>

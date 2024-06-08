@@ -58,7 +58,7 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
     {
       separator: true,
       title: 'Help Center',
-      link: '/temp2/',
+      link: '/help-center',
       icon: <MdOutlineHelp />
     },
     {

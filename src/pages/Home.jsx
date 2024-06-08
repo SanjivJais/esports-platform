@@ -8,6 +8,7 @@ import { ID, database, db_id } from '../../config/Appwrite';
 import { toast } from 'react-toastify'
 import { Query } from 'appwrite'
 import { TournCard } from '../components/Tournament/TournCard'
+import { SiPubg } from 'react-icons/si'
 
 
 export const Home = () => {
@@ -99,12 +100,13 @@ export const Home = () => {
         </div>
 
         {/* promotional banner homepage  */}
-        {homeBanners.length>0 && <a className='h-[120px] w-full mt-4 ' href={homeBanners[0].targetLink} target='_blank'><img className='h-full w-full object-center object-cover rounded-[5px]' src={homeBanners[0].imgUrl} alt='EG Promo banner' /></a>}
+        {homeBanners.length > 0 && <a className='h-[120px] w-full mt-4 ' href={homeBanners[0].targetLink} target='_blank'><img className='h-full w-full object-center object-cover rounded-[5px]' src={homeBanners[0].imgUrl} alt='EG Promo banner' /></a>}
 
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>PUBG Tournaments</h3></span><Link to={'/tournaments/pubgmobile'} className='text-primary text-sm'>View All »</Link></div>
         <div className='w-full h-64 mt-4 border-[0.8px] border-inactive border-opacity-20 rounded-[5px] flex justify-center items-center text-inactive'>
-          <div className='flex flex-col gap-3 items-center md:text-xl max-sm:text-center font-bold '>
-            PUBG Tournaments will be Available Soon, Stay Tuned!
+          <div className='flex flex-col gap-1 items-center max-sm:text-center font-semibold '>
+            <SiPubg className='text-5xl' />
+            <div>PUBG Tournaments will be Available Soon, Stay Tuned!</div>
           </div>
         </div>
       </div>

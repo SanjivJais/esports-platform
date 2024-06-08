@@ -66,6 +66,7 @@ body::-webkit-scrollbar-thumb {
   margin-bottom: 10px;
   color: #E2E2E2;
 }
+
 .content-area h4 {
   font-size: 17px;
   font-weight: bold;
@@ -98,8 +99,14 @@ body::-webkit-scrollbar-thumb {
   color: #F88B26;
 }
 
-.content-area strong{
-color: #E2E2E2;
+.content-area strong {
+  color: #E2E2E2;
+}
+
+
+.content-area img {
+  border-radius: 0.8rem;
+  border: 2px solid #6c81a153;
 }
 
 .custom-dropdown {
