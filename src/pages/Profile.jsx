@@ -639,7 +639,8 @@ export const Profile = () => {
           }
         </div>
 
-        <Link to={'#'} className='md:h-[220px] h-[120px] w-full bg-[url("/images/DummySliderBanner.jpg")] mt-6 bg-cover rounded-[5px] bg-center'>
+        <Link to={'#'} className='md:h-[220px] h-[120px] w-full mt-6'>
+          <img src="/images/DummySliderBanner.jpg" alt="" className='h-full w-full object-cover rounded-[5px]' />
         </Link>
       </div>
 

@@ -103,8 +103,14 @@ export const Signup = () => {
 
   const googleAuth = async (e) => {
     e.preventDefault();
-    if (countryCheck !== null && countryCheck)
-      await googleSignin();
+    if (countryCheck !== null && countryCheck) {
+      if (document.getElementById("agreementCheckbox").checked) {
+
+        await googleSignin();
+      } else {
+        toast.info("Please check the checkbox!")
+      }
+    }
   }
 
 
@@ -118,11 +124,14 @@ export const Signup = () => {
       <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
         <div className="bg-[url('/images/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>
-            <h2 className='font-bold text-xl mb-4 flex flex-col lg:gap-6 gap-4'>WELCOME TO
-              <br />
-              <span className='font-extrabold lg:text-[68px] md:text-4xl text-primary'>EsportsGravity</span>
-            </h2>
-            <h3 className='mt-8 italic'>Nepal's <span className='text-primary'>#1</span> Esports Platform</h3>
+            <div className="flex flex-col gap-4">
+              <h3 className='text-xl font-semibold uppercase'>Welcome To</h3>
+              <Link to={'/'}>
+                <img className='w-[360px] h-auto' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
+              </Link>
+              <h3 className='italic'>Nepal's <span className='text-primary'>#1</span> Esports Platform</h3>
+
+            </div>
             <div className="flex gap-2 justify-center mt-8">
               <svg className='' width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20.943 0H2.99175C1.34194 0 0 1.34576 0 2.99997V20.9998C0 22.6542 1.34199 24 2.99175 24H20.943C22.5931 24 23.9351 22.6542 23.9351 20.9998V3.00003C23.9351 1.34576 22.5932 0 20.943 0Z" fill="#1B80E4" />
@@ -192,15 +201,15 @@ export const Signup = () => {
             </div>
             <div className="flex items-start my-2 text-sm">
               <input type="checkbox" name="" id="agreementCheckbox" className='bg-transparent cursor-pointer' />
-              <p className='ml-2 -mt-1'>I'm at least 16 years of age and confirm to the <a href='#' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='#' className='text-primary underline underline-offset-4'>Privacy Policy</a>.</p>
+              <label htmlFor='agreementCheckbox' className='ml-2 -mt-1'>I'm at least 16 years of age and confirm to the <a href='/terms-conditions' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='/privacy-policy' className='text-primary underline underline-offset-4'>Privacy Policy</a>.</label>
             </div>
             <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'><span>Sign Up</span>{loading && <ClipLoader size={22} color="#080F18" />}</button>
             <div className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></div>
             {/* Sign in with  */}
-            <div className='flex flex-col items-center mt-12'>
+            <div className='flex flex-col items-center mt-8'>
               <div className="h-[1px] bg-inactive w-full"></div>
               <div className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</div>
-              <button onClick={(e) => googleAuth(e)} className='rounded-[100px] mt-6 flex justify-center items-center gap-3 border-[1px] border-inactive hover:bg-secondaryLight transition-colors duration-150 h-12 px-8'>
+              <button onClick={(e) => googleAuth(e)} className='rounded-[100px] mt-3 flex justify-center items-center gap-3 border-[1px] border-inactive hover:bg-secondaryLight transition-colors duration-150 h-12 px-8'>
                 <span>
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10.9999 4.58333C12.482 4.58333 13.8428 5.09073 14.9291 5.93456L18.2631 2.75375C16.3247 1.04496 13.7872 0 10.9999 0C6.77631 0 3.11356 2.38326 1.27026 5.8757L4.97766 8.80255C5.87575 6.34276 8.2293 4.58333 10.9999 4.58333Z" fill="#F44336" />
@@ -224,6 +233,10 @@ export const Signup = () => {
                 </span>
                 Continue with Google
               </button>
+
+              <div className='py-3 px-4 bg-frameBG rounded-[5px] text-sm mt-6'>
+                <p><span className='text-primary font-semibold'>IMPORTANT:</span> Please note that EsportsGravity is currently in testing phase and your account will be a test account. This account with all progress made will be cleared and you'll need to create a new account after the beta launch. Please join our <a href="https://discord.gg/bYevaFA5tK" target='_blank' className='text-primary underline'>Discord</a>  to know about benefits of testing as early user.</p>
+              </div>
             </div>
           </div>
         </div>
