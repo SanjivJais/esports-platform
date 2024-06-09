@@ -398,6 +398,23 @@ export const Profile = () => {
 
 
 
+  // fetching promo banner in profile
+  const [promoBanners, setPromoBanners] = useState([])
+
+  useEffect(() => {
+    const fetchPromoBanners = async () => {
+      try {
+        const res = await database.getDocument(db_id, 'native_promotions', 'profile_promo_banner', [])
+        const banners = JSON.parse(res.content).filter(banner => banner.isActive)
+        setPromoBanners(banners);
+      } catch (error) {
+      }
+
+    }
+    fetchPromoBanners()
+  }, [])
+
+
   return (
     <>
       <LoadingBar
@@ -639,9 +656,9 @@ export const Profile = () => {
           }
         </div>
 
-        <Link to={'#'} className='md:h-[220px] h-[120px] w-full mt-6'>
-          <img src="/images/DummySliderBanner.jpg" alt="" className='h-full w-full object-cover rounded-[5px]' />
-        </Link>
+        {promoBanners.length > 0 && <Link to={promoBanners[0].targetLink} className='md:h-[220px] h-[120px] w-full mt-6'>
+          <img src={promoBanners[0].imgUrl} alt="EG Promo" className='h-full w-full object-cover rounded-[5px]' />
+        </Link>}
       </div>
 
       <Modal isVisible={gameProfileModal} onClose={() => setGameProfileModal(false)}>
