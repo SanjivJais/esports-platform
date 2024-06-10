@@ -657,7 +657,7 @@ export const Profile = () => {
         </div>
 
         {promoBanners.length > 0 && <Link to={promoBanners[0].targetLink} className='md:h-[220px] h-[120px] w-full mt-6'>
-          <img src={promoBanners[0].imgUrl} alt="EG Promo" className='h-full w-full object-cover rounded-[5px]' />
+          <img src={promoBanners[0].imgUrl} alt="EG Promo" className='h-full w-full object-cover max-sm:object-left rounded-[5px]' />
         </Link>}
       </div>
 
