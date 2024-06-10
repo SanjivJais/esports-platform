@@ -164,8 +164,10 @@ export const Signup = () => {
 
         <div className="bg-secondary flex flex-col lg:col-span-4 md:col-span-6 col-span-1 md:px-10 px-6 py-10">
           <div className="flex justify-end"><Link to={'/'}><IoMdClose className='text-xl' /></Link></div>
-          <div className="flex md:hidden font-extrabold text-3xl text-primary justify-center my-1 mb-6">EsportsGravity</div>
-          <h2 className='font-extrabold text-2xl'>Sign Up</h2>
+          <Link to={'/'} className='self-center mt-4 mb-6'>
+            <img className='h-6 w-auto' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
+          </Link>
+          <h2 className='font-extrabold text-xl'>Sign Up</h2>
 
 
           <div className="flex flex-col gap-3 mt-5">

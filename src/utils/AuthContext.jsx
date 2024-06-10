@@ -9,6 +9,8 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
+  const rootPath = import.meta.env.VITE_ROOT_PATH
+
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
   const [userDetails, setUserDetails] = useState(null);
@@ -47,8 +49,8 @@ export const AuthProvider = ({ children }) => {
     try {
       account.createOAuth2Session(
         'google',
-        "http://localhost:5173/profile",
-        "http://localhost:5173/login"
+        `${rootPath}/profile`,
+        `${rootPath}/login`
       );
     } catch (error) {
       toast.error(error.message);
@@ -101,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       if (error.code == '404') {  // resource not found detection
         try {
-          let response = await database.createDocument(db_id, 'user_details', userID, { 'ff_profile': false });
+          let response = await database.createDocument(db_id, 'user_details', userID, { 'eg_token': 0 });
           setUserDetails(response);
 
           let notif = await database.createDocument(db_id, 'notifications', ID.unique(),
