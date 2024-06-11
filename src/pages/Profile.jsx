@@ -444,10 +444,13 @@ export const Profile = () => {
                 : <>
                   {usernameChangeEnable ?
                     <div className="flex flex-col gap-1">
-                      <div className="flex gap-2">
+                      <div className="md:flex max-sm:flex-col gap-2">
                         <input onChange={handleUsernameinput} className='bg-transparent px-2 py-1 focus:outline-none border-[0.8px] border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive rounded-[5px]' placeholder="Create a username" type="text" name="" id="" />
-                        <button onClick={handleUsernameEdit} className='bg-primary px-2 py-1 rounded-[5px] text-secondary text-sm font-bold'>Claim</button>
-                        <button onClick={() => setUsernameChangeEnable(false)} className='bg-secondaryLight px-2 py-1 rounded-[5px] text-inactive text-sm font-bold'>Cancel</button>
+                        <div className="flex gap-2 my-2">
+
+                          <button onClick={handleUsernameEdit} className='bg-primary px-2 py-1 rounded-[5px] text-secondary text-sm font-bold'>Claim</button>
+                          <button onClick={() => setUsernameChangeEnable(false)} className='bg-secondaryLight px-2 py-1 rounded-[5px] text-inactive text-sm font-bold'>Cancel</button>
+                        </div>
                       </div>
                       <div className='text-sm text-inactive '>*Username cannot be changed later!</div>
                     </div>

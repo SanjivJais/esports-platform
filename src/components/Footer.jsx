@@ -1,8 +1,12 @@
 import React from 'react'
 import { FaCaretRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import packageJson from '../../package.json';
 
 export const Footer = () => {
+
+  const appVersion = packageJson.version;
+
   return (
     <div className='w-full border-t-[1px] border-inactive border-opacity-20 px-4'>
       <div className="grid grid-cols-10 my-8 md:gap-8 gap-4 gap-y-8">
@@ -11,8 +15,8 @@ export const Footer = () => {
           <Link to={'/'}>
             <img className='w-44 h-auto mb-3' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
           </Link>
-          <p className='text-[15px] my-2 text-offBlue'><strong>EsportsGravity</strong> is your gateway to competitive gaming! Poudly developed in Nepal, and empowering esports across the country.</p>
-          <i className='text-[15px] text-primary'>#GetIntoBattle</i>
+          <p className='md:text-[15px] text-sm my-2 text-offBlue'><strong>EsportsGravity</strong> is your gateway to competitive gaming! Poudly developed in Nepal, and empowering esports across the country.</p>
+          <i className='md:text-[15px] text-sm text-primary'>#GetIntoBattle</i>
           <div className='mt-3 text-offWhite'>
             <label htmlFor="" className="text-[14px]">FOLLOW US</label>
             <div className="flex gap-2 justify-start mt-2">
@@ -43,14 +47,14 @@ export const Footer = () => {
         </div>
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>GAMES</h4>
-          <ul className='my-2 text-offBlue text-[15px]'>
+          <ul className='my-2 text-offBlue md:text-[15px] text-sm'>
             <li className='w-fit my-2'><Link to={'/tournaments/freefire'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Garena Free Fire</span></Link></li>
             <li className='w-fit my-2'><Link to={'/tournaments/pubgmobile'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>PUBG Mobile</span></Link></li>
           </ul>
         </div>
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>USEFUL LINKS</h4>
-          <ul className='my-2 text-offBlue text-[15px]'>
+          <ul className='my-2 text-offBlue md:text-[15px] text-sm'>
             <li className='w-fit my-2'><Link to={'/contact'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Contact Us</span></Link></li>
             <li className='w-fit my-2'><Link to={'/disclaimer'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Disclaimer</span></Link></li>
             <li className='w-fit my-2'><Link to={'/terms-conditions'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Terms & Conditions</span></Link></li>
@@ -59,16 +63,16 @@ export const Footer = () => {
         </div>
         <div className="flex flex-col xl:col-span-2 col-span-5">
           <h4 className='text-offWhite'>SUPPORT</h4>
-          <ul className='my-2 text-offBlue text-[15px]'>
+          <ul className='my-2 text-offBlue md:text-[15px] text-sm'>
             <li className='w-fit my-2'><Link to={'/feedback'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Feedback</span></Link></li>
             <li className='w-fit my-2'><Link to={'/help-center'} className='flex items-center gap-1 hover:text-primary transition-colors duration-300'><FaCaretRight /><span>Help Center</span></Link></li>
           </ul>
         </div>
       </div>
-      <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 text-[15px]'>
+      <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 md:text-[15px] text-sm'>
         <div className="flex justify-between items-center">
           <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='text-primary transition-colors duration-300'> EsportsGravity.com</Link></div>
-          <div className='text-dimText font-medium'>(Version 1.0.0) - Beta</div>
+          <div className='text-dimText font-medium'>(Version {appVersion}) - Beta</div>
         </div>
       </div>
     </div>

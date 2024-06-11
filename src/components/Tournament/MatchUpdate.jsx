@@ -109,12 +109,12 @@ export const MatchUpdate = ({ match, participants, gameID }) => {
 
                 <div className={`${editBoxOpen ? '' : 'hidden'} grid md:grid-cols-2 grid-cols-1 gap-4 px-4 py-4 bg-secondaryLight rounded-bl-[5px] rounded-br-[5px]`}>
 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 md:col-span-1 col-span-2">
                         <div>Match Name <span className='text-red-500 font-semibold text-lg'>*</span></div>
                         <input onChange={(e) => handleInputChange(e)} disabled={participants.length > 0 || match.matchStatus === "Finished"} name='matchName' type="text" value={updatedMatch.matchName} className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
                     </div>
 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 md:col-span-1 col-span-2">
                         <div>Start Date <span className='text-red-500 font-semibold text-lg'>*</span></div>
                         <div className="grid lg:grid-cols-2 grid-cols-1 gap-2">
                             <input onChange={(e) => handleInputChange(e)} disabled={participants.length > 0 || match.matchStatus === "Finished"} name='scheduledTime' type="datetime-local" className='bg-secondary py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-70 focus:outline-none' />
@@ -122,7 +122,7 @@ export const MatchUpdate = ({ match, participants, gameID }) => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 md:col-span-1 col-span-2">
                         <div>Match Status</div>
                         <select onChange={(e) => handleInputChange(e)} name="matchStatus" id="" value={updatedMatch.matchStatus} className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                             <option value="Scheduled">Scheduled</option>
@@ -131,7 +131,7 @@ export const MatchUpdate = ({ match, participants, gameID }) => {
                         </select>
                     </div>
 
-                    <fieldset className="flex flex-col gap-2 border-[1px] border-inactive border-opacity-20 rounded-[5px] p-3">
+                    <fieldset className="flex flex-col md:col-span-1 col-span-2 gap-2 border-[1px] border-inactive border-opacity-20 rounded-[5px] p-3">
                         <legend className='px-2'>Entry Details</legend>
                         {gameID === 'freefire' && <>
                             <div className="flex flex-col gap-1">
