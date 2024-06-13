@@ -397,7 +397,7 @@ export const TournModal = ({ tournament }) => {
                                     </div>
                                     <div>
                                         <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></div>
-                                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : tournament.status === "Upcoming" ? 'bg-primary' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
                                     </div>
                                 </div>
 
@@ -507,7 +507,7 @@ export const TournModal = ({ tournament }) => {
                             <h4 className='font-semibold text-xl mb-3'>Hosted By</h4>
                             <div className='flex justify-between items-center'>
                                 <div className='flex gap-3'>
-                                    <img src="/icons/EsportsGravityIcon.svg" alt="EsportsGravity Logo" className='' />
+                                    <img src="/icons/eg_square_logo.svg" alt="Host Profile Pic" className='h-12 w-12 object-cover rounded-[5px]' />
                                     <div className="flex flex-col justify-center">
                                         <h4 className='flex items-center gap-[6px]'><span>{JSON.parse(tournament.host).hostName}</span>
                                             <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -612,6 +612,7 @@ export const TournModal = ({ tournament }) => {
                                 {tournament.status == 'Ongoing' && <button disabled className='bg-ongoingStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
                                 {tournament.status == 'Finished' && <button disabled className='bg-finishedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
                                 {tournament.status == 'Aborted' && <button disabled className='bg-abortedStatus bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
+                                {tournament.status == 'Upcoming' && <button disabled className='bg-primary bg-opacity-50 text-secondary font-bold p-2 rounded-[5px]'>{tournament.status}</button>}
 
                             </div>
 

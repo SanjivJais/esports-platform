@@ -82,6 +82,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
 
 
 
+  const [logoutConfirmationModal, setLogoutConfirmationModal] = useState(false)
 
 
 
@@ -143,7 +144,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
                 </div>
                 <div className='absolute flex-col w-40 md:right-0 right-4 rounded-[5px] px-2 py-0 group-hover:py-2 bg-secondary h-0 transition-all duration-200 group-hover:h-fit group-hover:flex'>
                   <Link to={'/profile'}> <div className='px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'>Profile</div></Link>
-                  <div onClick={logoutUser} className='items-center gap-2 px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'><span>Logout</span> <IoIosLogOut /></div>
+                  <div onClick={() => setLogoutConfirmationModal(true)} className='items-center gap-2 px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'><span>Logout</span> <IoIosLogOut /></div>
                 </div>
               </>
             }
@@ -159,6 +160,16 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
       </nav>
       <Modal isVisible={searchEnable} onClose={() => setSearchEnable(false)}>
         <Search />
+      </Modal>
+
+      <Modal isVisible={logoutConfirmationModal} closeButtonActive={false} >
+        <div className='p-6 md:w-96 w-72'>
+          <p className='mt-4 flex justify-center'>Are you sure to logout?</p>
+          <div className="flex w-full justify-evenly mt-7">
+            <button onClick={() => setLogoutConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>No</button>
+            <button onClick={logoutUser} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Yes</button>
+          </div>
+        </div>
       </Modal>
     </>
   )

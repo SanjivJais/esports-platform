@@ -102,7 +102,8 @@ export const HostTournCard = ({ tournament }) => {
                     </div>
                     <div>
                         <div className='text-[12px] text-dimText'>STATUS</div>
-                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+                        <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : tournament.status === "Upcoming" ? 'bg-primary' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
+
                     </div>
 
                 </div>
@@ -111,7 +112,7 @@ export const HostTournCard = ({ tournament }) => {
                     <button onClick={() => setShowUserviewModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>View as User</button>
                     {tournament.status === "Draft" && <button onClick={() => setCreateTournModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>Edit Draft</button>}
 
-                    {(tournament.status == "Open" || tournament.status == "Ongoing") ?
+                    {(tournament.status === "Open" || tournament.status === "Ongoing" || tournament.status === "Upcoming") ?
                         <button onClick={() => setShowModal(true)} className=' px-5 py-2 text-secondary rounded-[5px] font-bold bg-primary'>Update</button>
                         :
                         <button onClick={() => setShowModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-ongoingStatus border-opacity-45 text-ongoingStatus'>View as Admin</button>

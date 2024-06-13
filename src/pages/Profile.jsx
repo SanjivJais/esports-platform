@@ -176,10 +176,10 @@ export const Profile = () => {
   }
 
   const createFFProfile = async () => {
-    setProgress(40)
     if (userDetails && !ffProfile) {
-      if (tempFFprof && tempFFprof.nickname != '' && tempFFprof.uid != '') {
+      if (tempFFprof && tempFFprof.nickname && tempFFprof.uid) {
         try {
+          setProgress(40)
 
           let updatedGameProfiles = [...userDetails.game_profiles]
           updatedGameProfiles.push(JSON.stringify(tempFFprof))
@@ -198,7 +198,7 @@ export const Profile = () => {
           toast.error(error.message)
         }
       } else {
-        toast.info("Free Fire name or UID missing!")
+        toast.info("Free Fire nickname or UID missing!")
       }
     }
     setProgress(100)
@@ -215,11 +215,10 @@ export const Profile = () => {
 
   }
   const createPubgProfile = async () => {
-    setProgress(40)
     if (userDetails && !pubgProfile) {
-      if (tempPUBGprof && tempPUBGprof.nickname != '' && tempPUBGprof.uid != '') {
+      if (tempPUBGprof && tempPUBGprof.nickname && tempPUBGprof.uid) {
         try {
-
+          setProgress(40)
           let updatedGameProfiles = [...userDetails.game_profiles]
           updatedGameProfiles.push(JSON.stringify(tempPUBGprof))
 
@@ -238,7 +237,7 @@ export const Profile = () => {
           toast.error(error.message)
         }
       } else {
-        toast.info("PUBG Mobile name or UID missing!")
+        toast.info("PUBG Mobile nickname or UID missing!")
       }
     }
     setProgress(100)
@@ -467,7 +466,7 @@ export const Profile = () => {
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Tournaments</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Game Profiles</div>
             <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Wallet</div>
-            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account Details</div>
+            <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 3 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Account</div>
             {user && user.labels.includes("host") && <div onClick={(e) => handleTabs(e)} className={`profileTab ${activeTab === 4 ? 'md:border-b-2 md:border-ongoingStatus md:text-ongoingStatus' : ''} text-ongoingStatus pb-2 font-semibold cursor-pointer`}>Host Panel</div>}
           </div>
           <div className="h-[1px] bg-inactive bg-opacity-25 w-full"></div>
@@ -728,7 +727,6 @@ export const Profile = () => {
         </div>
       </Modal>
 
-      {/* modal for FF tournament creation */}
       <Modal closeButtonActive={false} isVisible={createTournModal} onClose={() => setCreateTournModal(false)}>
         <CreateTournament gameID={selectedGame} onClose={() => setCreateTournModal(false)} />
       </Modal>

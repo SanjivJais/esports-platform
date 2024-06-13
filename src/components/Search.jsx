@@ -57,7 +57,7 @@ export const Search = () => {
                 onLoaderFinished={() => setProgress(0)}
             />
 
-            <div className='h-screen w-screen flex flex-col items-center md:px-6 p-3'>
+            <div className='h-[94vh] w-[98vw] flex flex-col items-center md:px-6 p-3'>
                 <h2 className='my-8 font-semibold text-xl text-offBlue'>Search Tournaments</h2>
                 <div className="flex items-center mb-10 md:w-[70%] w-[90%] rounded-3xl bg-secondaryLight h-12">
                     <div className="flex gap-2 items-center md:px-6 px-2 py-2 h-full w-full">

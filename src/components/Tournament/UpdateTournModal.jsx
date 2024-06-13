@@ -746,6 +746,7 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
                                                     <option value="Ongoing">Ongoing</option>
                                                     <option value="Finished">Finished</option>
                                                     <option value="Aborted">Aborted</option>
+                                                    <option value="Upcoming">Upcoming</option>
                                                 </select>
                                             </div>
 
@@ -818,7 +819,7 @@ export const UpdateTournModal = ({ tournament, onClose }) => {
 
             <Modal isVisible={confirmationModal} onClose={() => setConfirmationModal(false)}>
                 <div className='p-6 md:w-96 w-72'>
-                    {(updatedTournament.status === 'Open' || updatedTournament.status === 'Ongoing') && <p className='mt-4 flex justify-center'>Are you sure? </p>}
+                    {(updatedTournament.status === 'Open' || updatedTournament.status === 'Ongoing' || updatedTournament.status === 'Upcoming') && <p className='mt-4 flex justify-center'>Are you sure? </p>}
                     {(updatedTournament.status === 'Finished' || updatedTournament.status === 'Aborted') && <p className='mt-4 flex justify-center text-center'>Are you sure? You can't update '{updatedTournament.status}' tournament later.</p>}
                     <div className="flex w-full justify-evenly mt-7">
                         <button onClick={() => setConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>

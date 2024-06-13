@@ -39,6 +39,12 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
         bracket: JSON.stringify({ 'bracketType': 'single_match', 'matchID': null }),
     })
 
+    const [pubStatus, setPubStatus] = useState('Open')
+
+    const handleStatusChange = (e) => {
+        setPubStatus(e.target.value)
+    }
+
     // formatting datetime 
     const formatDateTime = (dateTimeString) => {
         // Split the input string into date and time parts
@@ -98,7 +104,7 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
 
 
     // prize pool 
-    const [prizesData, setPrizesData] = useState([0, 0]); // Initial state with a number
+    const [prizesData, setPrizesData] = useState([0, 0, 0]); // Initial state with a number
 
     const addPrize = () => {
         setPrizesData([...prizesData, 0]); // Add a number (0 in this case) to the prizes array
@@ -143,34 +149,39 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
                 if (tournament.max && tournament.max >= 2) {
                     if (tournament.min >= 2) {
                         if (JSON.parse(tournament.entryFee).fee >= 0) {
-                            if (tournament.prizePool.every(prize => prize >= 0)) {
-                                if (tournament.startDate && tournament.endDate) {
-                                    if (tournament.rules) {
-                                        // validating game info
-                                        if (gameID === 'freefire') {
-                                            let ffGameDetails = document.getElementsByClassName('ffGameDetails');
-                                            if (ffGameDetails[0].value) {
-                                                if (ffGameDetails[1].value !== "-1") {
-                                                    if (ffGameDetails[2].value) {
-                                                        return true;
+                            if (tournament.prizePool.length > 0) {
+                                if (tournament.prizePool.every(prize => prize >= 0)) {
+                                    if (tournament.startDate && tournament.endDate) {
+                                        if (tournament.rules) {
+                                            // validating game info
+                                            if (gameID === 'freefire') {
+                                                let ffGameDetails = document.getElementsByClassName('ffGameDetails');
+                                                if (ffGameDetails[0].value) {
+                                                    if (ffGameDetails[1].value !== "-1") {
+                                                        if (ffGameDetails[2].value) {
+                                                            return true;
+                                                        } else {
+                                                            toast.info("Invalid map!")
+                                                        }
                                                     } else {
-                                                        toast.info("Invalid map!")
+                                                        toast.info("Invalid team size!")
                                                     }
                                                 } else {
-                                                    toast.info("Invalid team size!")
+                                                    toast.info("Invalid game mode!")
                                                 }
-                                            } else {
-                                                toast.info("Invalid game mode!")
                                             }
+                                        } else {
+                                            toast.info("Enter tournament rules!")
                                         }
                                     } else {
-                                        toast.info("Enter tournament rules!")
+                                        toast.info("Missing start and/or end dates!")
                                     }
                                 } else {
-                                    toast.info("Missing start and/or end dates!")
+                                    toast.info("Invalid prize pool!")
                                 }
                             } else {
-                                toast.info("Invalid prize pool!")
+                                toast.info("Enter at least one prize!")
+
                             }
                         } else {
                             toast.info("Invalid entry fee!")
@@ -309,8 +320,8 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
         if (newlyCreatedTournament && scheduledMatch) {
             setProgress(70)
             try {
-                await database.updateDocument(db_id, 'tournaments', newlyCreatedTournament.$id, { 'status': 'Open' })
-                toast.success("Tournament is now open to join!")
+                await database.updateDocument(db_id, 'tournaments', newlyCreatedTournament.$id, { 'status': pubStatus })
+                toast.success("Tournament published!")
                 onClose()
             } catch (error) {
                 toast.error(error.message)
@@ -463,6 +474,14 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
                                             <div>Bracket</div>
                                             <select disabled name="bracket" id="" className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                                 <option value="single_match">Single Match</option>
+                                            </select>
+                                        </div>
+
+                                        <div className="flex flex-col gap-1">
+                                            <div>Status</div>
+                                            <select onChange={handleStatusChange} defaultValue={"Open"} id="" className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                                <option value="Open">Open</option>
+                                                <option value="Upcoming">Upcoming</option>
                                             </select>
                                         </div>
 

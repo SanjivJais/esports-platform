@@ -29,7 +29,7 @@ export const Home = () => {
   useEffect(() => {
     const fetchTournaments = async () => {
       try {
-        const response = await database.listDocuments(db_id, 'tournaments', [Query.limit(3), Query.orderDesc('$createdAt'), Query.notEqual('status', 'Draft')])
+        const response = await database.listDocuments(db_id, 'tournaments', [Query.orderDesc('$createdAt'), Query.notEqual('status', 'Draft')])
         setTournaments(response.documents)
       } catch (error) {
         toast.error("Something went wrong!")
@@ -90,6 +90,18 @@ export const Home = () => {
           <Slider slides={slides} interval={5000} />
         </div>
         <div className="h-[0.8px] bg-inactive bg-opacity-20 w-full mt-2"></div>
+        {tournaments && tournaments.filter(tourn => tourn.isFeatured).length > 0 &&
+          <>
+            <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>Featured</h3></span></div>
+            <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
+              {tournaments.filter(tourn => tourn.isFeatured && (tourn.status==="Open" || tourn.status==="Upcoming")).map((tournament, index) => (
+                <TournCard key={index}
+                  tournament={tournament}
+                />
+              ))}
+            </div>
+          </>
+        }
         <div className="flex justify-between items-center mt-6 w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-xl text-offBlue'><FaTrophy /><h3>All Tournaments</h3></span><Link to={'/tournaments/freefire'} className='text-primary text-sm'>View All »</Link></div>
         <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-4 content-center">
           {tournaments && tournaments.map((tournament, index) => (
