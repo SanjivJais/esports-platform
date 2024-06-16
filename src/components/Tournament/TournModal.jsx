@@ -130,8 +130,16 @@ export const TournModal = ({ tournament }) => {
                     if (tourn.participants.length < tourn.max) {
                         if (JSON.parse(tourn.entryFee).currencyType === "eg_coin" && user_details.eg_coin >= JSON.parse(tourn.entryFee).fee) {
                             try {
-                                tourn.participants.push(user.$id);
-                                user_details.tournaments.push(tournament.$id);
+
+                                if (!tourn.participants.includes(user.$id)) {
+                                    tourn.participants.push(user.$id);
+                                }
+                                if (!user_details.tournaments.includes(tournament.$id)) {
+                                    user_details.tournaments.push(tournament.$id);
+                                }
+
+                                // tourn.participants.push(user.$id);
+                                // user_details.tournaments.push(tournament.$id);
                                 let updatedEGCoin = user_details.eg_coin - JSON.parse(tournament.entryFee).fee;
 
                                 await database.updateDocument(db_id, 'tournaments', tournament.$id, { 'participants': tourn.participants })
@@ -154,9 +162,17 @@ export const TournModal = ({ tournament }) => {
 
                         } else if (JSON.parse(tourn.entryFee).currencyType === "eg_token" && user_details.eg_token >= JSON.parse(tourn.entryFee).fee) {
                             try {
-                                tourn.participants.push(user.$id);
+
+                                if (!tourn.participants.includes(user.$id)) {
+                                    tourn.participants.push(user.$id);
+                                }
+                                if (!user_details.tournaments.includes(tournament.$id)) {
+                                    user_details.tournaments.push(tournament.$id);
+                                }
+
+                                // tourn.participants.push(user.$id);
+                                // user_details.tournaments.push(tournament.$id)
                                 let updatedEGToken = user_details.eg_token - JSON.parse(tournament.entryFee).fee;
-                                user_details.tournaments.push(tournament.$id)
 
                                 await database.updateDocument(db_id, 'tournaments', tournament.$id, { 'participants': tourn.participants })
 

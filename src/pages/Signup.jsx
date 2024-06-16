@@ -8,10 +8,17 @@ import { Alert } from '../components/Alert';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { Helmet } from 'react-helmet';
+import { FaDiscord } from 'react-icons/fa';
+
+import packageJson from '../../package.json'
 
 
 
 export const Signup = () => {
+
+  const appVersion = packageJson.version;
+
+
   const [countryCheck, setCountryCheck] = useState(true)
 
   const fetchCountryFromIP = async () => {
@@ -108,10 +115,108 @@ export const Signup = () => {
   return (
     <>
       <Helmet>
-        <title>Signup- EsportsGravity</title>
+        <title>Signup - EsportsGravity</title>
         <meta name="description" content="Create an account to get started on EsportsGravity." />
       </Helmet>
-      <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
+
+
+
+      <div className='h-screen w-screen bg-[url("images/gaming_bg.png")] bg-cover bg-center flex flex-col justify-center'>
+        <div className='absolute z-10 h-screen w-screen bg-frameBG opacity-[92%] '>
+        </div>
+
+        <div className="grid md:grid-cols-2 grid-cols-1 lg:gap-48 gap-28 z-20">
+
+          <div className="col-span-1 flex md:justify-end justify-center">
+
+            <div className="flex flex-col items-center bg-secondary bg-opacity-[65%] max-w-[568px] lg:w-[78%] md:w-[80%] w-[85%] md:h-[76vh] h-auto max-md:py-12 text-offWhite rounded-[5px]">
+              <div className='relative md:top-32 flex flex-col gap-4 items-center w-full'>
+
+                <img src="icons/eg_square_logo.svg" alt="EG Square Logo" className='md:hidden h-14 w-14 object-cover' />
+
+                <h2 className='font-bold md:text-[22px] text-lg mb-1'>Sign Up</h2>
+
+                <button onClick={(e) => googleAuth(e)} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 md:w-[58%] w-[70%]'>
+                  <img src="icons/google_icon.svg" alt="Google Icon" />
+                  Continue with Google
+                </button>
+
+                <button className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 md:w-[58%] w-[70%]'>
+                  <img src="icons/email_icon.svg" alt="Email Icon" />
+                  Signup with Email
+                </button>
+
+                <p className='text-sm text-offBlue'>Already have an account? <Link to={'/login'} className='text-primary underline decoration-dotted'>Login here</Link></p>
+
+                {!countryCheck && (
+                  <div className='w-[90%] relative top-10'>
+                    <Alert type={"error"} message={"Your country is not yet supported. Please check back later!"} />
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
+
+
+          <div className="hidden md:flex col-span-1 justify-start">
+
+            <div className='flex flex-col items-center justify-center gap-3 text-center'>
+
+              <img className='mb-3' src="icons/eg_long_logo.svg" alt="EG Logo" />
+              <h3 className='font-bold lg:text-4xl text-2xl'>Create <span className='text-primary'>Account</span> Now!</h3>
+              <p className='text-offBlue'>Play. Win. Shine</p>
+
+              <a href="https://discord.gg/bYevaFA5tK" target='_blank'>
+                <button className='text-sm mt-4 text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 w-60'>
+                  <FaDiscord className='text-xl' />
+                  Join Our Discord Server
+                </button>
+              </a>
+
+
+              <p className='text-sm text-offBlue mt-4 '>Version - {appVersion} <span className='text-primary'>(Beta)</span></p>
+
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <p className='text-[12px] font-semibold text-dimText self-center z-30 relative top-[18%] text-opacity-90 md:hidden'>v{appVersion}</p>
+
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
         <div className="bg-[url('/images/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>
             <div className="flex flex-col gap-4">
@@ -150,7 +255,6 @@ export const Signup = () => {
           </div>
         </div>
 
-        {/* input fields section  */}
 
         <div className="bg-secondary flex flex-col lg:col-span-4 md:col-span-6 col-span-1 md:px-10 px-6 py-10">
           <div className="flex justify-end"><Link to={'/'}><IoMdClose className='text-xl' /></Link></div>
@@ -194,7 +298,6 @@ export const Signup = () => {
             
             <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'><span>Sign Up</span>{loading && <ClipLoader size={22} color="#080F18" />}</button>
             <div className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></div>
-            {/* Sign in with  */}
             <div className='flex flex-col items-center mt-8'>
               <div className="h-[1px] bg-inactive w-full"></div>
               <div className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</div>
@@ -236,7 +339,7 @@ export const Signup = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   )
 }
