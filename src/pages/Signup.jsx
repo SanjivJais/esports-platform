@@ -6,7 +6,9 @@ import { useAuth } from '../utils/AuthContext';
 import { Alert } from '../components/Alert';
 
 import { toast } from 'react-toastify';
-import ClipLoader from 'react-spinners/ClipLoader';
+// import ClipLoader from 'react-spinners/ClipLoader';
+import LoadingBar from 'react-top-loading-bar'
+
 import { Helmet } from 'react-helmet';
 import { FaDiscord } from 'react-icons/fa';
 
@@ -18,8 +20,10 @@ export const Signup = () => {
 
   const appVersion = packageJson.version;
 
-
+  const [progress, setProgress] = useState(0);
   const [countryCheck, setCountryCheck] = useState(true)
+
+  const [signupFormOpen, setSignupFormOpen] = useState(false)
 
   const fetchCountryFromIP = async () => {
     try {
@@ -70,35 +74,37 @@ export const Signup = () => {
     }))
   }
 
-  const [loading, setLoading] = useState(false);
 
   const checkInputValidity = () => {
-    if (userData.name != '') {
-      if (userData.email !== '') {
+    if (userData.name !== '') {
+      if (userData.email !== '' && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(userData.email)) {
         if (userData.password !== '') {
           if (userData.password.length >= 8) {
-            return 1;
-          } else {
-            toast.error("Password must be at least 8 characters.");
+            if (userData.password === userData.confirm_password) {
+              return true;
+            } else {
+              toast.error("Confirmed password does not match!")
+            }
 
+          } else {
+            toast.error("Password must be at least 8 characters!");
           }
         } else {
           toast.error("Create a password");
-
         }
       } else {
-        toast.error("Enter your email");
-
+        toast.error("Invalid email");
       }
     } else {
       toast.error("Enter your name");
     }
   }
+
   const signUp = async () => {
     if (countryCheck !== null && countryCheck && checkInputValidity()) {
-      setLoading(true)
+      setProgress(50)
       await registerUser(userData);
-      setLoading(false)
+      setProgress(100)
     }
   };
 
@@ -111,59 +117,127 @@ export const Signup = () => {
   }
 
 
-
   return (
     <>
+      <LoadingBar color='#F88B26' progress={progress} onLoaderFinished={() => setProgress(0)} />
       <Helmet>
         <title>Signup - EsportsGravity</title>
         <meta name="description" content="Create an account to get started on EsportsGravity." />
       </Helmet>
 
 
-
       <div className='h-screen w-screen bg-[url("images/gaming_bg.png")] bg-cover bg-center flex flex-col justify-center'>
-        <div className='absolute z-10 h-screen w-screen bg-frameBG opacity-[92%] '>
+        <div className='absolute z-10 h-screen w-screen bg-frameBG opacity-[90%] '>
         </div>
 
-        <div className="grid md:grid-cols-2 grid-cols-1 lg:gap-48 gap-28 z-20">
+        <div className="grid md:grid-cols-2 grid-cols-1 lg:gap-48 gap-28 z-20 max-h-screen overflow-auto py-8">
 
           <div className="col-span-1 flex md:justify-end justify-center">
 
-            <div className="flex flex-col items-center bg-secondary bg-opacity-[65%] max-w-[568px] lg:w-[78%] md:w-[80%] w-[85%] md:h-[76vh] h-auto max-md:py-12 text-offWhite rounded-[5px]">
-              <div className='relative md:top-32 flex flex-col gap-4 items-center w-full'>
+            <div className={`flex flex-col items-center ${signupFormOpen ? '' : 'justify-evenly'}  bg-secondary bg-opacity-[65%] max-w-[568px] lg:w-[78%] md:w-[80%] w-[90%] md:min-h-[76vh] h-auto py-6 text-offWhite rounded-[5px]`}>
 
-                <img src="icons/eg_square_logo.svg" alt="EG Square Logo" className='md:hidden h-14 w-14 object-cover' />
+              {
+                !signupFormOpen ?
+                  <>
+                    <div className='flex flex-col gap-4 items-center w-full'>
+                      <Link to={'/'}><img src="icons/eg_square_logo.svg" alt="EG Square Logo" className='md:hidden h-14 w-14 object-cover' /></Link>
 
-                <h2 className='font-bold md:text-[22px] text-lg mb-1'>Sign Up</h2>
+                      <h2 className='font-bold md:text-[22px] text-lg mb-1'>Sign Up</h2>
 
-                <button onClick={(e) => googleAuth(e)} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 md:w-[58%] w-[70%]'>
-                  <img src="icons/google_icon.svg" alt="Google Icon" />
-                  Continue with Google
-                </button>
+                      <button onClick={(e) => googleAuth(e)} disabled={!countryCheck} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 md:w-[58%] w-[70%]'>
+                        <img src="icons/google_icon.svg" alt="Google Icon" />
+                        Continue with Google
+                      </button>
 
-                <button className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 md:w-[58%] w-[70%]'>
-                  <img src="icons/email_icon.svg" alt="Email Icon" />
-                  Signup with Email
-                </button>
+                      <button onClick={() => setSignupFormOpen(true)} disabled={!countryCheck} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 md:w-[58%] w-[70%]'>
+                        <img src="icons/email_icon.svg" alt="Email Icon" />
+                        Signup with Email
+                      </button>
 
-                <p className='text-sm text-offBlue'>Already have an account? <Link to={'/login'} className='text-primary underline decoration-dotted'>Login here</Link></p>
+                      <p className='text-sm text-offBlue'>Already have an account? <Link to={'/login'} className='text-primary underline decoration-dotted'>Login here</Link></p>
 
-                {!countryCheck && (
-                  <div className='w-[90%] relative top-10'>
-                    <Alert type={"error"} message={"Your country is not yet supported. Please check back later!"} />
-                  </div>
-                )}
+                      {!countryCheck && (
+                        <div className='w-[90%]'>
+                          <Alert type={"error"} message={"Your country is not yet supported. Please check back later!"} />
+                        </div>
+                      )}
 
-              </div>
+
+                    </div>
+                  </>
+                  :
+                  <>
+                    <div className='flex flex-col gap-4 items-center w-[90%]'>
+                      <Link to={'/'}><img src="icons/eg_square_logo.svg" alt="EG Square Logo" className='md:hidden h-14 w-14 object-cover' /></Link>
+
+                      <h2 className='font-bold text-lg mb-1'>Sign Up With Email</h2>
+
+                      <input
+                        type="text"
+                        placeholder='Your Name'
+                        className='w-full bg-transparent border-[0.8px] border-inactive border-opacity-30 focus:outline-none placeholder:text-sm py-2 px-4 rounded-[3px]'
+                        name='name'
+                        onChange={handleInputs}
+                      />
+                      <input
+                        type="email"
+                        placeholder='Email Address'
+                        className='w-full bg-transparent border-[0.8px] border-inactive border-opacity-30 focus:outline-none placeholder:text-sm py-2 px-4 rounded-[3px]'
+                        name='email'
+                        onChange={handleInputs}
+                      />
+
+                      <input
+                        type="password"
+                        placeholder='Create Password'
+                        className='w-full bg-transparent border-[0.8px] border-inactive border-opacity-30 focus:outline-none placeholder:text-sm py-2 px-4 rounded-[3px]'
+                        name='password'
+                        onChange={handleInputs}
+                      />
+
+                      <input
+                        type="password"
+                        placeholder='Confirm Password'
+                        className='w-full bg-transparent border-[0.8px] border-inactive border-opacity-30 focus:outline-none placeholder:text-sm py-2 px-4 rounded-[3px]'
+                        name='confirm_password'
+                        onChange={handleInputs}
+                      />
+
+
+                      <button onClick={signUp} disabled={progress % 100 != 0 || !countryCheck} className='bg-primary w-full text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'>Sign Up</button>
+
+                      <div className='text-sm self-start'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline decoration-dotted'>Login here</Link></div>
+                      <div className='flex flex-col w-full items-center mt-8'>
+                        <div className="h-[0.8px] bg-inactive bg-opacity-40 w-[90%]"></div>
+                        <div className='relative bg-secondary -translate-y-[50%] w-fit px-3 text-offBlue'>OR</div>
+
+                        <button onClick={(e) => googleAuth(e)} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-11 md:w-[58%] w-[70%]'>
+                          <img src="icons/google_icon.svg" alt="Google Icon" />
+                          Continue with Google
+                        </button>
+
+                      </div>
+
+                      {!countryCheck && (
+                        <div className='w-full'>
+                          <Alert type={"error"} message={"Your country is not yet supported. Please check back later!"} />
+                        </div>
+                      )}
+
+
+                    </div>
+                  </>
+              }
+
+              <p className='md:text-sm text-[11px] w-[90%] text-offBlue self-center my-6'>By signing up, you confirm that you are at least 16 years of age and agree to our <a href='/terms-conditions' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='/privacy-policy' className='text-primary underline underline-offset-4'>Privacy Policy</a></p>
+              <p className='text-[12px] font-semibold text-dimText self-center z-30 mt-4 text-opacity-90 md:hidden'>v{appVersion}</p>
+
             </div>
           </div>
 
-
           <div className="hidden md:flex col-span-1 justify-start">
-
             <div className='flex flex-col items-center justify-center gap-3 text-center'>
-
-              <img className='mb-3' src="icons/eg_long_logo.svg" alt="EG Logo" />
+              <Link to={'/'}><img className='mb-3' src="icons/eg_long_logo.svg" alt="EG Logo" /></Link>
               <h3 className='font-bold lg:text-4xl text-2xl'>Create <span className='text-primary'>Account</span> Now!</h3>
               <p className='text-offBlue'>Play. Win. Shine</p>
 
@@ -173,173 +247,13 @@ export const Signup = () => {
                   Join Our Discord Server
                 </button>
               </a>
-
-
               <p className='text-sm text-offBlue mt-4 '>Version - {appVersion} <span className='text-primary'>(Beta)</span></p>
-
-
             </div>
           </div>
-
         </div>
-
-
-        <p className='text-[12px] font-semibold text-dimText self-center z-30 relative top-[18%] text-opacity-90 md:hidden'>v{appVersion}</p>
-
-
-
-
-
-
       </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      {/* <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
-        <div className="bg-[url('/images/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
-          <div className='relative bottom-[12%] text-center'>
-            <div className="flex flex-col gap-4">
-              <h3 className='text-xl font-semibold uppercase'>Welcome To</h3>
-              <Link to={'/'}>
-                <img className='w-[360px] h-auto' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
-              </Link>
-              <h3 className='italic'>Nepal's <span className='text-primary'>#1</span> Esports Platform</h3>
-
-            </div>
-            <div className="flex gap-2 justify-center mt-8">
-              <svg className='' width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.943 0H2.99175C1.34194 0 0 1.34576 0 2.99997V20.9998C0 22.6542 1.34199 24 2.99175 24H20.943C22.5931 24 23.9351 22.6542 23.9351 20.9998V3.00003C23.9351 1.34576 22.5932 0 20.943 0Z" fill="#1B80E4" />
-                <path d="M20.1952 12H16.4554V9.00001C16.4554 8.17192 17.1257 8.25012 17.9512 8.25012H19.4474V4.5H16.4554C13.9766 4.5 11.9677 6.51439 11.9677 9.00001V12H8.97583V15.7501H11.9677V24H16.4554V15.7501H18.6993L20.1952 12Z" fill="#FCFCFC" />
-              </svg>
-              <svg className='' width="26" height="25" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22.6189 0H3.25122C1.97204 0 0.935059 1.03698 0.935059 2.31616V21.6838C0.935059 22.963 1.97204 24 3.25122 24H22.6189C23.8981 24 24.9351 22.963 24.9351 21.6838V2.31616C24.9351 1.03698 23.8981 0 22.6189 0Z" fill="#ED2524" />
-                <path fillRule="evenodd" clipRule="evenodd" d="M15.6657 11.8272L11.2465 14.2144V10.5388V9.421L13.2405 10.5057L15.6657 11.8272ZM20.9516 8.58737C20.9516 8.58737 20.7953 7.41271 20.3027 6.89643C19.6822 6.21436 18.986 6.20963 18.6639 6.17174C16.3761 6.00122 12.9421 6.00122 12.9421 6.00122H12.9327C12.9327 6.00122 9.49869 6.00122 7.20621 6.17174C6.88886 6.20963 6.19259 6.21436 5.56737 6.89643C5.07951 7.41271 4.91846 8.58737 4.91846 8.58737C4.91846 8.58737 4.75269 9.97043 4.75269 11.3488V11.5193V12.6466C4.75269 14.0249 4.91846 15.408 4.91846 15.408C4.91846 15.408 5.07951 16.5826 5.56737 17.0989C6.19259 17.781 7.00727 17.7573 7.37199 17.8283C8.68401 17.961 12.9374 17.9989 12.9374 17.9989C12.9374 17.9989 16.3761 17.9941 18.6639 17.8236C18.986 17.781 19.6822 17.781 20.3027 17.0989C20.7953 16.5826 20.9516 15.408 20.9516 15.408C20.9516 15.408 21.1174 14.0249 21.1174 12.6466V11.5903V11.3488C21.1174 9.97043 20.9516 8.58737 20.9516 8.58737Z" fill="#FEFEFE" />
-              </svg>
-              <svg width="26" height="25" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.93506 0H21.9351C23.5851 0 24.9351 1.35 24.9351 3V21C24.9351 22.65 23.5851 24 21.9351 24H3.93506C2.28506 24 0.935059 22.65 0.935059 21V3C0.935059 1.35 2.28506 0 3.93506 0Z" fill="url(#paint0_linear_78_91)" />
-                <path d="M16.8351 3.75H9.03506C6.63506 3.75 4.68506 5.775 4.68506 8.175V15.825C4.68506 18.225 6.63506 20.25 9.03506 20.25H16.8351C19.2351 20.25 21.1851 18.225 21.1851 15.825V8.175C21.1851 5.775 19.2351 3.75 16.8351 3.75ZM19.6851 15.675C19.6851 17.325 18.3351 18.75 16.6851 18.75H9.18506C7.53506 18.75 6.18506 17.325 6.18506 15.675V8.25C6.18506 6.6 7.46006 5.25 9.18506 5.25H16.6851C18.3351 5.25 19.6851 6.675 19.6851 8.325V15.675Z" fill="white" />
-                <path d="M12.9352 7.80003C10.6102 7.72503 8.66018 9.60003 8.58518 11.925C8.51018 14.25 10.3852 16.2 12.7102 16.275C15.0352 16.35 16.9852 14.475 17.0602 12.15V12.075C17.1352 9.67503 15.2602 7.80003 12.9352 7.80003ZM12.9352 14.7C11.4352 14.7 10.1602 13.5 10.1602 12C10.1602 10.5 11.3602 9.22503 12.8602 9.22503C14.3602 9.22503 15.6352 10.425 15.6352 11.925V12C15.6352 13.5 14.4352 14.7 12.9352 14.7Z" fill="white" />
-                <path d="M17.285 8.4749C17.7821 8.4749 18.185 8.03838 18.185 7.4999C18.185 6.96142 17.7821 6.5249 17.285 6.5249C16.788 6.5249 16.385 6.96142 16.385 7.4999C16.385 8.03838 16.788 8.4749 17.285 8.4749Z" fill="white" />
-                <defs>
-                  <linearGradient id="paint0_linear_78_91" x1="5.28768" y1="25.2456" x2="20.5824" y2="-1.2456" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#FEC053" />
-                    <stop offset="0.327" stopColor="#F2203E" />
-                    <stop offset="0.648" stopColor="#B729A8" />
-                    <stop offset="1" stopColor="#5342D6" />
-                  </linearGradient>
-                </defs>
-              </svg>
-
-            </div>
-          </div>
-        </div>
-
-
-        <div className="bg-secondary flex flex-col lg:col-span-4 md:col-span-6 col-span-1 md:px-10 px-6 py-10">
-          <div className="flex justify-end"><Link to={'/'}><IoMdClose className='text-xl' /></Link></div>
-          <Link to={'/'} className='self-center mt-4 mb-6'>
-            <img className='h-6 w-auto' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
-          </Link>
-          <h2 className='font-extrabold text-xl'>Sign Up</h2>
-
-
-          <div className="flex flex-col gap-3 mt-5">
-            {!countryCheck && (
-              <Alert type={"error"} message={"Your country is not yet supported! Please check back later :)"} />
-            )}
-            <div className="flex border-[0.8px] border-inactive rounded-[3px]">
-              <div className='px-4 self-center'>
-                <svg width="13" height="18.2" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8.68116 4.52943C8.68116 3.43953 8.23921 2.45301 7.52576 1.73957C6.81153 1.02533 5.82501 0.583374 4.73511 0.583374C3.64521 0.583374 2.6587 1.02533 1.94447 1.73957C1.23102 2.45301 0.789062 3.43953 0.789062 4.52943C0.789062 5.61932 1.23102 6.60584 1.94447 7.31928C2.6587 8.03352 3.64521 8.47548 4.73511 8.47548C5.82501 8.47548 6.81153 8.03352 7.52576 7.31928C8.23921 6.60584 8.68116 5.61932 8.68116 4.52943Z" fill="#6C81A2" />
-                  <path d="M0 12.4216C0 13.2108 1.77572 14 4.73526 14C7.5117 14 9.47052 13.2108 9.47052 12.4216C9.47052 10.8432 7.61272 9.26477 4.73526 9.26477C1.77572 9.26477 0 10.8432 0 12.4216Z" fill="#6C81A2" />
-                </svg>
-              </div>
-              <input type="text" name='name' onChange={handleInputs} placeholder='Name' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
-            </div>
-            <div className="flex border-[0.8px] border-inactive rounded-[3px]">
-              <div className='px-4 self-center'>
-                <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8.4 10.4H7.2V11.7H1.2V1.3H7.2V1.95H8.4V0H0V13H8.4V10.4Z" fill="#6C81A2" />
-                  <path d="M5.4 9.75H3V11.05H5.4V9.75Z" fill="#6C81A2" />
-                  <path d="M9.74405 8.44998H12V2.59998H4.80005V8.44998H6.60005V10.153L9.74405 8.44998Z" fill="#6C81A2" />
-                </svg>
-              </div>
-              <input type="email" name="email" onChange={handleInputs} id="" placeholder='Email' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
-            </div>
-            <div className="flex border-[0.8px] border-inactive rounded-[3px]">
-              <div className='px-4 self-center'>
-                <svg width="10" height="15.5" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7.26923 5.38462V2.87179C7.26923 2.11015 6.97747 1.3797 6.45814 0.841129C5.93881 0.302563 5.23445 0 4.5 0C3.76555 0 3.06119 0.302563 2.54186 0.841129C2.02253 1.3797 1.73077 2.11015 1.73077 2.87179C1.73077 3.06221 1.80371 3.24482 1.93354 3.37946C2.06337 3.5141 2.23947 3.58974 2.42308 3.58974C2.60669 3.58974 2.78278 3.5141 2.91261 3.37946C3.04245 3.24482 3.11538 3.06221 3.11538 2.87179C3.11538 2.49097 3.26126 2.12575 3.52093 1.85646C3.7806 1.58718 4.13278 1.4359 4.5 1.4359C4.86722 1.4359 5.21941 1.58718 5.47907 1.85646C5.73874 2.12575 5.88462 2.49097 5.88462 2.87179V5.38462H1.73077C1.27174 5.38462 0.831513 5.57372 0.506931 5.91032C0.182348 6.24692 0 6.70346 0 7.17949V12.2051C0 12.6812 0.182348 13.1377 0.506931 13.4743C0.831513 13.8109 1.27174 14 1.73077 14H7.26923C7.72826 14 8.16849 13.8109 8.49307 13.4743C8.81765 13.1377 9 12.6812 9 12.2051V7.17949C9 6.70346 8.81765 6.24692 8.49307 5.91032C8.16849 5.57372 7.72826 5.38462 7.26923 5.38462ZM5.19231 10.5682V10.7692C5.19231 10.9596 5.11937 11.1423 4.98954 11.2769C4.8597 11.4115 4.68361 11.4872 4.5 11.4872C4.31639 11.4872 4.1403 11.4115 4.01046 11.2769C3.88063 11.1423 3.80769 10.9596 3.80769 10.7692V10.5682C3.59842 10.4429 3.42442 10.263 3.30296 10.0464C3.18151 9.82974 3.11684 9.58392 3.11538 9.33333C3.11538 8.95251 3.26126 8.58728 3.52093 8.318C3.7806 8.04872 4.13278 7.89744 4.5 7.89744C4.86722 7.89744 5.21941 8.04872 5.47907 8.318C5.73874 8.58728 5.88462 8.95251 5.88462 9.33333C5.88316 9.58392 5.81849 9.82974 5.69704 10.0464C5.57558 10.263 5.40158 10.4429 5.19231 10.5682Z" fill="#6C81A2" />
-                </svg>
-              </div>
-              <input type="password" name='password' onChange={handleInputs} placeholder='Create password' className='w-full rounded-[3px] bg-transparent outline-none border-l-[0.8px] border-inactive  p-3 placeholder:opacity-70' />
-            </div>
-            
-            <button onClick={signUp} className='bg-primary w-full my-2 text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'><span>Sign Up</span>{loading && <ClipLoader size={22} color="#080F18" />}</button>
-            <div className='text-sm'>Already have an account? <Link to={'/login'} className='text-primary underline-offset-4 underline'>Login here</Link></div>
-            <div className='flex flex-col items-center mt-8'>
-              <div className="h-[1px] bg-inactive w-full"></div>
-              <div className='relative bg-secondary -translate-y-[50%] w-fit px-3'>OR</div>
-              
-              <div className="flex flex-col gap-8 mt-6 ">
-                <button onClick={(e) => googleAuth(e)} className='rounded-[100px] flex justify-center items-center self-center gap-3 border-[1px] border-inactive hover:bg-secondaryLight transition-colors duration-150 h-12 px-8'>
-                  <span>
-                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M10.9999 4.58333C12.482 4.58333 13.8428 5.09073 14.9291 5.93456L18.2631 2.75375C16.3247 1.04496 13.7872 0 10.9999 0C6.77631 0 3.11356 2.38326 1.27026 5.8757L4.97766 8.80255C5.87575 6.34276 8.2293 4.58333 10.9999 4.58333Z" fill="#F44336" />
-                      <path d="M21.9047 12.3767C21.962 11.9261 22 11.4663 22 11C22 10.2137 21.9141 9.44796 21.7573 8.70837H11V13.2917H16.9457C16.4647 14.5418 15.6083 15.5997 14.5182 16.3345L18.2393 19.2723C20.2119 17.5409 21.5618 15.1162 21.9047 12.3767Z" fill="#2196F3" />
-                      <path d="M4.58333 11C4.58333 10.2269 4.72712 9.48902 4.97772 8.80259L1.27032 5.87573C0.462306 7.40672 0 9.14852 0 11C0 12.8309 0.453802 14.5534 1.24503 16.0719L4.95713 13.1413C4.7194 12.4708 4.58333 11.7521 4.58333 11Z" fill="#FFC107" />
-                      <path d="M11.0001 17.4166C8.20835 17.4166 5.83964 15.6305 4.95721 13.1412L1.24512 16.0718C3.0794 19.5923 6.75575 22 11.0001 22C13.7755 22 16.3064 20.9689 18.2394 19.2722L14.5183 16.3345C13.5129 17.0123 12.3095 17.4166 11.0001 17.4166Z" fill="#00B060" />
-                      <path opacity="0.1" d="M11.0001 21.7708C7.76275 21.7708 4.85178 20.4351 2.7937 18.307C4.80836 20.568 7.73354 22 11.0001 22C14.2365 22 17.1374 20.5962 19.1476 18.3707C17.0956 20.4642 14.2067 21.7708 11.0001 21.7708Z" fill="black" />
-                      <path opacity="0.1" d="M11 13.0625V13.2917H16.9457L17.0385 13.0625H11Z" fill="black" />
-                      <path d="M21.9949 11.1348C21.9957 11.0897 22 11.0453 22 11C22 10.9872 21.998 10.9748 21.998 10.962C21.9973 11.0198 21.9944 11.0768 21.9949 11.1348Z" fill="#E6E6E6" />
-                      <path opacity="0.2" d="M11 8.70837V8.93754H21.8034C21.789 8.8619 21.7732 8.78346 21.7573 8.70837H11Z" fill="white" />
-                      <path d="M21.7573 8.70833H11V13.2917H16.9457C16.0211 15.6948 13.7291 17.4167 11 17.4167C7.4562 17.4167 4.58333 14.5438 4.58333 11C4.58333 7.45614 7.4562 4.58333 11 4.58333C12.285 4.58333 13.4694 4.97811 14.4728 5.62896C14.6264 5.72878 14.7848 5.82249 14.9291 5.93456L18.2632 2.75375L18.188 2.6959C16.2589 1.02398 13.7532 0 11 0C4.92485 0 0 4.92485 0 11C0 17.0751 4.92485 22 11 22C16.6079 22 21.2258 17.8005 21.9047 12.3767C21.962 11.926 22 11.4663 22 11C22 10.2136 21.9141 9.44792 21.7573 8.70833Z" fill="url(#paint0_linear_73_226)" />
-                      <path opacity="0.1" d="M14.4727 5.39983C13.4693 4.74898 12.285 4.3542 10.9999 4.3542C7.45612 4.3542 4.58325 7.22701 4.58325 10.7709C4.58325 10.8095 4.58377 10.8397 4.58444 10.8783C4.64627 7.38792 7.49478 4.58337 10.9999 4.58337C12.285 4.58337 13.4693 4.97814 14.4727 5.629C14.6263 5.72881 14.7847 5.82253 14.929 5.93459L18.2631 2.75378L14.929 5.70542C14.7847 5.59336 14.6263 5.49964 14.4727 5.39983Z" fill="black" />
-                      <path opacity="0.2" d="M11 0.229167C13.7271 0.229167 16.2093 1.23602 18.131 2.8798L18.2632 2.75375L18.1623 2.66592C16.2332 0.993996 13.7532 0 11 0C4.92485 0 0 4.92485 0 11C0 11.0387 0.00537112 11.076 0.00576272 11.1146C0.067866 5.09286 4.96351 0.229167 11 0.229167Z" fill="white" />
-                      <defs>
-                        <linearGradient id="paint0_linear_73_226" x1="0" y1="11" x2="22" y2="11" gradientUnits="userSpaceOnUse">
-                          <stop stopColor="white" stopOpacity="0.2" />
-                          <stop offset="1" stopColor="white" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </span>
-                  Continue with Google
-                </button>
-                <div className='text-sm  max-w-[500px] self-center'>By signing in, you confirm that you are at least 16 years of age and agree to our <a href='/terms-conditions' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='/privacy-policy' className='text-primary underline underline-offset-4'>Privacy Policy</a></div>
-
-              </div>
-
-
-
-              <div className='py-3 px-4 bg-frameBG rounded-[5px] text-sm mt-6'>
-                <p><span className='text-primary font-semibold'>IMPORTANT:</span> Please note that EsportsGravity is currently in testing phase and your account will be a test account. This account with all progress made will be cleared and you'll need to create a new account after the beta launch. Please join our <a href="https://discord.gg/bYevaFA5tK" target='_blank' className='text-primary underline'>Discord</a>  to know about benefits of testing as early user.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   )
 }

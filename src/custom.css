@@ -134,6 +134,10 @@ textarea:disabled {
   background-color: #0E1825;
 }
 
+button:disabled{
+  opacity: 60%;
+}
+
 
 .bg-highlighted-text {
   background-color: #0E1825;
