@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../custom.css'
-import { IoMdClose } from "react-icons/io";
 import { useAuth } from '../utils/AuthContext';
 import { Alert } from '../components/Alert';
-
 import { toast } from 'react-toastify';
-// import ClipLoader from 'react-spinners/ClipLoader';
 import LoadingBar from 'react-top-loading-bar'
-
 import { Helmet } from 'react-helmet';
 import { FaDiscord } from 'react-icons/fa';
-
 import packageJson from '../../package.json'
 
 
@@ -211,7 +206,7 @@ export const Signup = () => {
                         <div className="h-[0.8px] bg-inactive bg-opacity-40 w-[90%]"></div>
                         <div className='relative bg-secondary -translate-y-[50%] w-fit px-3 text-offBlue'>OR</div>
 
-                        <button onClick={(e) => googleAuth(e)} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-11 md:w-[58%] w-[70%]'>
+                        <button onClick={(e) => googleAuth(e)} disabled={!countryCheck} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-11 md:w-[58%] w-[70%]'>
                           <img src="icons/google_icon.svg" alt="Google Icon" />
                           Continue with Google
                         </button>

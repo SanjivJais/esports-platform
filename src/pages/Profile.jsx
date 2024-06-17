@@ -626,7 +626,11 @@ export const Profile = () => {
                   </div>
                   <div className='flex flex-col gap-[2px]'>
                     <div className='text-inactive'>Email</div>
-                    <strong className='text-offBlue'>{user.email}</strong>
+                    <div className="flex gap-2 items-center">
+                      <strong className='text-offBlue'>{user.email}</strong>
+                      <div className={`text-offBlue w-fit text-sm px-4 py-1 font-medium bg-opacity-30 rounded-[15px] ${user.emailVerification ? 'bg-green-700' : 'bg-abortedStatus'}`}>{user.emailVerification ? 'Verified' : 'Unverified'}</div>
+
+                    </div>
                   </div>
                   <div className='flex flex-col gap-[2px]'>
                     <div className='text-inactive'>Joined On</div>
@@ -634,7 +638,7 @@ export const Profile = () => {
                   </div>
                   <div className='flex flex-col gap-[2px]'>
                     <div className='text-inactive'>Account Status</div>
-                    <strong className={`text-offBlue w-fit text-sm px-4 py-1 font-medium bg-opacity-30 rounded-[15px] ${user.status ? 'bg-green-700' : 'bg-red-700'}`}>{user.status ? 'Active' : 'Closed'}</strong>
+                    <strong className={`text-offBlue w-fit text-sm px-4 py-1 font-medium bg-opacity-30 rounded-[15px] ${user.status ? 'bg-green-700' : 'bg-abortedStatus'}`}>{user.status ? 'Active' : 'Closed'}</strong>
                   </div>
                   <button onClick={logoutUser} className='self-start border-[0.8px] border-inactive border-opacity-30 rounded-[5px] px-3 py-1 text-offBlue flex items-center gap-2'><span>Logout</span><IoIosLogOut /></button>
                 </div>

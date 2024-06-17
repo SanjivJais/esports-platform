@@ -25,6 +25,7 @@ import { TermsConditions } from "./pages/EssentialPages/TermsConditions"
 import { Disclaimer } from "./pages/EssentialPages/Disclaimer"
 import { Contact } from "./pages/EssentialPages/Contact"
 import { HelpCenter } from "./pages/EssentialPages/HelpCenter"
+import { AccountVerification } from "./pages/AccountVerification"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -61,6 +62,8 @@ function App() {
             <Route element={<PrivateRoutes />} >
               <Route path='/profile' element={<ParentPage Page={<Profile />} />} />
               <Route path='/notifications' element={<ParentPage Page={<Notifications />} />} />
+              <Route path="/verify-account" element={<AccountVerification />} />
+
 
             </Route>
 

@@ -62,6 +62,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null)
     navigate('/login');
   }
+  
   const registerUser = async (userInfo) => {
     try {
       const response = await account.create(
@@ -122,8 +123,8 @@ export const AuthProvider = ({ children }) => {
             }
           )
 
-          await database.updateDocument(db_id, 'user_details', user.$id, {'notifications': [notif.$id]})
-          setUserDetails((prevData)=>({
+          await database.updateDocument(db_id, 'user_details', user.$id, { 'notifications': [notif.$id] })
+          setUserDetails((prevData) => ({
             ...prevData,
             notifications: [notif.$id]
           }))
@@ -137,6 +138,29 @@ export const AuthProvider = ({ children }) => {
 
   }
 
+
+  const userVerification = async () => {
+    try {
+      await account.createVerification(`${rootPath}/verify-account`)
+    } catch (error) {
+      toast.error("Something went wrong!")
+    }
+  }
+
+  const verifyUser = async () => {
+    try {
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const secret = urlParams.get('secret');
+      const userId = urlParams.get('userId');
+
+      const promise = account.updateVerification(userId, secret);
+    } catch (error) {
+      toast.error("Something went wrong!")
+    }
+  }
+
+
   const contextData = {
     user,
     setUser,
@@ -146,6 +170,8 @@ export const AuthProvider = ({ children }) => {
     logoutUser,
     registerUser,
     googleSignin,
+    userVerification,
+    verifyUser,
   }
 
   return (

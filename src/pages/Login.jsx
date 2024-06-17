@@ -7,12 +7,22 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
+import LoadingBar from 'react-top-loading-bar';
+import { FaDiscord } from 'react-icons/fa';
+import { Alert } from '../components/Alert';
+import packageJson from '../../package.json'
+
 
 export const Login = () => {
+
+  const appVersion = packageJson.version;
+
 
   const { loginUser, googleSignin } = useAuth();
 
   const [countryCheck, setCountryCheck] = useState(true)
+  const [progress, setProgress] = useState(0);
+
 
   const fetchCountryFromIP = async () => {
     try {
@@ -64,7 +74,7 @@ export const Login = () => {
   const checkInputValidity = () => {
     if (loginDetails.email !== '') {
       if (loginDetails.password !== '') {
-        return 1;
+        return true;
       } else {
         toast.error("Enter your password");
       }
@@ -74,12 +84,13 @@ export const Login = () => {
 
   }
 
-  const [loading, setLoading] = useState(false);
+
   const userLogin = async () => {
     if (checkInputValidity()) {
-      setLoading(true)
+      setProgress(50)
       await loginUser(loginDetails);
-      setLoading(false)
+      setProgress(100)
+
     }
   }
 
@@ -91,11 +102,117 @@ export const Login = () => {
 
   return (
     <>
+
+      <LoadingBar color='#F88B26' progress={progress} onLoaderFinished={() => setProgress(0)} />
+
+
       <Helmet>
-        <title>Login- EsportsGravity</title>
+        <title>Login - EsportsGravity</title>
         <meta name="description" content="Login to your account on EsportsGravity." />
       </Helmet>
-      <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
+
+
+      <div className='h-screen w-screen bg-[url("images/gaming_bg.png")] bg-cover bg-center flex flex-col justify-center'>
+        <div className='absolute z-10 h-screen w-screen bg-frameBG opacity-[90%] '>
+        </div>
+
+        <div className="grid md:grid-cols-2 grid-cols-1 lg:gap-48 gap-28 z-20 max-h-screen overflow-auto py-8">
+
+          <div className="col-span-1 flex md:justify-end justify-center">
+
+            <div className={`flex flex-col items-center bg-secondary bg-opacity-[65%] max-w-[568px] lg:w-[78%] md:w-[80%] w-[90%] md:min-h-[76vh] h-auto py-6 text-offWhite rounded-[5px]`}>
+
+              <div className='flex flex-col gap-4 items-center w-[90%]'>
+                <Link to={'/'}><img src="icons/eg_square_logo.svg" alt="EG Square Logo" className='md:hidden h-14 w-14 object-cover' /></Link>
+
+                <h2 className='font-bold text-lg mb-1'>Login With Email</h2>
+
+                <input
+                  type="email"
+                  placeholder='Email Address'
+                  className='w-full bg-transparent border-[0.8px] border-inactive border-opacity-30 focus:outline-none placeholder:text-sm py-2 px-4 rounded-[3px]'
+                  name='email'
+                  onChange={handleInputs}
+                />
+
+                <input
+                  type="password"
+                  placeholder='Password'
+                  className='w-full bg-transparent border-[0.8px] border-inactive border-opacity-30 focus:outline-none placeholder:text-sm py-2 px-4 rounded-[3px]'
+                  name='password'
+                  onChange={handleInputs}
+                />
+
+                <p className='self-end text-sm text-primary cursor-pointer'>Forgot password?</p>
+
+
+                <button onClick={userLogin} disabled={progress % 100 != 0 || !countryCheck} className='bg-primary w-full text-secondary font-bold text-lg py-2 rounded-[3px] flex items-center justify-center gap-2'>Login</button>
+
+                <div className='text-sm self-start'>Don't have an account? <Link to={'/signup'} className='text-primary underline-offset-4 underline decoration-dotted'>Sign up here</Link></div>
+                <div className='flex flex-col w-full items-center mt-8'>
+                  <div className="h-[0.8px] bg-inactive bg-opacity-40 w-[90%]"></div>
+                  <div className='relative bg-secondary -translate-y-[50%] w-fit px-3 text-offBlue'>OR</div>
+
+                  <button onClick={(e) => googleAuth(e)} disabled={!countryCheck} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-11 md:w-[58%] w-[70%]'>
+                    <img src="icons/google_icon.svg" alt="Google Icon" />
+                    Continue with Google
+                  </button>
+
+                </div>
+
+                {!countryCheck && (
+                  <div className='w-full'>
+                    <Alert type={"error"} message={"Your country is not yet supported. Please check back later!"} />
+                  </div>
+                )}
+
+              </div>
+
+              <p className='md:text-sm text-[11px] w-[90%] text-offBlue self-center my-6'>By signing in, you confirm that you are at least 16 years of age and agree to our <a href='/terms-conditions' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='/privacy-policy' className='text-primary underline underline-offset-4'>Privacy Policy</a></p>
+              <p className='text-[12px] font-semibold text-dimText self-center z-30 mt-4 text-opacity-90 md:hidden'>v{appVersion}</p>
+
+            </div>
+          </div>
+
+          <div className="hidden md:flex col-span-1 justify-start">
+            <div className='flex flex-col items-center justify-center gap-3 text-center'>
+              <Link to={'/'}><img className='mb-3' src="icons/eg_long_logo.svg" alt="EG Logo" /></Link>
+              <h3 className='font-bold lg:text-4xl text-2xl'>Welcome Back!</h3>
+              <p className='text-offBlue'>Play. Win. Shine</p>
+
+              <a href="https://discord.gg/bYevaFA5tK" target='_blank'>
+                <button className='text-sm mt-4 text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-12 w-60'>
+                  <FaDiscord className='text-xl' />
+                  Join Our Discord Server
+                </button>
+              </a>
+              <p className='text-sm text-offBlue mt-4 '>Version - {appVersion} <span className='text-primary'>(Beta)</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* <div className="grid md:grid-cols-10 grid-cols-1 h-screen  text-offBlue">
         <div className="bg-[url('/images/EsportsBG4.jpg')] bg-cover bg-center md:flex flex-col lg:col-span-6 md:col-span-4 hidden items-center justify-end">
           <div className='relative bottom-[12%] text-center'>
 
@@ -136,7 +253,6 @@ export const Login = () => {
           </div>
         </div>
 
-        {/* input fields section  */}
 
         <div className="bg-secondary flex flex-col lg:col-span-4 md:col-span-6 col-span-1 md:px-10 px-6 py-10">
           <div className="flex justify-end"><Link to={'/'}><IoMdClose className='text-xl' /></Link></div>
@@ -206,7 +322,7 @@ export const Login = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   )
 }
