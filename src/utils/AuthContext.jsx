@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null)
     navigate('/login');
   }
-  
+
   const registerUser = async (userInfo) => {
     try {
       const response = await account.create(
@@ -149,16 +149,36 @@ export const AuthProvider = ({ children }) => {
 
   const verifyUser = async () => {
     try {
-
       const urlParams = new URLSearchParams(window.location.search);
       const secret = urlParams.get('secret');
       const userId = urlParams.get('userId');
 
-      const promise = account.updateVerification(userId, secret);
+      const promise = await account.updateVerification(userId, secret);
     } catch (error) {
       toast.error("Something went wrong!")
     }
   }
+
+  const passRecovery = async (userEmail) => {
+    try {
+      const promise = await account.createRecovery(userEmail, `${rootPath}/pass-recovery`);
+      toast.success("Recovery link sent!")
+    } catch (error) {
+      if (error.code == "404") {
+        toast.error("Email is not registered!")
+      } else {
+        toast.error("Something went wrong!");
+      }
+    }
+  }
+
+  // const updatePass = async () => {
+  //   try {
+      
+  //   } catch (error) {
+      
+  //   }
+  // }
 
 
   const contextData = {
@@ -172,6 +192,8 @@ export const AuthProvider = ({ children }) => {
     googleSignin,
     userVerification,
     verifyUser,
+    passRecovery,
+    // updatePass,
   }
 
   return (

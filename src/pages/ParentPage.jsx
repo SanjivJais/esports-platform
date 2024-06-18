@@ -40,7 +40,7 @@ export const ParentPage = ({ Page }) => {
                 <div className="flex flex-col w-full">
                     <Navbar toggleSidebar={toggleSidebar} mobToggleSidebar={mobToggleSidebar} />
                     <div className='mb-6 w-full max-w-[1600px] flex flex-col self-center'>
-                        {!user.emailVerification && <div className="flex items-center px-6 py-3 bg-primary text-secondary font-medium">
+                        {user && !user.emailVerification && <div className="flex items-center px-6 py-3 bg-primary text-secondary font-medium">
                             Please&nbsp; <button onClick={sendVerificationMail} disabled={progress % 100 !== 0} className='underline underline-offset-2 decoration-dotted cursor-pointer font-semibold'>verify your email</button>&nbsp;to enjoy all features!
                         </div>}
                         {Page}

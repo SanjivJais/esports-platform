@@ -206,7 +206,7 @@ export const Signup = () => {
                         <div className="h-[0.8px] bg-inactive bg-opacity-40 w-[90%]"></div>
                         <div className='relative bg-secondary -translate-y-[50%] w-fit px-3 text-offBlue'>OR</div>
 
-                        <button onClick={(e) => googleAuth(e)} disabled={!countryCheck} className='text-sm text-offBlue rounded-[100px] flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-11 md:w-[58%] w-[70%]'>
+                        <button onClick={(e) => googleAuth(e)} disabled={!countryCheck} className='text-sm text-offBlue rounded-[100px] mt-2 flex justify-center items-center self-center gap-3 border-[0.5px] border-opacity-50 border-inactive h-11 md:w-[58%] w-[70%]'>
                           <img src="icons/google_icon.svg" alt="Google Icon" />
                           Continue with Google
                         </button>
@@ -224,7 +224,7 @@ export const Signup = () => {
                   </>
               }
 
-              <p className='md:text-sm text-[11px] w-[90%] text-offBlue self-center my-6'>By signing up, you confirm that you are at least 16 years of age and agree to our <a href='/terms-conditions' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='/privacy-policy' className='text-primary underline underline-offset-4'>Privacy Policy</a></p>
+              <p className='md:text-sm text-[11px] w-[90%] text-offBlue self-center my-6 max-sm:text-center'>By signing up, you confirm that you are at least 16 years of age and agree to our <a href='/terms-conditions' className='text-primary underline underline-offset-4'>Terms & Conditions</a> and <a href='/privacy-policy' className='text-primary underline underline-offset-4'>Privacy Policy</a></p>
               <p className='text-[12px] font-semibold text-dimText self-center z-30 mt-4 text-opacity-90 md:hidden'>v{appVersion}</p>
 
             </div>
