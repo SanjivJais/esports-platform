@@ -78,8 +78,11 @@ export const ResetPass = () => {
             <LoadingBar color='#F88B26' progress={progress} onLoaderFinished={() => setProgress(0)} />
 
 
-            <div className='h-screen w-screen flex flex-col items-center'>
-                <div className="relative top-[20%] flex flex-col justify-center items-center gap-3">
+            <div className='h-screen w-screen bg-[url("images/gaming_bg.jpg")] bg-cover bg-center flex flex-col items-center'>
+                <div className='absolute z-10 h-screen w-screen bg-frameBG md:opacity-[96%] opacity-[93%]'>
+                </div>
+                
+                <div className="relative top-[20%] z-20 flex flex-col justify-center items-center gap-3">
                     <img src="icons/eg_square_logo.svg" alt="EG logo" className='mb-2 h-14 w-14 object-cover' />
 
                     {secret && userId ? <>

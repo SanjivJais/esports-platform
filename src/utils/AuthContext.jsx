@@ -172,13 +172,6 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // const updatePass = async () => {
-  //   try {
-      
-  //   } catch (error) {
-      
-  //   }
-  // }
 
 
   const contextData = {
@@ -193,7 +186,6 @@ export const AuthProvider = ({ children }) => {
     userVerification,
     verifyUser,
     passRecovery,
-    // updatePass,
   }
 
   return (

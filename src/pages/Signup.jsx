@@ -121,8 +121,8 @@ export const Signup = () => {
       </Helmet>
 
 
-      <div className='h-screen w-screen bg-[url("images/gaming_bg.png")] bg-cover bg-center flex flex-col justify-center'>
-        <div className='absolute z-10 h-screen w-screen bg-frameBG opacity-[90%] '>
+      <div className='h-screen w-screen bg-[url("images/gaming_bg.jpg")] bg-cover bg-center flex flex-col justify-center'>
+        <div className='absolute z-10 h-screen w-screen bg-frameBG md:opacity-[96%] opacity-[93%]'>
         </div>
 
         <div className="grid md:grid-cols-2 grid-cols-1 lg:gap-48 gap-28 z-20 max-h-screen overflow-auto py-8">
