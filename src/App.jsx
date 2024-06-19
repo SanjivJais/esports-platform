@@ -27,6 +27,7 @@ import { Contact } from "./pages/EssentialPages/Contact"
 import { HelpCenter } from "./pages/EssentialPages/HelpCenter"
 import { AccountVerification } from "./pages/AccountVerification"
 import { ResetPass } from "./pages/ResetPass"
+import { SingleTournament } from "./pages/SingleTournament"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -54,6 +55,7 @@ function App() {
             <Route path='/contact' element={<ParentPage Page={<Contact />} />} />
             <Route path='/help-center' element={<ParentPage Page={<HelpCenter />} />} />
             <Route path='/pass-recovery' element={<ResetPass />} />
+            <Route path='/t/:tid' element={<ParentPage Page={<SingleTournament />} />} />
 
             <Route element={<LoginStatusRouting />}>
               <Route path="/signup" element={<Signup />} />

@@ -4,6 +4,7 @@ import { TournModal } from './TournModal';
 import { HiMiniTrophy } from 'react-icons/hi2';
 import { FaCircleCheck, FaRegClock } from 'react-icons/fa6';
 import { useAuth } from '../../utils/AuthContext';
+import { Link } from 'react-router-dom';
 
 export const TournCard = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
@@ -123,7 +124,8 @@ export const TournCard = ({ tournament }) => {
                         <label htmlFor="" className='text-[12px] text-dimText'>STARTING</label>
                         <div className='font-semibold flex gap-2'><span>{formatDateTime(tournament.startDate).date} . {formatDateTime(tournament.startDate).time}</span> </div>
                     </div>
-                    <button onClick={() => setShowModal(true)} className='bg-secondaryLight px-5 py-2 hover:text-secondary border-[0.8px] border-inactive border-opacity-40 hover:border-primary transition-colors duration-200 ease-in-out rounded-[5px] font-bold hover:bg-primary'>View Details</button>
+                    <Link to={`/t/${tournament.$id}`}><button className='bg-secondaryLight px-5 py-2 hover:text-secondary border-[0.8px] border-inactive border-opacity-40 hover:border-primary transition-colors duration-200 ease-in-out rounded-[5px] font-bold hover:bg-primary'>View Details</button></Link>
+                    {/* <button onClick={() => setShowModal(true)} className='bg-secondaryLight px-5 py-2 hover:text-secondary border-[0.8px] border-inactive border-opacity-40 hover:border-primary transition-colors duration-200 ease-in-out rounded-[5px] font-bold hover:bg-primary'>View Details</button> */}
                 </div>
 
             </div>
