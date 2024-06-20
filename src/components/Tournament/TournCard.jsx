@@ -69,7 +69,7 @@ export const TournCard = ({ tournament }) => {
             const status = userDetails.tournaments.includes(tournament.$id)
             setJoinStatus(status)
         }
-    }, [user])
+    }, [user, userDetails])
 
 
     return (

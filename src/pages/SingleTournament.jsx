@@ -31,39 +31,42 @@ export const SingleTournament = () => {
     const [tournament, setTournament] = useState(null)
 
     useEffect(() => {
-        const fetchTournament = async () => {
-            setProgress(60)
-            try {
-                const res = await database.getDocument(db_id, 'tournaments', tid, [])
-                setTournament(res)
-            } catch (error) {
-                toast.error("Something went wrong!")
+
+        if (!tournament) {    // temporarily to avoid re-fetching during development 
+            const fetchTournament = async () => {
+                setProgress(60)
+                try {
+                    const res = await database.getDocument(db_id, 'tournaments', tid, [])
+                    setTournament(res)
+                } catch (error) {
+                    toast.error("Something went wrong!")
+                }
             }
+            fetchTournament();
+            setProgress(100)
         }
-        fetchTournament();
-        setProgress(100)
     }, [])
 
 
     const [gameDetails, setGameDetails] = useState({})
-    let totalPrize = 0;
-    let joinPercent = 0;
+    const [totalPrize, setTotalPrize] = useState(0)
+    const [joinPercent, setJoinPercent] = useState(0)
 
     useEffect(() => {
         if (tournament) {
 
             setGameDetails(JSON.parse(tournament.gameDetails))
+
+            let totalPr = 0;
             for (let index = 0; index < tournament.prizePool.length; index++) {
-                totalPrize += tournament.prizePool[index];
+                totalPr += tournament.prizePool[index];
             }
-            joinPercent = parseInt((tournament.participants.length * 100) / tournament.max);
-
-
+            setTotalPrize(totalPr)
+            let joinPer = parseInt((tournament.participants.length * 100) / tournament.max);
+            setJoinPercent(joinPer)
 
         }
     }, [tournament])
-
-
 
 
 
@@ -133,12 +136,12 @@ export const SingleTournament = () => {
 
     const [joinStatus, setJoinStatus] = useState(false)
     useEffect(() => {
-
-        if (tournament && user && userDetails) {
-            const status = userDetails.tournaments.includes(tournament.$id)
+        if (user && userDetails) {
+            const status = userDetails.tournaments.includes(tid)
             setJoinStatus(status)
         }
-    }, [tournament])
+    }, [user, userDetails])
+
 
     const [joinConfirmationModal, setJoinConfirmationModal] = useState(null);
 
@@ -168,84 +171,54 @@ export const SingleTournament = () => {
                 if (tourn && user_details) {
                     setProgress(50)
                     if (tourn.participants.length < tourn.max) {
-                        if (JSON.parse(tourn.entryFee).currencyType === "eg_coin" && user_details.eg_coin >= JSON.parse(tourn.entryFee).fee) {
+
+                        let vCurrency = JSON.parse(tourn.entryFee).currencyType;
+                        let eFee = JSON.parse(tourn.entryFee).fee;
+
+                        if (user_details[vCurrency] >= eFee) {
+
                             try {
-
-                                if (!tourn.participants.includes(user.$id)) {
+                                if (!tourn.participants.includes(user.$id) && !user_details.tournaments.includes(tournament.$id)) {
                                     tourn.participants.push(user.$id);
-                                }
-                                if (!user_details.tournaments.includes(tournament.$id)) {
                                     user_details.tournaments.push(tournament.$id);
+
+                                    let updatedBalance = user_details[vCurrency] - eFee;
+
+                                    await database.updateDocument(db_id, 'tournaments', tournament.$id, { 'participants': tourn.participants })
+
+                                    await database.updateDocument(db_id, 'user_details', user.$id, { 'tournaments': user_details.tournaments, [vCurrency]: updatedBalance })
+
+                                    setProgress(80)
+                                    setUserDetails((prevData) => ({
+                                        ...prevData,
+                                        [vCurrency]: updatedBalance,
+                                        'tournaments': user_details.tournaments
+                                    }))
+                                    toast.success("Tournament joined!");
+                                    setJoinStatus(true)
+
+
+                                } else {
+                                    toast.info("Tournament already joined!");
                                 }
 
-                                // tourn.participants.push(user.$id);
-                                // user_details.tournaments.push(tournament.$id);
-                                let updatedEGCoin = user_details.eg_coin - JSON.parse(tournament.entryFee).fee;
-
-                                await database.updateDocument(db_id, 'tournaments', tournament.$id, { 'participants': tourn.participants })
-
-                                await database.updateDocument(db_id, 'user_details', user.$id, { 'tournaments': user_details.tournaments, 'eg_coin': updatedEGCoin })
-
-                                setProgress(80)
-                                setJoinConfirmationModal(false)
-                                setUserDetails((prevData) => ({
-                                    ...prevData,
-                                    'eg_coin': updatedEGCoin,
-                                    'tournaments': user_details.tournaments
-                                }))
-                                toast.success("Tournament joined!");
-                                setJoinStatus(true)
-                                setProgress(100)
                             } catch (error) {
                                 toast.error("Something went wrong")
                             }
 
-                        } else if (JSON.parse(tourn.entryFee).currencyType === "eg_token" && user_details.eg_token >= JSON.parse(tourn.entryFee).fee) {
-                            try {
-
-                                if (!tourn.participants.includes(user.$id)) {
-                                    tourn.participants.push(user.$id);
-                                }
-                                if (!user_details.tournaments.includes(tournament.$id)) {
-                                    user_details.tournaments.push(tournament.$id);
-                                }
-
-                                // tourn.participants.push(user.$id);
-                                // user_details.tournaments.push(tournament.$id)
-                                let updatedEGToken = user_details.eg_token - JSON.parse(tournament.entryFee).fee;
-
-                                await database.updateDocument(db_id, 'tournaments', tournament.$id, { 'participants': tourn.participants })
-
-                                await database.updateDocument(db_id, 'user_details', user.$id, { 'tournaments': user_details.tournaments, 'eg_token': updatedEGToken })
-
-                                setProgress(80)
-                                setJoinConfirmationModal(false)
-                                setUserDetails((prevData) => ({
-                                    ...prevData,
-                                    'eg_token': updatedEGToken,
-                                    'tournaments': user_details.tournaments
-                                }))
-                                toast.success("Tournament joined!");
-                                setJoinStatus(true)
-                                setProgress(100)
-                            } catch (error) {
-                                toast.error("Something went wrong")
-                            }
+                        } else {
+                            toast.info("Insufficient balance!");
                         }
-                        else {
-                            toast.info("Insufficient funds!")
-                            setProgress(100)
-                        }
+
                     } else {
                         toast.info("Tournament is already full")
                     }
-                } else {
-                    setProgress(80)
                 }
             } catch (error) {
-                console.log(error);
-                toast.error("Error occurred")
+                toast.error("Something went wrong!")
             }
+            setJoinConfirmationModal(false)
+            setProgress(100)
         }
     }
 
