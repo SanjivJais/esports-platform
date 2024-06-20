@@ -72,9 +72,9 @@ export const Sidebar = ({ sideOpen, mobSideOpen, mobToggleSidebar }) => {
   return (
 
     <>
-      <div className={`w-64 lg:w-72 top-0 z-30 bg-secondary transition-all duration-300 h-screen md:text-[16px] text-[14px] ${sideOpen ? 'lg:sticky lg:left-0' : 'lg:fixed lg:-left-72'} fixed ${mobSideOpen ? 'left-0' : '-left-64'}`}>
+      <div className={`w-64 lg:w-72 top-0 z-30 bg-secondary transition-all duration-300 h-screen md:text-[16px] text-[15px] ${sideOpen ? 'lg:sticky lg:left-0' : 'lg:fixed lg:-left-72'} fixed ${mobSideOpen ? 'left-0' : '-left-64'}`}>
         <div className="flex w-full absolute items-center justify-end top-4 right-3 lg:hidden"><IoClose className={`text-xl cursor-pointer ${mobSideOpen ? '' : 'rotate-180 duration-100'}`} onClick={mobToggleSidebar} /></div>
-        <Link to={'/'} className='h-[72px] max-sm:mt-3 flex px-4 items-center justify-center text-lg font-bold'>
+        <Link to={'/'} className='h-[72px] max-sm:mt-6 flex px-4 items-center justify-center text-lg font-bold'>
           <img className='w-[170px] h-auto' src="/icons/eg_long_logo.svg" alt="EG Long Logo" />
         </Link>
 

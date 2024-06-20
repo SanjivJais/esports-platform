@@ -71,7 +71,7 @@ export const Footer = () => {
       </div>
       <div className='w-full border-t-[1px] border-inactive border-opacity-20 py-4 md:text-[15px] text-sm'>
         <div className="flex justify-between items-center">
-          <div className="md:col-span-6 md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='text-primary transition-colors duration-300'> EsportsGravity.com</Link></div>
+          <div className="md:text-left col-span-full text-center gap-1">© 2024 <Link to={'/'} className='text-primary transition-colors duration-300'> EsportsGravity.com</Link></div>
           <div className='text-dimText font-medium'>(Version {appVersion}) - Beta</div>
         </div>
       </div>

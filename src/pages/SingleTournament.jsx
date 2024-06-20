@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 import { PuffLoader } from 'react-spinners';
 import GameProfileContext from '../utils/GameProfileContext';
 import { useAuth } from '../utils/AuthContext';
-import { IoCopyOutline } from 'react-icons/io5';
+// import { IoCopyOutline } from 'react-icons/io5';
 import { Tooltip } from '../components/Tooltip';
 import { MdInfo } from 'react-icons/md';
 import ReactHtmlParser from 'react-html-parser';
@@ -17,6 +17,8 @@ import { FaCircleCheck, FaPeopleGroup, FaRegClock } from 'react-icons/fa6';
 import { BiSolidExit } from 'react-icons/bi';
 import { Query } from 'appwrite';
 import { Modal } from '../components/Modal';
+import { TournCard } from '../components/Tournament/TournCard'
+import { FaTrophy } from 'react-icons/fa';
 
 
 
@@ -45,7 +47,7 @@ export const SingleTournament = () => {
             fetchTournament();
             setProgress(100)
         }
-    }, [])
+    }, [tid])
 
 
     const [gameDetails, setGameDetails] = useState({})
@@ -350,6 +352,26 @@ export const SingleTournament = () => {
         fetchPromoBanners()
     }, [])
 
+
+
+    const [moreTournaments, setMoreTournaments] = useState([])
+
+    useEffect(() => {
+        if (tournament) {
+            const fetchMoreTournaments = async () => {
+                try {
+                    const tourns = await database.listDocuments(db_id, 'tournaments', [Query.equal('gameID', tournament.gameID), Query.limit(3), Query.orderDesc('$createdAt')])
+                    setMoreTournaments(tourns.documents)
+                } catch (error) {
+
+                }
+            }
+            fetchMoreTournaments();
+        }
+    }, [tournament])
+
+
+
     return (
         <>
             <LoadingBar
@@ -372,23 +394,20 @@ export const SingleTournament = () => {
                 :
                 <>
 
-                    <div>
-                        <div className='lg:h-[45%] md:h-[40%] h-[35%] flex flex-col justify-between' style={{
+                    <div className='flex flex-col items-center'>
+                        <div className='lg:h-[42vh] md:h-[38vh] h-[32vh] w-full flex flex-col justify-between' style={{
                             backgroundImage: `url("${tournament.imgURL}")`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                         }}>
-                            <div className="flex gap-2 items-center pt-3 pl-3">
-                                <div className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Free Fire</div>
-                                {tournament.status === "Open" && calculateTimeLeft(tournament.startDate).daysLeft >= 0 && calculateTimeLeft(tournament.startDate).hoursLeft >= 0 && <div title='Time left to start' className='bg-secondary h-fit relative text-[13px] px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startDate).daysLeft}d, {calculateTimeLeft(tournament.startDate).hoursLeft}hrs </div>}
+                            <div className="flex gap-2 items-center pt-3 pl-3 ">
+                                <div className='bg-secondary h-fit relative md:text-sm text-[12px] bg-opacity-90 px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Free Fire</div>
+                                {tournament.status === "Open" && calculateTimeLeft(tournament.startDate).daysLeft >= 0 && calculateTimeLeft(tournament.startDate).hoursLeft >= 0 && <div title='Time left to start' className='bg-secondary h-fit relative md:text-sm text-[12px] bg-opacity-90 px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startDate).daysLeft}d, {calculateTimeLeft(tournament.startDate).hoursLeft}hrs </div>}
                             </div>
-                            <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
-                                <div className="lg:w-[63%] md:w-[58%] w-full">
-                                    <div className="flex gap-4 items-center mb-4">
-                                        <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite'>{tournament.tournTitle}</h2>
-                                        <div onClick={handleShareClick} title='Copy sharable Tournament Code' className='bg-offBlue text-secondary font-medium bg-opacity-80 flex items-center justify-center text-sm py-1 px-3 rounded cursor-pointer gap-2'><span>T-Code</span> <IoCopyOutline /></div>
-                                    </div>
-                                    <div className="flex max-md:justify-between md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
+                            <div className='tournModalComponent-custom-gradient h-full w-full flex flex-col justify-end items-start px-4'>
+                                <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite mb-4 '>{tournament.tournTitle}</h2>
+                                <div className="lg:w-[64%] md:w-[58%] w-full pr-4">
+                                    <div className="flex md:gap-8 gap-5 md:text-base text-[15px] custom-scrollbar whitespace-nowrap overflow-x-auto">
                                         <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</div>
                                         <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Bracket</div>
                                         <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Matches</div>
@@ -400,12 +419,13 @@ export const SingleTournament = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full px-4 py-6 flex md:flex-row flex-col gap-4'>
-                            <div className="lg:w-[64%] md:w-[58%] flex flex-col">
+
+                        <div className='w-full h-auto px-4 py-6 flex md:flex-row flex-col gap-6'>
+                            <div className="lg:w-[64%] md:w-[58%] w-full flex flex-col">
 
                                 {activeTab === 0 &&
                                     <>
-                                        <div className="grid lg:grid-cols-4 grid-cols-3 gap-x-4 gap-y-8">
+                                        <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-x-4 gap-y-8 h-fit w-full">
                                             <div>
                                                 <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENTRY FEE </span></div>
                                                 <div className='font-medium flex items-center gap-1'>{JSON.parse(tournament.entryFee).fee !== 0 ? JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" /> : ''}{JSON.parse(tournament.entryFee).fee == 0 ? 'Free' : JSON.parse(tournament.entryFee).fee}</div>
@@ -413,7 +433,7 @@ export const SingleTournament = () => {
                                             {tournament.gameID === "freefire" && <>
                                                 <div>
                                                     <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MODE </span><Tooltip content={"Mode of the game the tournament will be played in."} children={<MdInfo />} /></div>
-                                                    <div className='font-medium'>{gameDetails.gameMode} - {gameDetails.teamSize}</div>
+                                                    <div className='font-medium'>{gameDetails.gameMode}</div>
                                                 </div>
                                                 <div>
                                                     <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>MAP </span></div>
@@ -434,9 +454,10 @@ export const SingleTournament = () => {
                                             </div>
 
                                             <div>
-                                                <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTS AT</span></div>
-                                                <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.startDate).date} . {formatDateTime(tournament.startDate).time}</div>
+                                                <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTS ON</span></div>
+                                                <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.startDate).date}</div>
                                             </div>
+
                                             <div>
                                                 <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENDS ON </span></div>
                                                 <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.endDate).date}</div>
@@ -541,6 +562,7 @@ export const SingleTournament = () => {
 
 
                                 <div className="h-[1px] bg-inactive bg-opacity-25 w-full mt-6 mb-3"></div>
+
                                 {activeTab === 0 && tournament.description &&
                                     <div className="bg-secondaryLight p-4 rounded-[5px] mt-3 mb-4">
                                         <h5 className='font-semibold text-base text-offBlue mb-3'>Description</h5>
@@ -591,8 +613,8 @@ export const SingleTournament = () => {
                                 </div>
 
                             </div>
-                            <div className='h-fit lg:w-[36%] md:w-[42%] rounded-[5px] flex flex-col md:-mt-12'>
-                                <div className='bg-frameBG '>
+                            <div className='h-fit lg:w-[36%] md:w-[42%] w-full rounded-[5px] flex flex-col md:-mt-12'>
+                                <div className='bg-secondary '>
                                     <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
                                         <h3 className='font-bold text-lg text-offBlue'>{tournament.status === "Finished" ? 'Results' : tournament.status === "Aborted" ? 'Aborted' : 'Prize Pool'}</h3>
                                         {(tournament.status === "Open" || tournament.status === "Ongoing") && <div> {formatDateTime(tournament.startDate).time} / {formatDateTime(tournament.startDate).date} </div>}
@@ -662,34 +684,6 @@ export const SingleTournament = () => {
 
                                     </div>
 
-                                    {/* confirmation modal  */}
-                                    <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
-                                        <div className='p-6 md:w-96 w-72'>
-                                            <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'>{JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {JSON.parse(tournament.entryFee).fee}</span></p>
-                                            <p className='text-sm text-offBlue my-4'>(<span className='text-primary'>IMPORTANT:</span> For tournaments other than <span className='underline font-bold'>Solo</span> (team size), make sure your other teammates do not enroll for this tournament. You are the leader on their behalf.)</p>
-                                            <div className="flex w-full justify-evenly mt-7">
-                                                <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
-                                                <button onClick={handleFinalJoin} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
-                                            </div>
-                                        </div>
-
-                                    </Modal>
-
-
-                                    {/* exit confirmation modal  */}
-                                    <Modal isVisible={exitConfirmationModal} onClose={() => setExitConfirmationModal(false)}>
-                                        <div className='p-6 md:w-96 w-72'>
-                                            <p className='mt-4 flex flex-col gap-1 items-center'>
-                                                <span> Are you sure?</span>
-                                                {JSON.parse(tournament.entryFee).fee > 0 && <span className='mx-2 flex items-center gap-1'>You will get {JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />}  {Math.floor(JSON.parse(tournament.entryFee).fee * 0.90)} <span className='text-inactive'>(90% of entry fee)</span> as refund!</span>}
-                                            </p>
-                                            <div className="flex w-full justify-evenly mt-7">
-                                                <button onClick={() => setExitConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
-                                                <button onClick={handleFinalExitConfirmation} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Confirm</button>
-                                            </div>
-                                        </div>
-                                    </Modal>
-
                                 </div>
                                 <>
                                     {promoBanners.length > 0 && <a href={promoBanners[0].targetLink} target='_blank' className='h-28 w-auto my-4'><img className='object-cover w-full h-full rounded-[5px] object-left' src={promoBanners[0].imgUrl} alt="EG Promo" /></a>}
@@ -698,9 +692,47 @@ export const SingleTournament = () => {
                         </div>
                     </div>
 
+                    <div className='flex flex-col px-4 gap-6 mt-6 pb-4'>
+                        <div className="h-[0.8px] bg-inactive bg-opacity-25 w-full"></div>
+                        <div className="flex justify-between items-center w-full self-start"><span className='flex items-center gap-2 font-semibold md:text-[24px] text-lg text-offBlue'><FaTrophy /><h3>Explore more</h3></span><Link to={`/tournaments/${tournament.gameID}`} className='text-primary text-sm'>View All »</Link></div>
+                        <div className="w-full grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 content-center">
+                            {moreTournaments.length > 0 && moreTournaments.map((tournament, index) => (
+                                <TournCard key={index}
+                                    tournament={tournament}
+                                />
+                            ))}
+                        </div>
+
+                    </div>
 
 
+                    {/* confirmation modal  */}
+                    <Modal isVisible={joinConfirmationModal} onClose={() => setJoinConfirmationModal(false)}>
+                        <div className='p-6 md:w-96 w-72'>
+                            <p className='mt-4 flex justify-center'>It will cost you <span className='flex gap-1 justify-center mx-2'>{JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {JSON.parse(tournament.entryFee).fee}</span></p>
+                            <p className='text-sm text-offBlue my-4'>(<span className='text-primary'>IMPORTANT:</span> For tournaments other than <span className='underline font-bold'>Solo</span> (team size), make sure your other teammates do not enroll for this tournament. You are the leader on their behalf.)</p>
+                            <div className="flex w-full justify-evenly mt-7">
+                                <button onClick={() => setJoinConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
+                                <button onClick={handleFinalJoin} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Join</button>
+                            </div>
+                        </div>
 
+                    </Modal>
+
+
+                    {/* exit confirmation modal  */}
+                    <Modal isVisible={exitConfirmationModal} onClose={() => setExitConfirmationModal(false)}>
+                        <div className='p-6 md:w-96 w-72'>
+                            <p className='mt-4 flex flex-col gap-1 items-center'>
+                                <span> Are you sure?</span>
+                                {JSON.parse(tournament.entryFee).fee > 0 && <span className='mx-2 flex items-center gap-1'>You will get {JSON.parse(tournament.entryFee).currencyType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />}  {Math.floor(JSON.parse(tournament.entryFee).fee * 0.90)} <span className='text-inactive'>(90% of entry fee)</span> as refund!</span>}
+                            </p>
+                            <div className="flex w-full justify-evenly mt-7">
+                                <button onClick={() => setExitConfirmationModal(false)} className='bg-transparent rounded-[3px] text-inactive border-[1px] border-inactive px-8 py-2 font-medium'>Cancel</button>
+                                <button onClick={handleFinalExitConfirmation} className='bg-primary rounded-[3px] text-secondary border-[1px] border-primary px-8 py-2 font-bold'>Confirm</button>
+                            </div>
+                        </div>
+                    </Modal>
                 </>
             }
         </>
