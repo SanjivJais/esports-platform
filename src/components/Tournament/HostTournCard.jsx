@@ -5,6 +5,7 @@ import { HiMiniTrophy } from 'react-icons/hi2';
 import { TournModal } from './TournModal'
 import { CreateTournament } from './CreateTournament';
 import { UpdateTournModal } from './UpdateTournModal';
+import { Link } from 'react-router-dom';
 
 
 export const HostTournCard = ({ tournament }) => {
@@ -109,7 +110,8 @@ export const HostTournCard = ({ tournament }) => {
                 </div>
                 <div className="h-[0.8px] bg-inactive bg-opacity-30 my-4"></div>
                 <div className="flex justify-between">
-                    <button onClick={() => setShowUserviewModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>View as User</button>
+                    <Link to={`/t/${tournament.$id}`}><button className='bg-secondaryLight px-5 py-2 hover:text-secondary border-[0.8px] border-inactive border-opacity-40 hover:border-primary transition-colors duration-200 ease-in-out rounded-[5px] font-bold hover:bg-primary'>View As User</button></Link>
+
                     {tournament.status === "Draft" && <button onClick={() => setCreateTournModal(true)} className=' px-5 py-2 rounded-[5px] font-bold bg-secondaryLight border-2 border-inactive border-opacity-25 text-offBlue'>Edit Draft</button>}
 
                     {(tournament.status === "Open" || tournament.status === "Ongoing" || tournament.status === "Upcoming") ?
