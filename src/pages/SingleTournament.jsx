@@ -34,19 +34,20 @@ export const SingleTournament = () => {
 
     useEffect(() => {
 
-        if (!tournament) {    // temporarily to avoid re-fetching during development 
-            const fetchTournament = async () => {
-                setProgress(60)
-                try {
-                    const res = await database.getDocument(db_id, 'tournaments', tid, [])
-                    setTournament(res)
-                } catch (error) {
-                    toast.error("Something went wrong!")
-                }
+        // if (!tournament) {    // temporarily to avoid re-fetching during development 
+        const fetchTournament = async () => {
+            setProgress(60)
+            try {
+                const res = await database.getDocument(db_id, 'tournaments', tid, [])
+                setTournament(res)
+                setProgress(80)
+            } catch (error) {
+                toast.error("Something went wrong!")
             }
-            fetchTournament();
-            setProgress(100)
         }
+        fetchTournament();
+        setProgress(100)
+        // }
     }, [tid])
 
 
@@ -307,6 +308,21 @@ export const SingleTournament = () => {
     }, [tournament]);
 
 
+    // loading host details
+    const [host, setHost] = useState(null)
+    useEffect(() => {
+        const fetchHostDetails = async () => {
+            try {
+                const res = await database.getDocument(db_id, 'user_details', tournament.host, [])
+                setHost(res)
+            } catch (error) {
+
+            }
+        }
+        fetchHostDetails()
+    }, [tournament])
+
+
     // copy tournament ID functionality 
     const handleShareClick = () => {
         navigator.clipboard.writeText(tournament.$id)
@@ -320,20 +336,15 @@ export const SingleTournament = () => {
     // fetching matches
     const [matches, setMatches] = useState([])
     useEffect(() => {
-        if (activeTab === 2) {
-            setProgress(70)
-            const fetchMatches = async () => {
-                const response = await database.listDocuments(db_id, 'matches', [Query.equal('tournamentID', tournament.$id)])
-                if (response) {
-                    setMatches(response.documents)
-                }
+        const fetchMatches = async () => {
+            const response = await database.listDocuments(db_id, 'matches', [Query.equal('tournamentID', tid)])
+            if (response) {
+                setMatches(response.documents)
             }
-
-            fetchMatches();
-            setProgress(100)
-
         }
-    }, [activeTab])
+        fetchMatches();
+
+    }, [tid])
 
 
     // promo banners
@@ -574,16 +585,16 @@ export const SingleTournament = () => {
                                 <div className="">
                                     <h4 className='font-semibold text-xl mb-3'>Hosted By</h4>
                                     <div className='flex justify-between items-center'>
-                                        <div className='flex gap-3'>
-                                            <img src="/icons/eg_square_logo.svg" alt="Host Profile Pic" className='h-12 w-12 object-cover rounded-[5px]' />
+                                        {host && <div className='flex gap-3'>
+                                            <img src={`${host.prof_pic_url}`} alt="Host Profile Pic" className='h-12 w-12 object-cover rounded-[5px]' />
                                             <div className="flex flex-col justify-center">
-                                                <h4 className='flex items-center gap-[6px]'><span>{JSON.parse(tournament.host).hostName}</span>
+                                                <h4 className='flex items-center gap-[6px]'><span>{host.username}</span>
                                                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fillRule="evenodd" clipRule="evenodd" d="M5.55141 0.412125C6.00125 -0.137374 6.84161 -0.137376 7.29151 0.412125L7.84912 1.09323L8.67262 0.782194C9.337 0.531261 10.0647 0.951419 10.1796 1.65225L10.322 2.52093L11.1907 2.6633C11.8915 2.77816 12.3116 3.5059 12.0607 4.17027L11.7496 4.99375L12.4308 5.55139C12.9802 6.00128 12.9802 6.84159 12.4308 7.29148L11.7496 7.84916L12.0607 8.67259C12.3116 9.33698 11.8915 10.0647 11.1907 10.1796L10.322 10.3219L10.1796 11.1906C10.0647 11.8915 9.337 12.3116 8.67262 12.0607L7.84912 11.7497L7.29151 12.4307C6.84161 12.9803 6.00125 12.9803 5.55141 12.4307L4.99375 11.7497L4.17026 12.0607C3.5059 12.3116 2.77816 11.8915 2.6633 11.1906L2.52092 10.3219L1.65224 10.1796C0.951414 10.0647 0.531262 9.33698 0.782195 8.67259L1.09324 7.84916L0.412126 7.29148C-0.137374 6.84159 -0.137376 6.00128 0.412126 5.55139L1.09324 4.99375L0.782195 4.17027C0.531256 3.5059 0.95142 2.77816 1.65225 2.6633L2.52092 2.52093L2.6633 1.65225C2.77816 0.951419 3.5059 0.531261 4.17026 0.782194L4.99375 1.09323L5.55141 0.412125ZM5.97589 8.78678L9.91148 4.8512L9.11638 4.0561L5.57834 7.59413L3.72699 5.74277L2.93188 6.53787L5.18079 8.78678C5.28623 8.89225 5.42924 8.95146 5.57834 8.95146C5.72745 8.95146 5.87048 8.89225 5.97589 8.78678Z" fill="#26B9F8" />
                                                     </svg>
                                                 </h4>
                                             </div>
-                                        </div>
+                                        </div>}
                                         <div className="flex gap-2 justify-center">
                                             <svg className='' width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M20.943 0H2.99175C1.34194 0 0 1.34576 0 2.99997V20.9998C0 22.6542 1.34199 24 2.99175 24H20.943C22.5931 24 23.9351 22.6542 23.9351 20.9998V3.00003C23.9351 1.34576 22.5932 0 20.943 0Z" fill="#1B80E4" />

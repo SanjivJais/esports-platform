@@ -24,7 +24,7 @@ export const CreateTournament = ({ onClose, gameID, tournamentDraft }) => {
         startDate: null,
         endDate: null,
         entryFee: JSON.stringify(entryFeeObj),
-        host: JSON.stringify({ 'hostID': user.$id, 'hostName': user.name }),
+        host: user.$id,
         isFeatured: false,
         prizeType: 'eg_token',
         prizePool: [],

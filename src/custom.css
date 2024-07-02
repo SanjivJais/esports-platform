@@ -41,7 +41,7 @@ body::-webkit-scrollbar-thumb {
 /* styles.css */
 
 .tournModalComponent-custom-gradient {
-  background: linear-gradient(to top, #080F18 10%, #080F18 5%, transparent 85%);
+  background: linear-gradient(to top, #05090F 10%, #05090F 5%, transparent 85%);
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;

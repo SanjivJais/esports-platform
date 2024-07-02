@@ -378,13 +378,12 @@ export const Profile = () => {
 
   // fetching tournaments for host
   const [tournamentsHost, setTournamentsHost] = useState([])
-  const hostDetails = `{"hostID":"${user.$id}"`
   useEffect(() => {
     if (activeTab == 4) {
       setProgress(40)
       const fetchTournaments = async () => {
         try {
-          const tourns = await database.listDocuments(db_id, 'tournaments', [Query.startsWith('host', hostDetails), Query.orderDesc('$createdAt')])
+          const tourns = await database.listDocuments(db_id, 'tournaments', [Query.equal('host', user.$id), Query.orderDesc('$createdAt')])
           setTournamentsHost(tourns.documents)
         } catch (error) {
           toast.error(error.message)
