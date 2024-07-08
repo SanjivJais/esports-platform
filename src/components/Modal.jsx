@@ -1,8 +1,14 @@
 import React from 'react'
 import { IoClose } from 'react-icons/io5'
 
-export const Modal = ({ isVisible, onClose, children, closeButtonActive=true, outsideClose = false }) => {
-    if (!isVisible) return null;
+export const Modal = ({ isVisible, onClose, children, closeButtonActive = true, outsideClose = false }) => {
+    if (!isVisible) {
+        document.body.classList.remove("overflow-hidden");
+        return null
+    } else {
+        document.body.classList.add("overflow-hidden");
+
+    }
     const handleClose = (e) => {
         if (e.target.id === "modalWrapper" && outsideClose) { onClose() };
     }

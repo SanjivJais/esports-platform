@@ -18,7 +18,7 @@ import { BiSolidExit } from 'react-icons/bi';
 import { Query } from 'appwrite';
 import { Modal } from '../components/Modal';
 import { TournCard } from '../components/Tournament/TournCard'
-import { FaTrophy } from 'react-icons/fa';
+import { FaCircle, FaTrophy } from 'react-icons/fa';
 
 
 
@@ -34,20 +34,19 @@ export const SingleTournament = () => {
 
     useEffect(() => {
 
-        // if (!tournament) {    // temporarily to avoid re-fetching during development 
-        const fetchTournament = async () => {
-            setProgress(60)
-            try {
-                const res = await database.getDocument(db_id, 'tournaments', tid, [])
-                setTournament(res)
-                setProgress(80)
-            } catch (error) {
-                toast.error("Something went wrong!")
+        if (!tournament) {    // temporarily to avoid re-fetching during development 
+            const fetchTournament = async () => {
+                setProgress(60)
+                try {
+                    const res = await database.getDocument(db_id, 'tournaments', tid, [])
+                    setTournament(res)
+                } catch (error) {
+                    toast.error("Something went wrong!")
+                }
             }
+            fetchTournament();
+            setProgress(100)
         }
-        fetchTournament();
-        setProgress(100)
-        // }
     }, [tid])
 
 
@@ -417,7 +416,7 @@ export const SingleTournament = () => {
                             </div>
                             <div className='tournModalComponent-custom-gradient h-full w-full flex flex-col justify-end items-start px-4'>
                                 <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite mb-4 '>{tournament.tournTitle}</h2>
-                                <div className="lg:w-[64%] md:w-[58%] w-full pr-4">
+                                <div className="lg:w-[64%] md:w-[58%] w-full lg:pr-4">
                                     <div className="flex md:gap-8 gap-5 md:text-base text-[15px] custom-scrollbar whitespace-nowrap overflow-x-auto">
                                         <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</div>
                                         <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Bracket</div>
@@ -431,11 +430,69 @@ export const SingleTournament = () => {
                             </div>
                         </div>
 
-                        <div className='w-full h-auto px-4 py-6 flex md:flex-row flex-col gap-6'>
-                            <div className="lg:w-[64%] md:w-[58%] w-full flex flex-col">
+                        <div className='w-full h-auto px-4 py-4 flex md:flex-row flex-col gap-6'>
+                            <div className="lg:w-[64%] md:w-[58%] w-full flex flex-col lg:pr-4">
 
                                 {activeTab === 0 &&
                                     <>
+                                        <div className='max-w-[800px] flex gap-3 py-3 pb-6 px-3 overflow-x-auto custom-scrollbar flex-nowrap mb-8'>
+
+                                            <div className='flex flex-col gap-2 min-w-64'>
+                                                <div className="flex items-center w-full gap-2">
+                                                    <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
+                                                        {/* <FaCircle className='text-primary opacity-90' /> */}
+                                                        <FaCircleCheck className='text-openStatus' />
+                                                    </div>
+                                                    <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
+                                                </div>
+
+                                                <div className='flex flex-col gap-1 px-2'>
+                                                    <h4 className='text-lg text-offBlue font-semibold'>Registration opens</h4>
+                                                    <p className='text-inactive font-medium text-sm text-wrap'>July 10, 2024 — July 15, 2024</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col gap-2 min-w-64'>
+                                                <div className="flex items-center w-full gap-2">
+                                                    <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
+                                                        <FaCircle className='text-primary opacity-90' />
+                                                    </div>
+                                                    <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
+                                                </div>
+
+                                                <div className='flex flex-col gap-1 px-2'>
+                                                    <h4 className='text-lg text-offBlue font-semibold'>Seeding</h4>
+                                                    <p className='text-inactive font-medium text-sm text-wrap'>Matches of Round 1 are seeded randomly.</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col gap-2 min-w-64'>
+                                                <div className="flex items-center w-full gap-2">
+                                                    <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
+                                                        {/* <FaCircle className='text-primary opacity-90' /> */}
+                                                    </div>
+                                                    <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
+                                                </div>
+
+                                                <div className='flex flex-col gap-1 px-2'>
+                                                    <h4 className='text-lg text-offBlue font-semibold'>Starts</h4>
+                                                    <p className='text-inactive font-medium text-sm text-wrap'>Check your match schedule in Bracket section.</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col gap-2 min-w-64'>
+                                                <div className="flex items-center w-full gap-2">
+                                                    <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
+                                                        {/* <FaCircle className='text-primary opacity-90' /> */}
+                                                    </div>
+                                                    <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
+                                                </div>
+
+                                                <div className='flex flex-col gap-1 px-2'>
+                                                    <h4 className='text-lg text-offBlue font-semibold'>Concluded</h4>
+                                                    <p className='text-inactive font-medium text-sm text-wrap'>Check the tournament results!</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                         <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-x-4 gap-y-8 h-fit w-full">
                                             <div>
                                                 <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENTRY FEE </span></div>
