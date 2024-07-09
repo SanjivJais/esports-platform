@@ -381,6 +381,9 @@ export const SingleTournament = () => {
     }, [tournament])
 
 
+    const [tournProgress, setTournProgress] = useState(3);
+
+
 
     return (
         <>
@@ -416,7 +419,7 @@ export const SingleTournament = () => {
                             </div>
                             <div className='tournModalComponent-custom-gradient h-full w-full flex flex-col justify-end items-start px-4'>
                                 <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite mb-4 '>{tournament.tournTitle}</h2>
-                                <div className="lg:w-[64%] md:w-[58%] w-full lg:pr-4">
+                                <div className="lg:w-[64%] md:w-[58%] w-full">
                                     <div className="flex md:gap-8 gap-5 md:text-base text-[15px] custom-scrollbar whitespace-nowrap overflow-x-auto">
                                         <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Overview</div>
                                         <div onClick={(e) => handleTabs(e)} className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive hover:text-offBlue'}  pb-2 font-semibold cursor-pointer`}>Bracket</div>
@@ -431,7 +434,7 @@ export const SingleTournament = () => {
                         </div>
 
                         <div className='w-full h-auto px-4 py-4 flex md:flex-row flex-col gap-6'>
-                            <div className="lg:w-[64%] md:w-[58%] w-full flex flex-col lg:pr-4">
+                            <div className="lg:w-[64%] md:w-[58%] w-full flex flex-col">
 
                                 {activeTab === 0 &&
                                     <>
@@ -440,8 +443,7 @@ export const SingleTournament = () => {
                                             <div className='flex flex-col gap-2 min-w-64'>
                                                 <div className="flex items-center w-full gap-2">
                                                     <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
-                                                        {/* <FaCircle className='text-primary opacity-90' /> */}
-                                                        <FaCircleCheck className='text-openStatus' />
+                                                        {tournProgress === 1 ? <FaCircle className='text-primary opacity-90' /> : tournProgress > 1 ? <FaCircleCheck className='text-openStatus' /> : <></>}
                                                     </div>
                                                     <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
                                                 </div>
@@ -454,7 +456,8 @@ export const SingleTournament = () => {
                                             <div className='flex flex-col gap-2 min-w-64'>
                                                 <div className="flex items-center w-full gap-2">
                                                     <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
-                                                        <FaCircle className='text-primary opacity-90' />
+                                                        {tournProgress === 2 ? <FaCircle className='text-primary opacity-90' /> : tournProgress > 2 ? <FaCircleCheck className='text-openStatus' /> : <></>}
+
                                                     </div>
                                                     <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
                                                 </div>
@@ -467,20 +470,22 @@ export const SingleTournament = () => {
                                             <div className='flex flex-col gap-2 min-w-64'>
                                                 <div className="flex items-center w-full gap-2">
                                                     <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
-                                                        {/* <FaCircle className='text-primary opacity-90' /> */}
+                                                        {tournProgress === 3 ? <FaCircle className='text-primary opacity-90' /> : tournProgress > 3 ? <FaCircleCheck className='text-openStatus' /> : <></>}
+
                                                     </div>
                                                     <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
                                                 </div>
 
                                                 <div className='flex flex-col gap-1 px-2'>
                                                     <h4 className='text-lg text-offBlue font-semibold'>Starts</h4>
-                                                    <p className='text-inactive font-medium text-sm text-wrap'>Check your match schedule in Bracket section.</p>
+                                                    <p className='text-inactive font-medium text-sm text-wrap'>Tournament will start at <span className='text-offBlue'>4:30 PM on July 16, 2024. </span>Check your match schedule in <span>Bracket</span> section before this time.</p>
                                                 </div>
                                             </div>
                                             <div className='flex flex-col gap-2 min-w-64'>
                                                 <div className="flex items-center w-full gap-2">
                                                     <div className="w-10 aspect-square bg-secondary rounded-[50%] flex justify-center items-center border-[0.8px] border-inactive border-opacity-45">
-                                                        {/* <FaCircle className='text-primary opacity-90' /> */}
+                                                        {tournProgress === 4 ? <FaCircle className='text-primary opacity-90' /> : tournProgress > 4 ? <FaCircleCheck className='text-openStatus' /> : <></>}
+
                                                     </div>
                                                     <div className="h-[0.8px] bg-inactive w-full opacity-35"></div>
                                                 </div>
@@ -521,7 +526,7 @@ export const SingleTournament = () => {
                                                 <div className='font-medium flex items-center gap-1'>{tournament.prizeType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {totalPrize}</div>
                                             </div>
 
-                                            <div>
+                                            {/* <div>
                                                 <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTS ON</span></div>
                                                 <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.startDate).date}</div>
                                             </div>
@@ -529,7 +534,7 @@ export const SingleTournament = () => {
                                             <div>
                                                 <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENDS ON </span></div>
                                                 <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.endDate).date}</div>
-                                            </div>
+                                            </div> */}
                                             <div>
                                                 <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></div>
                                                 <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : tournament.status === "Upcoming" ? 'bg-primary' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
