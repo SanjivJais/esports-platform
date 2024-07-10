@@ -415,7 +415,7 @@ export const SingleTournament = () => {
                         }}>
                             <div className="flex gap-2 items-center pt-3 pl-3 ">
                                 <div className='bg-secondary h-fit relative md:text-sm text-[12px] bg-opacity-90 px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Free Fire</div>
-                                {tournament.status === "Open" && calculateTimeLeft(tournament.startDate).daysLeft >= 0 && calculateTimeLeft(tournament.startDate).hoursLeft >= 0 && <div title='Time left to start' className='bg-secondary h-fit relative md:text-sm text-[12px] bg-opacity-90 px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.startDate).daysLeft}d, {calculateTimeLeft(tournament.startDate).hoursLeft}hrs </div>}
+                                {tournament.status === "Open" && calculateTimeLeft(tournament.regEnd).daysLeft >= 0 && calculateTimeLeft(tournament.regEnd).hoursLeft >= 0 && <div title='Time left to start' className='bg-secondary h-fit relative md:text-sm text-[12px] bg-opacity-90 px-3 py-[3px] rounded-2xl font-medium flex items-center gap-1'>Start In: <FaRegClock className='text-openStatus' />{calculateTimeLeft(tournament.regEnd).daysLeft}d, {calculateTimeLeft(tournament.regEnd).hoursLeft}hrs </div>}
                             </div>
                             <div className='tournModalComponent-custom-gradient h-full w-full flex flex-col justify-end items-start px-4'>
                                 <h2 className='lg:text-4xl md:text-3xl text-xl font-semibold text-offWhite mb-4 '>{tournament.tournTitle}</h2>
@@ -526,15 +526,6 @@ export const SingleTournament = () => {
                                                 <div className='font-medium flex items-center gap-1'>{tournament.prizeType === "eg_coin" ? <img className='' src="/icons/Coin.svg" alt="" /> : <img className='' src="/icons/eg_token.svg" alt="" />} {totalPrize}</div>
                                             </div>
 
-                                            {/* <div>
-                                                <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STARTS ON</span></div>
-                                                <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.startDate).date}</div>
-                                            </div>
-
-                                            <div>
-                                                <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>ENDS ON </span></div>
-                                                <div className='font-medium flex items-center gap-1'>{formatDateTime(tournament.endDate).date}</div>
-                                            </div> */}
                                             <div>
                                                 <div className='text-[13px] text-inactive font-semibold flex items-center gap-1'><span>STATUS </span><Tooltip content={"Status shows whether new enrollments in tournament is allowed or not."} children={<MdInfo />} /></div>
                                                 <div className={`text-[12px] mt-[2px] font-medium ${tournament.status === "Open" ? 'bg-openStatus' : tournament.status === "Ongoing" ? 'bg-ongoingStatus' : tournament.status === "Finished" ? 'bg-finishedStatus' : tournament.status === "Upcoming" ? 'bg-primary' : 'bg-abortedStatus'} bg-opacity-40 w-fit px-2 py-[2px] rounded-xl`}>{tournament.status}</div>
@@ -690,7 +681,7 @@ export const SingleTournament = () => {
                                 <div className='bg-secondary '>
                                     <div className='bg-secondaryLight py-3 px-4 flex justify-between rounded-tr-[5px] rounded-tl-[5px]'>
                                         <h3 className='font-bold text-lg text-offBlue'>{tournament.status === "Finished" ? 'Results' : tournament.status === "Aborted" ? 'Aborted' : 'Prize Pool'}</h3>
-                                        {(tournament.status === "Open" || tournament.status === "Ongoing") && <div> {formatDateTime(tournament.startDate).time} / {formatDateTime(tournament.startDate).date} </div>}
+                                        {(tournament.status === "Open" || tournament.status === "Ongoing") && <div> {formatDateTime(tournament.regEnd).time} / {formatDateTime(tournament.regEnd).date} </div>}
                                         {tournament.status === "Finished" && <div className='font-bold text-lg text-offBlue'>Prizes</div>}
                                     </div>
 

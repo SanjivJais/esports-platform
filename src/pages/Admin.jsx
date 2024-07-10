@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { CreateTourn } from '../components/Tournament/CreateTourn';
+import { Link } from 'react-router-dom';
 
 export const Admin = () => {
 
@@ -29,7 +30,7 @@ export const Admin = () => {
       <div className='flex'>
         {/* Sidebar */}
         <div className="flex flex-col min-w-[274px] h-screen sticky top-0 left-0 bg-secondary px-4 py-6">
-          <h2 className='self-center font-bold text-xl'>EG Admin</h2>
+          <Link to={'/'} className='self-center font-bold text-xl'><h2>EG Admin</h2></Link>
 
           {/* menu options */}
           <div className="flex flex-col gap-3 mt-10">
