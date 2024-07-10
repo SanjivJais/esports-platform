@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Modal } from '../Modal';
 import { FaRegClock } from 'react-icons/fa6';
 import { HiMiniTrophy } from 'react-icons/hi2';
-import { TournModal } from './TournModal'
+// import { TournModal } from './TournModal'
 import { CreateTournament } from './CreateTournament';
 import { UpdateTournModal } from './UpdateTournModal';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 export const HostTournCard = ({ tournament }) => {
     const [showModal, setShowModal] = useState(false);
     const [createTournModal, setCreateTournModal] = useState(false)
-    const [showUserviewModal, setShowUserviewModal] = useState(false);
+    // const [showUserviewModal, setShowUserviewModal] = useState(false);
     let totalPrize = 0;
     for (let index = 0; index < tournament.prizePool.length; index++) {
         totalPrize += tournament.prizePool[index];
@@ -126,9 +126,9 @@ export const HostTournCard = ({ tournament }) => {
             <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
                 <UpdateTournModal tournament={tournament} onClose={() => setShowModal(false)} />
             </Modal>
-            <Modal isVisible={showUserviewModal} onClose={() => setShowUserviewModal(false)}>
+            {/* <Modal isVisible={showUserviewModal} onClose={() => setShowUserviewModal(false)}>
                 <TournModal tournament={tournament} onClose={() => setShowUserviewModal(false)} />
-            </Modal>
+            </Modal> */}
 
             <Modal closeButtonActive={false} isVisible={createTournModal} onClose={() => setCreateTournModal(false)}>
                 <CreateTournament gameID={tournament.gameID} onClose={() => setCreateTournModal(false)} tournamentDraft={tournament} />

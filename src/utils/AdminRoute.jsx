@@ -5,5 +5,5 @@ import { useAuth } from './AuthContext'
 export const AdminRoute = () => {
     const { user } = useAuth()
 
-    return ((user.labels.includes("admin") && user.email === "esportsgravity7@gmail.com") ? <Outlet /> : <Navigate to={'/'} />)
+    return ((user && user.labels.includes("admin") && user.email === "esportsgravity7@gmail.com") ? <Outlet /> : <Navigate to={'/'} />)
 }

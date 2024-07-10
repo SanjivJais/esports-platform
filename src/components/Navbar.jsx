@@ -121,13 +121,13 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
               <div className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG md:px-4 px-2 max-sm:text-sm md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
                 <div className='flex items-center gap-2'>
                   <img src="/icons/eg_token.svg" alt="" className='h-4 w-auto' />
-                  <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_token}</label>
+                  <div className="cursor-pointer">{userDetails && userDetails.eg_token}</div>
                 </div>
               </div>
               <div title='Load EG Coins' className="hover:bg-secondaryLight cursor-pointer transition-colors duration-200 ease-in-out bg-frameBG md:px-4 px-2 max-sm:text-sm md:py-2 py-[6px] rounded-[5px] text-offBlue border-[0.8px] border-inactive border-opacity-20">
                 <div className='flex items-center gap-2'>
                   <img src="/icons/Coin.svg" alt="" className='h-4 w-auto' />
-                  <label htmlFor="" className="cursor-pointer">{userDetails && userDetails.eg_coin}</label>
+                  <div className="cursor-pointer">{userDetails && userDetails.eg_coin}</div>
                 </div>
               </div>
             </div>
@@ -144,6 +144,7 @@ export const Navbar = ({ toggleSidebar, mobToggleSidebar }) => {
                 </div>
                 <div className='absolute flex-col w-40 md:right-0 right-4 rounded-[5px] px-2 py-0 group-hover:py-2 bg-secondary h-0 transition-all duration-200 group-hover:h-fit group-hover:flex'>
                   <Link to={'/profile'}> <div className='px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'>Profile</div></Link>
+                  {user.labels.includes("admin") && <Link to={'/egofficial-admin'}> <div className='px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'>Admin Dash</div></Link>}
                   <div onClick={() => setLogoutConfirmationModal(true)} className='items-center gap-2 px-2 py-2 hover:bg-secondaryLight cursor-pointer rounded-[5px] hidden group-hover:flex'><span>Logout</span> <IoIosLogOut /></div>
                 </div>
               </>

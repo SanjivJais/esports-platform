@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from '../Modal';
-import { TournModal } from './TournModal';
+// import { Modal } from '../Modal';
+// import { TournModal } from './TournModal';
 import { HiMiniTrophy } from 'react-icons/hi2';
 import { FaCircleCheck, FaRegClock } from 'react-icons/fa6';
 import { useAuth } from '../../utils/AuthContext';
 import { Link } from 'react-router-dom';
 
 export const TournCard = ({ tournament }) => {
-    const [showModal, setShowModal] = useState(false);
+    // const [showModal, setShowModal] = useState(false);
     let totalPrize = 0;
     for (let index = 0; index < tournament.prizePool.length; index++) {
         totalPrize += tournament.prizePool[index];
@@ -129,9 +129,9 @@ export const TournCard = ({ tournament }) => {
                 </div>
 
             </div>
-            <Modal outsideClose={false} isVisible={showModal} onClose={() => setShowModal(false)}>
+            {/* <Modal outsideClose={false} isVisible={showModal} onClose={() => setShowModal(false)}>
                 <TournModal tournament={tournament} />
-            </Modal>
+            </Modal> */}
         </div>
     )
 }

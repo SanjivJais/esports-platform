@@ -28,6 +28,7 @@ import { HelpCenter } from "./pages/EssentialPages/HelpCenter"
 import { AccountVerification } from "./pages/AccountVerification"
 import { ResetPass } from "./pages/ResetPass"
 import { SingleTournament } from "./pages/SingleTournament"
+import { NotFound404 } from "./pages/EssentialPages/NotFound404"
 
 const LoginStatusRouting = () => {
   const { user } = useAuth(); // Get authentication status from context
@@ -72,9 +73,10 @@ function App() {
             </Route>
 
             <Route element={<AdminRoute />}>
-              <Route path='/admin-egofficial' element={<Admin />} />
+              <Route path='/egofficial-admin' element={<Admin />} />
             </Route>
 
+            <Route path="*" element={<NotFound404 />} />
 
           </Routes>
         </GameProfileProvider>

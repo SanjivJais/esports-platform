@@ -19,7 +19,8 @@ export default {
         openStatus: "rgb(34, 197, 94)",
         ongoingStatus: "rgb(6, 182, 212)",
         finishedStatus: 'rgb(99, 102, 241)',
-        abortedStatus: 'rgb(100 116 139)'
+        abortedStatus: 'rgb(100 116 139)',
+        adminColor: '#059669'
       },
       boxShadow: {
         'card': '0 10px 25px 3px #6C81A124',
