@@ -19,6 +19,8 @@ import { Query } from 'appwrite';
 import { Modal } from '../components/Modal';
 import { TournCard } from '../components/Tournament/TournCard'
 import { FaCircle, FaTrophy } from 'react-icons/fa';
+import { formatDateTime, calculateTimeLeft } from '../utils/DateUtils';
+
 
 
 
@@ -71,46 +73,6 @@ export const SingleTournament = () => {
     }, [tournament])
 
 
-
-    // formatting datetime 
-    const formatDateTime = (dateTimeString) => {
-        // Split the input string into date and time parts
-        const [datePart, timePart] = dateTimeString.split('T');
-
-        const [year, month, day] = datePart.split('-');
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        const formattedDate = `${months[parseInt(month, 10) - 1]} ${parseInt(day, 10)}, ${year}`;
-
-        // Parse the time part
-        const [hours, minutes] = timePart.split(':');
-        const hour = parseInt(hours, 10) > 12 ? parseInt(hours, 10) - 12 : parseInt(hours, 10);
-        const ampm = parseInt(hours, 10) >= 12 ? 'PM' : 'AM';
-        const formattedTime = `${hour}:${minutes} ${ampm}`;
-
-        return { date: formattedDate, time: formattedTime };
-    };
-
-    const calculateTimeLeft = (targetDateTime) => {
-        // Parse the target date and time
-        const [dateString, timeString] = targetDateTime.split('T');
-        const [year, month, day] = dateString.split('-').map(Number);
-        const [hour, minute] = timeString.split(':').map(Number);
-
-        // Create a new Date object using the extracted components
-        const targetDate = new Date(year, month - 1, day, hour, minute);
-
-        // Get the current date and time
-        const currentDate = new Date();
-
-        // Calculate the time difference in milliseconds
-        const timeDifference = targetDate - currentDate;
-
-        // Calculate days and hours left
-        const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-        return { daysLeft, hoursLeft };
-    };
 
 
     const tabs = document.getElementsByClassName("tournTab");
@@ -450,7 +412,7 @@ export const SingleTournament = () => {
 
                                                 <div className='flex flex-col gap-1 px-2'>
                                                     <h4 className='text-lg text-offBlue font-semibold'>Registration opens</h4>
-                                                    <p className='text-inactive font-medium text-sm text-wrap'>July 10, 2024 — July 15, 2024</p>
+                                                    <p className='text-inactive font-medium text-sm text-wrap'>{formatDateTime(tournament.regStart).time}, {formatDateTime(tournament.regStart).date} — {formatDateTime(tournament.regEnd).time}, {formatDateTime(tournament.regEnd).date}</p>
                                                 </div>
                                             </div>
                                             <div className='flex flex-col gap-2 min-w-64'>

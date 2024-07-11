@@ -25,7 +25,7 @@ export const Slider = ({ slides, interval = 3000 }) => {
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
                 {slides.map((slide, index) => (
-                    <div key={index} className="relative flex-shrink-0 w-full md:h-56 h-20">
+                    <div key={index} className="relative flex-shrink-0 w-full md:h-64 h-20">
                         <a href={slide.targetLink} target='_blank'>
                             <img src={slide.imgUrl} alt={`Slide ${index}`} className="w-full h-full object-cover object-center" />
                         </a>

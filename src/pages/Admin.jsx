@@ -64,7 +64,7 @@ export const Admin = () => {
           </div>
 
 
-          <div className='px-6 w-full'>
+          <div className='px-4 w-full'>
 
             {sideTab === 0 && activeTab === 0 && <>
               <CreateTourn />

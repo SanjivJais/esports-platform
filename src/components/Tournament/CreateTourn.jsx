@@ -5,40 +5,73 @@ import { toast } from 'react-toastify';
 import { TbTournament } from 'react-icons/tb';
 import { database, ID, db_id } from '../../../config/Appwrite';
 import LoadingBar from 'react-top-loading-bar';
+import { formatDateTime } from '../../utils/DateUtils';
 
 
-export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
+export const CreateTourn = ({ onClose, tournamentDraft }) => {
     const { user } = useAuth()
 
-    const [entryFeeObj, setEntryFeeObj] = useState({
-        currencyType: 'eg_token',
-        fee: 0
-    })
+    const tabs = document.getElementsByClassName("tournTab");
+    let [activeTab, setActiveTab] = useState(0);
+    // const handleTabs = (event) => {
+    //     const index = Array.from(tabs).indexOf(event.target);
+    //     setActiveTab(index);
+    // }
+
+    useEffect(() => (
+        setActiveTab(activeTab)
+    ), [activeTab])
+
+
+
+    const [gameID, setGameID] = useState(null)
+
+    const [entryFeeObj, setEntryFeeObj] = useState(null)
 
     const [gameDetailsObj, setGameDetailsObj] = useState(null)
 
-    const [tournament, setTournament] = useState({
-        gameID: gameID,
-        tournTitle: null,
-        description: null,
-        imgURL: null,
-        regStart: null,
-        regEnd: null,
-        entryFee: JSON.stringify(entryFeeObj),
-        host: user.$id,
-        isFeatured: false,
-        prizeType: 'eg_token',
-        prizePool: [],
-        participants: [],
-        status: 'Draft',
-        ytStreamURL: [],
-        rules: null,
-        winners: [],
-        max: null,
-        min: 2,
-        gameDetails: JSON.stringify(gameDetailsObj),
-        bracket: null,
-    })
+    const [tournament, setTournament] = useState(null)
+    // prize pool 
+    const [prizesData, setPrizesData] = useState([0, 0, 0]); // Initiate state with three default prizes
+    const [pubStatus, setPubStatus] = useState("Open")
+
+
+
+    useEffect(() => {
+        setEntryFeeObj({
+            currencyType: 'eg_token',
+            fee: 0
+        })
+
+        setGameDetailsObj(null)
+
+        setTournament({
+            gameID: gameID,
+            tournTitle: null,
+            description: null,
+            imgURL: null,
+            regStart: null,
+            regEnd: null,
+            entryFee: JSON.stringify(entryFeeObj),
+            host: user.$id,
+            isFeatured: false,
+            prizeType: 'eg_token',
+            prizePool: [],
+            participants: [],
+            status: 'Draft',
+            ytStreamURL: [],
+            rules: null,
+            winners: [],
+            max: null,
+            min: null,
+            gameDetails: JSON.stringify(gameDetailsObj),
+            bracket: null,
+        })
+
+        setPrizesData([0, 0, 0])
+        setPubStatus("Open")
+
+    }, [gameID])
 
 
 
@@ -47,48 +80,15 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
 
 
 
-
-
-
-
-
-    
-
-    const [pubStatus, setPubStatus] = useState('Open')
 
     const handleStatusChange = (e) => {
         setPubStatus(e.target.value)
     }
 
-    // formatting datetime 
-    const formatDateTime = (dateTimeString) => {
-        // Split the input string into date and time parts
-        const [datePart, timePart] = dateTimeString.split('T');
-
-        const [year, month, day] = datePart.split('-');
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        const formattedDate = `${months[parseInt(month, 10) - 1]} ${parseInt(day, 10)}, ${year}`;
-
-        // Parse the time part
-        const [hours, minutes] = timePart.split(':');
-        const hour = parseInt(hours, 10) > 12 ? parseInt(hours, 10) - 12 : parseInt(hours, 10);
-        const ampm = parseInt(hours, 10) >= 12 ? 'PM' : 'AM';
-        const formattedTime = `${hour}:${minutes} ${ampm}`;
-
-        return { date: formattedDate, time: formattedTime };
-    };
 
 
-    const tabs = document.getElementsByClassName("tournTab");
-    let [activeTab, setActiveTab] = useState(0);
-    const handleTabs = (event) => {
-        const index = Array.from(tabs).indexOf(event.target);
-        setActiveTab(index);
-    }
 
-    useEffect(() => (
-        setActiveTab(activeTab)
-    ), [activeTab])
+
 
 
     const handleInput = (e) => {
@@ -118,8 +118,7 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
     }, [entryFeeObj])
 
 
-    // prize pool 
-    const [prizesData, setPrizesData] = useState([0, 0, 0]); // Initial state with a number
+
 
     const addPrize = () => {
         setPrizesData([...prizesData, 0]); // Add a number (0 in this case) to the prizes array
@@ -234,15 +233,17 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
     const createTournament = async () => {
         if (validateFields()) {
 
-            setProgress(60)
-            try {
-                const res = await database.createDocument(db_id, 'tournaments', ID.unique(), tournament)
-                toast.success("Tournament created successfully!")
-                setNewlyCreatedTournament(res)
-            } catch (error) {
-                toast.error(error.message)
-            }
-            setProgress(100)
+            console.log(tournament);
+
+            // setProgress(60)
+            // try {
+            //     const res = await database.createDocument(db_id, 'tournaments', ID.unique(), tournament)
+            //     toast.success("Tournament created successfully!")
+            //     setNewlyCreatedTournament(res)
+            // } catch (error) {
+            //     toast.error(error.message)
+            // }
+            // setProgress(100)
         }
     }
 
@@ -356,18 +357,43 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
                 progress={progress}
                 onLoaderFinished={() => setProgress(0)}
             />
-            <div className='h-[92vh] lg:w-[70vw] md:w-[80vw] w-[94vw] overflow-x-hidden custom-scrollbar'>
-                <div className='lg:h-[40%] md:h-[36%] h-[34%] flex flex-col justify-between' style={{
-                    backgroundImage: `url(${tournament.imgURL}`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}>
 
-                    {!tournament.imgURL && gameID === "freefire" && <img src="/images/FF_Long_logo.png" alt="FF Logo" className='self-center top-[45%] relative translate-y-[-50%] opacity-45 object-cover h-4' />}
+
+            <div className="flex flex-col gap-4 mx-3 mt-6 mb-12 w-full">
+                <h3 className='text-xl font-bold text-offBlue'>Select game</h3>
+                <div className="flex gap-4 w-full">
+                    <div className="flex gap-8 w-full">
+                        {/* pass gameID in setGameID */}
+                        <div onClick={() => setGameID('freefire')} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
+                            <div className={`${gameID === 'freefire' ? '' : 'bg-secondary bg-opacity-60'} h-40 w-32 tournModalComponent-custom-gradient absolute flex flex-col justify-end items-center pb-2 text-offBlue font-semibold`}>Free Fire</div>
+                            <img src="/images/FF_DP.jpg" alt="" className={`h-40 w-32 rounded-lg border-2 group-hover:border-primary ${gameID === 'freefire' ? 'border-primary ' : 'border-inactive border-opacity-40'} object-cover`} />
+                        </div>
+                        <div onClick={() => setGameID('pubgmobile')} className="flex flex-col gap-2 items-center group hover:cursor-pointer">
+                            <div className={`${gameID === 'pubgmobile' ? '' : 'bg-secondary bg-opacity-60'} h-40 w-32 tournModalComponent-custom-gradient absolute flex flex-col justify-end items-center pb-2 text-offBlue font-semibold`}>PUBG Mobile</div>
+                            <img src="/images/PUBG_DP.jpg" alt="" className={`h-40 w-32 rounded-lg border-2 group-hover:border-primary ${gameID === 'pubgmobile' ? 'border-primary ' : 'border-inactive border-opacity-40'} object-cover`} />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            {gameID && <div className=''>
+                <div className='lg:h-56 md:h-48 h-40 flex flex-col justify-between rounded-lg'
+                    style={{
+                        backgroundImage: `url(${tournament.imgURL}`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                >
+
+                    {!tournament.imgURL && gameID === "freefire" && <img src="/images/FF_Long_logo.png" alt="FF Logo" className='self-center top-[40%] relative translate-y-[-50%] opacity-45 object-cover h-4' />}
+                    {!tournament.imgURL && gameID === "pubgmobile" && <div className='self-center top-[40%] relative translate-y-[-50%] text-inactive font-bold text-lg'>Coming Soon!</div>}
 
                     <div className='tournModalComponent-custom-gradient h-full flex flex-col justify-end items-start px-4'>
                         <div className="w-full">
-                            <div className="flex md:justify-center md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
+                            <div className="flex md:gap-8 gap-4 md:text-base text-sm custom-scrollbar whitespace-nowrap overflow-x-auto">
                                 <div className={`tournTab ${activeTab === 0 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive'}  pb-2 font-semibold`}>Step 1: Create Tournament</div>
                                 <div className={`tournTab ${activeTab === 1 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive'}  pb-2 font-semibold`}>Step 2: Setup Bracket</div>
                                 <div className={`tournTab ${activeTab === 2 ? 'md:border-b-2 md:border-primary md:text-offBlue text-primary' : 'text-inactive'}  pb-2 font-semibold`}>Step 3: Schedule Matches</div>
@@ -376,37 +402,37 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
                         </div>
                     </div>
                 </div>
+
                 <div className='w-full p-4 flex-col gap-4'>
                     <div className="w-full flex flex-col">
-
 
                         {activeTab === 0 &&
                             <>
                                 <h3 className='text-xl text-offBlue font-semibold '>Create Tournament</h3>
-                                <div className='text-sm text-offBlue my-4 border-2 border-finishedStatus border-opacity-45 bg-inactive bg-opacity-10 px-3 py-2 rounded-[5px]'>
+                                <div className='text-sm text-offBlue my-4 border-2 border-finishedStatus border-opacity-35 bg-inactive bg-opacity-10 px-3 py-2 rounded-[5px]'>
                                     <p>Please double-check entered details.</p>
                                 </div>
 
                                 <fieldset className='border-2 border-inactive border-opacity-20 rounded-md bg-secondaryLight bg-opacity-30'>
-                                    <legend className='px-3 bg-finishedStatus rounded-xl text-sm ml-2'>General Info</legend>
+                                    <legend className='px-3 bg-primary text-secondary font-semibold py-1 rounded-2xl text-sm ml-2'>General</legend>
                                     <div className="grid md:grid-cols-2 grid-cols-1 gap-3 px-4 pt-2 pb-4">
                                         <div className="flex flex-col gap-1">
                                             <div>Tournament title <span className='text-red-500 font-semibold text-lg'>*</span></div>
-                                            <input onChange={handleInput} name='tournTitle' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="text" placeholder='Title here (<150 characters)' />
+                                            <input onChange={handleInput} value={tournament.tournTitle || ""} name='tournTitle' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="text" placeholder='Title here (<150 characters)' />
                                         </div>
                                         <div className="flex flex-col gap-1">
                                             <div>Image URL <span className='text-red-500 font-semibold text-lg'>*</span></div>
-                                            <input onChange={handleInput} name='imgURL' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="url" placeholder='Thumbnail image URL' />
+                                            <input onChange={handleInput} value={tournament.imgURL || ""} name='imgURL' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="url" placeholder='Thumbnail image URL' />
                                         </div>
 
                                         <div className="flex flex-col gap-1">
                                             <div>Description</div>
-                                            <textarea onChange={handleInput} name="description" id="" cols="30" placeholder='Short tournament description (HTML)' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
+                                            <textarea onChange={handleInput} value={tournament.description || ""} name="description" id="" cols="30" placeholder='Short tournament description (HTML)' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
                                         </div>
 
                                         <div className="flex flex-col gap-1">
                                             <div>Is Featured?</div>
-                                            <select onChange={handleInput} defaultValue={false} name="isFeatured" id="" className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                            <select onChange={handleInput} value={tournament.isFeatured} name="isFeatured" id="" className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </select>
@@ -414,11 +440,11 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
 
                                         <div className="flex flex-col gap-1">
                                             <div>Max Participants<span className='text-red-500 font-semibold text-lg'>*</span></div>
-                                            <input onChange={handleInput} name='max' min={2} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="number" placeholder='Min. 2' />
+                                            <input onChange={handleInput} value={tournament.max || ""} name='max' min={2} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="number" placeholder='Min. 2' />
                                         </div>
                                         <div className="flex flex-col gap-1">
-                                            <div>Min Participants</div>
-                                            <input onChange={handleInput} name='min' min={2} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="number" placeholder='Min. 2' />
+                                            <div>Min Participants<span className='text-red-500 font-semibold text-lg'>*</span></div>
+                                            <input onChange={handleInput} value={tournament.min || ""} name='min' min={2} className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="number" placeholder='Min. 2' />
                                         </div>
                                         <div className="flex flex-col gap-1">
                                             <div>Entry Fee<span className='text-red-500 font-semibold text-lg'>*</span></div>
@@ -436,7 +462,7 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
                                         <div className="flex flex-col gap-1">
                                             <div>Prize Type<span className='text-red-500 font-semibold text-lg'>*</span></div>
                                             <div className="flex items-center">
-                                                <select onChange={handleInput} value={tournament.prizeType || ''} name="prizeType" id="" className='custom-dropdown'>
+                                                <select onChange={handleInput} value={tournament.prizeType} name="prizeType" id="" className='custom-dropdown'>
                                                     <option value="eg_token">EG Token</option>
                                                     <option value="eg_coin">EG Coin (premium)</option>
                                                 </select>
@@ -471,30 +497,30 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
 
                                         <div className="flex flex-col gap-2 bg-frameBG bg-opacity-75 p-4 rounded-[5px]">
                                             <div className="flex flex-col gap-1">
-                                                <div>Start Date/Time <span className='text-red-500 font-semibold text-lg'>*</span></div>
-                                                <input onChange={handleInput} name='startDate' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="datetime-local" />
+                                                <div>Registration Start<span className='text-red-500 font-semibold text-lg'>*</span></div>
+                                                <input onChange={handleInput} value={tournament.regStart || ""} name='regStart' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="datetime-local" />
                                             </div>
                                             <div className="flex flex-col gap-1">
-                                                <div>End Date <span className='text-red-500 font-semibold text-lg'>*</span></div>
-                                                <input onChange={handleInput} name='endDate' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="datetime-local" />
+                                                <div>Registration End <span className='text-red-500 font-semibold text-lg'>*</span></div>
+                                                <input onChange={handleInput} value={tournament.regEnd || ""} name='regEnd' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="datetime-local" />
                                             </div>
                                         </div>
 
                                         <div className="flex flex-col gap-1">
                                             <div>Rules <span className='text-red-500 font-semibold text-lg'>*</span></div>
-                                            <textarea onChange={handleInput} name="rules" id="" cols="30" placeholder='Rules, Details, and Guides (HTML)' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
+                                            <textarea onChange={handleInput} value={tournament.rules || ""} name="rules" id="" cols="30" placeholder='Rules, Details, and Guides (HTML)' className='bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none'></textarea>
                                         </div>
 
-                                        <div className="flex flex-col gap-1">
+                                        {/* <div className="flex flex-col gap-1">
                                             <div>Bracket</div>
                                             <select disabled name="bracket" id="" className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                                 <option value="single_match">Single Match</option>
                                             </select>
-                                        </div>
+                                        </div> */}
 
                                         <div className="flex flex-col gap-1">
                                             <div>Status</div>
-                                            <select onChange={handleStatusChange} defaultValue={"Open"} id="" className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                            <select onChange={handleStatusChange} value={pubStatus} id="" className='custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                                 <option value="Open">Open</option>
                                                 <option value="Upcoming">Upcoming</option>
                                             </select>
@@ -505,20 +531,22 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
                                 </fieldset>
 
                                 <fieldset className='border-2 border-inactive border-opacity-20 rounded-md mt-4 bg-secondaryLight bg-opacity-30'>
-                                    <legend className='px-3 bg-openStatus text-secondary font-semibold rounded-xl text-sm ml-2'>Game Info</legend>
+                                    <legend className='px-3 py-1 bg-adminColor text-secondary font-semibold rounded-2xl text-sm ml-2'>Game details</legend>
                                     <div className="grid md:grid-cols-2 grid-cols-1 gap-3 px-4 pt-2 pb-4">
                                         {gameID === "freefire" && <>
                                             <div className="flex flex-col gap-1">
                                                 <div>Game Mode <span className='text-red-500 font-semibold text-lg'>*</span></div>
-                                                <input onChange={handleGamedetailsInput} name='gameMode' className='ffGameDetails bg-transparent py-2 px-3 rounded-[5px] border-2 border-inactive border-opacity-20 placeholder:text-sm placeholder:text-inactive focus:border-opacity-80 focus:outline-none' type="text" placeholder='Eg. Battle Royale' />
+                                                <select onChange={handleGamedetailsInput} defaultValue={"battle_royale"} name="gameMode" className='ffGameDetails custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                                    <option value="battle_royale">Battle Royale</option>
+                                                    <option value="clash_squad">Clash Squad</option>
+                                                </select>
                                             </div>
                                             <div className="flex flex-col gap-1">
                                                 <div>Team Size <span className='text-red-600'>*</span></div>
-                                                <select onChange={handleGamedetailsInput} defaultValue={"-1"} name="teamSize" id="" className='ffGameDetails custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
+                                                <select onChange={handleGamedetailsInput} defaultValue={"-1"} name="teamSize" className='ffGameDetails custom-dropdown border-2 border-inactive border-opacity-20 text-offBlue'>
                                                     <option value="-1">Choose size</option>
-                                                    <option value="Solo">Solo (1)</option>
-                                                    <option value="Duo">Duo (2)</option>
-                                                    <option value="Squad">Squad (4)</option>
+                                                    <option value="1">1 (Solo)</option>
+                                                    <option value="4">4 (Squad)</option>
                                                 </select>
                                             </div>
                                             <div className="flex flex-col gap-1">
@@ -584,7 +612,7 @@ export const CreateTourn = ({ onClose, gameID, tournamentDraft }) => {
                     </div>}
                 </div>
 
-            </div>
+            </div>}
 
 
 

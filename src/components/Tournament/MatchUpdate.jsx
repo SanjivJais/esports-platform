@@ -4,28 +4,13 @@ import { Modal } from '../Modal';
 import { database, db_id } from '../../../config/Appwrite';
 import LoadingBar from 'react-top-loading-bar';
 import { toast } from 'react-toastify';
+import { formatDateTime } from '../../utils/DateUtils';
+
 
 export const MatchUpdate = ({ match, participants, gameID }) => {
 
     const [progress, setProgress] = useState(0)
 
-    // formatting datetime 
-    const formatDateTime = (dateTimeString) => {
-        // Split the input string into date and time parts
-        const [datePart, timePart] = dateTimeString.split('T');
-
-        const [year, month, day] = datePart.split('-');
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        const formattedDate = `${months[parseInt(month, 10) - 1]} ${parseInt(day, 10)}, ${year}`;
-
-        // Parse the time part
-        const [hours, minutes] = timePart.split(':');
-        const hour = parseInt(hours, 10) > 12 ? parseInt(hours, 10) - 12 : parseInt(hours, 10);
-        const ampm = parseInt(hours, 10) >= 12 ? 'PM' : 'AM';
-        const formattedTime = `${hour}:${minutes} ${ampm}`;
-
-        return { date: formattedDate, time: formattedTime };
-    };
 
     const [editBoxOpen, setEditBoxOpen] = useState(false)
     const [entryDetails, setEntryDetails] = useState(JSON.parse(match.entryDetails))
