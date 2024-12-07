@@ -5,6 +5,7 @@ import { Footer } from '../components/Footer'
 import { useAuth } from '../utils/AuthContext'
 import LoadingBar from 'react-top-loading-bar'
 import { toast } from 'react-toastify'
+import { IoIosWarning } from 'react-icons/io'
 
 export const ParentPage = ({ Page }) => {
 
@@ -43,6 +44,10 @@ export const ParentPage = ({ Page }) => {
                         {user && !user.emailVerification && <div className="flex items-center px-6 py-3 bg-primary text-secondary font-medium">
                             Please&nbsp; <button onClick={sendVerificationMail} disabled={progress % 100 !== 0} className='underline underline-offset-2 decoration-dotted cursor-pointer font-semibold'>verify your email</button>&nbsp;to enjoy all features!
                         </div>}
+                        <div className="flex items-center gap-2 text-lg px-6 py-3 bg-rose-900 text-white font-bold">
+                            <IoIosWarning /><span>Sorry, we are currently not operating!</span>
+                        </div>
+
                         {Page}
                     </div>
                     <Footer />
