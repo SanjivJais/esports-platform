@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { IoNotificationsCircle } from 'react-icons/io5'
-import ReactHtmlParser from 'react-html-parser'
+import parse from 'html-react-parser';
 import { useAuth } from '../utils/AuthContext'
 import { database, db_id } from '../../config/Appwrite'
 import { Query } from 'appwrite'
@@ -138,7 +138,7 @@ export const NotificationTile = ({ notification }) => {
                     <div className="flex flex-col self-start"><IoNotificationsCircle className={`${readStatus ? 'text-openStatus' : 'text-offBlue group-hover:text-openStatus'}  text-3xl`} /></div>
                     <div className="flex flex-col text-offWhite gap-1">
                         {/* content  */}
-                        {ReactHtmlParser(notification.message)}
+                        {parse(notification.message)}
 
                         <div className='text-dimText text-sm'>{formatDateTime(convertISODateToLocal(notification.$createdAt)).date} / {formatDateTime(convertISODateToLocal(notification.$createdAt)).time}</div>
 

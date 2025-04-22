@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactHtmlParser from 'react-html-parser'
+import parse from 'html-react-parser';
 
 export const AnnouncementsCard = ({ announcement }) => {
 
@@ -35,7 +35,7 @@ export const AnnouncementsCard = ({ announcement }) => {
                 <div className="flex flex-col gap-1">
                     <h3 className='text-[1.3rem] font-semibold text-offWhite'>{announcement.title}</h3>
 
-                    <div className='text-offBlue content-area'>{ReactHtmlParser(announcement.content)}</div>
+                    <div className='text-offBlue content-area'>{parse(announcement.content)}</div>
                 </div>
             </div>
         </>

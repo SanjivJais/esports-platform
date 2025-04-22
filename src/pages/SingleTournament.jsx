@@ -10,7 +10,7 @@ import { useAuth } from '../utils/AuthContext';
 // import { IoCopyOutline } from 'react-icons/io5';
 import { Tooltip } from '../components/Tooltip';
 import { MdInfo } from 'react-icons/md';
-import ReactHtmlParser from 'react-html-parser';
+import parse from 'html-react-parser';;
 import { MatchTile } from '../components/Tournament/MatchTile';
 import { TbTournament } from 'react-icons/tb';
 import { FaCircleCheck, FaPeopleGroup, FaRegClock } from 'react-icons/fa6';
@@ -582,7 +582,7 @@ export const SingleTournament = () => {
                                 }
                                 {activeTab === 5 &&
                                     <div className='content-area'>
-                                        {ReactHtmlParser(tournament.rules)}
+                                        {parse(tournament.rules)}
                                     </div>
                                 }
 
@@ -593,7 +593,7 @@ export const SingleTournament = () => {
                                     <div className="bg-secondaryLight p-4 rounded-[5px] mt-3 mb-4">
                                         <h5 className='font-semibold text-base text-offBlue mb-3'>Description</h5>
                                         <div className='content-area'>
-                                            {ReactHtmlParser(tournament.description)}
+                                            {parse(tournament.description)}
                                         </div>
 
                                     </div>}

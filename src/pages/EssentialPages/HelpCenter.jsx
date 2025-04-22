@@ -3,7 +3,7 @@ import LoadingBar from 'react-top-loading-bar'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { Helmet } from 'react-helmet'
 import { TbCalendarTime } from 'react-icons/tb'
-import ReactHtmlParser from 'react-html-parser'
+import parse from 'html-react-parser';
 import { database, db_id } from '../../../config/Appwrite'
 import { formatDateTime } from '../../utils/DateUtils'
 
@@ -44,7 +44,7 @@ export const HelpCenter = () => {
                     <div className="flex gap-2 items-center text-offBlue mb-6"><span className='flex items-center gap-1'><TbCalendarTime />Last updated: </span><span className='italic'>{page && formatDateTime(page.$updatedAt).date}</span></div>
 
 
-                    {page && ReactHtmlParser(page.content)}
+                    {page && parse(page.content)}
 
                 </div>
             </div>
